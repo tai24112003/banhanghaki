@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               Text(
-                "Đăng nhập",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                "Đăng Ký",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
@@ -54,12 +54,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
+                        "Họ và tên",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      const TextField(),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      const Text(
                         "Email",
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                       const TextField(),
                       const SizedBox(
-                        height: 30,
+                        height: 25,
+                      ),
+                      const Text(
+                        "Số điện thoại",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      const TextField(),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      const Text(
+                        "Địa chỉ",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      const TextField(),
+                      const SizedBox(
+                        height: 25,
                       ),
                       const Text(
                         "Password",
@@ -67,7 +91,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const TextField(),
                       const SizedBox(
-                        height: 100,
+                        height: 25,
+                      ),
+                      const Text(
+                        "Confirm Password",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      const TextField(),
+                      SizedBox(
+                        height: 10,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
@@ -84,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Padding(
                             padding: EdgeInsets.all(15.0),
                             child: Text(
-                              "Đăng nhập",
+                              "Đăng Ký",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
@@ -92,29 +124,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                              side: MaterialStatePropertyAll(
-                                  BorderSide(color: Colors.transparent)),
-                              backgroundColor: const MaterialStatePropertyAll(
-                                Colors.transparent,
-                              ),
-                              shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: Colors.transparent)))),
-                          child: const Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Text(
-                              "Đăng ký",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            ),
-                          ),
-                        ),
+                        height: 10,
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Đã có tài khoản? "),
+                          GestureDetector(
+                            child: Text(
+                              "Đăng nhập",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
