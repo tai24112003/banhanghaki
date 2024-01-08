@@ -1,3 +1,5 @@
+import 'package:bangiayhaki/components/MyReviewItem.dart';
+import 'package:bangiayhaki/presenters/Previews.dart';
 import 'package:flutter/material.dart';
 
 class CommentsScreen extends StatefulWidget {
@@ -20,6 +22,21 @@ class _CommentsScreenState extends State<CommentsScreen> {
               textAlign: TextAlign.center,
             ),
           )),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              MyReviewItem(),
+              MyReviewItem(),
+              MyReviewItem(),
+              MyReviewItem(),
+              MyReviewItem(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

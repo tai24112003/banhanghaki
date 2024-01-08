@@ -19,7 +19,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5, // Số lượng tab
+        length: 5,
         child: Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(
