@@ -1,4 +1,4 @@
-import '../views/detailScreen.dart';
+import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
 
 class Item extends StatefulWidget {
