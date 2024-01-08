@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/views/AddAddressScreen.dart';
 import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context) => EditAddressScreen(),
+        "/": (context) => AddAddressScreen(),
         "/home": (context) => HomeScreen(),
         "/noti": (context) => NotiScreen(),
         "/profile": (context) => ProductsManageScreen(),

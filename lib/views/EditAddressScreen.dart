@@ -51,6 +51,12 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("Floating Action Button Pressed");
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
