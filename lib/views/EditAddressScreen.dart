@@ -52,10 +52,13 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("Floating Action Button Pressed");
-        },
-        child: Icon(Icons.add),
+        shape: CircleBorder(),
+        onPressed: () {},
+        backgroundColor: Colors.white,
+        child: Icon(
+          Icons.add, // Biểu tượng dấu cộng đen
+          color: Colors.black, // Màu của biểu tượng
+        ),
       ),
     );
   }
