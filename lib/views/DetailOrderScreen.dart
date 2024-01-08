@@ -1,4 +1,4 @@
-import 'package:demo/components/DetailOrderItem.dart';
+import 'package:bangiayhaki/components/DetailOrderItem.dart';
 import 'package:flutter/material.dart';
 
 class DetailOrderScreen extends StatefulWidget {
