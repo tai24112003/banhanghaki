@@ -8,6 +8,7 @@ import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
+import 'package:bangiayhaki/views/SettingScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context) => EditAddressScreen(),
+        "/": (context) => SettingScreen(),
         "/home": (context) => HomeScreen(),
         "/noti": (context) => NotiScreen(),
         "/profile": (context) => ProductsManageScreen(),
