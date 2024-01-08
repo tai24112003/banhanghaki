@@ -8,11 +8,11 @@ class AddProduct extends StatefulWidget {
 }
 
 String? _selectedItem;
-TextEditingController tenSanPham = TextEditingController();
-TextEditingController linkHinhAnh = TextEditingController();
-TextEditingController moTa = TextEditingController();
-TextEditingController giaBan = TextEditingController();
-TextEditingController soLuong = TextEditingController();
+TextEditingController _productName = TextEditingController();
+TextEditingController _urlImage = TextEditingController();
+TextEditingController _description = TextEditingController();
+TextEditingController _price = TextEditingController();
+TextEditingController _quantity = TextEditingController();
 List<String> _dropdownItems = [
   'Ghế',
   'Bàn',
@@ -77,7 +77,7 @@ class _AddProductState extends State<AddProduct> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-                controller: tenSanPham,
+                controller: _productName,
                 decoration: InputDecoration(
                   labelText: 'Tên sản phẩm',
                   labelStyle: TextStyle(
@@ -108,7 +108,7 @@ class _AddProductState extends State<AddProduct> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-                controller: giaBan,
+                controller: _price,
                 decoration: InputDecoration(
                   labelText: 'Giá bán',
                   labelStyle: TextStyle(
@@ -139,7 +139,7 @@ class _AddProductState extends State<AddProduct> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-                controller: soLuong,
+                controller: _quantity,
                 decoration: InputDecoration(
                   labelText: 'Số lượng',
                   labelStyle: TextStyle(
@@ -170,7 +170,38 @@ class _AddProductState extends State<AddProduct> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-                controller: moTa,
+                controller: _urlImage,
+                decoration: InputDecoration(
+                  labelText: 'Liên kết hình ảnh',
+                  labelStyle: TextStyle(
+                    color: Color.fromARGB(255, 155, 155, 155),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
+                      width: 2, // Độ dày của border
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(
+                          111, 111, 111, 1), // Màu của border khi được chọn
+                      width: 2, // Độ dày của border
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: TextField(
+                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                controller: _description,
                 maxLines: null,
                 decoration: InputDecoration(
                   labelText: 'Mô tả',
