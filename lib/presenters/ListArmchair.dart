@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/item.dart';
+import '../presenters/item.dart';
 
 class ListArmchair extends StatefulWidget {
   const ListArmchair({super.key});

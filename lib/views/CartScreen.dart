@@ -1,3 +1,5 @@
+import 'package:bangiayhaki/components/CartItem.dart';
+import 'package:bangiayhaki/components/DetailOrderItem.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
@@ -23,12 +25,42 @@ class _CartScreenState extends State<CartScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  style: const ButtonStyle(
+                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5)))),
+                    backgroundColor: MaterialStatePropertyAll(Colors.black),
+                  ),
+                  child: const Text(
+                    "Xoá hết",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
           //list product here
-          const Column(
-            children: [
-              Text("haha"),
-              Text("haha"),
-            ],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: const Column(
+                  children: [
+                    CartItem(),
+                    CartItem(),
+                    CartItem(),
+                    CartItem(),
+                    CartItem(),
+                  ],
+                ),
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),

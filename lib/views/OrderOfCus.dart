@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/components/OrderItem.dart';
 import 'package:flutter/material.dart';
 
 class OrderOfCus extends StatefulWidget {
@@ -51,35 +52,50 @@ class _OrderOfCusState extends State<OrderOfCus> {
             ),
           ),
         ),
-        body: TabBarView(children: [
+        body: const TabBarView(children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Hoàn thành"),
-                Container(),
-              ],
+            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  OrderItem(status: "Đã giao"),
+                  OrderItem(status: "Đã giao"),
+                  OrderItem(status: "Đã giao"),
+                  OrderItem(status: "Đã giao"),
+                  OrderItem(status: "Đã giao"),
+                  OrderItem(status: "Đã giao"),
+                ],
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Đang xử lí"),
-                Container(),
-              ],
+            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  OrderItem(status: "Đang xử lí"),
+                  OrderItem(status: "Đang xử lí"),
+                  OrderItem(status: "Đang xử lí"),
+                  OrderItem(status: "Đang xử lí"),
+                  OrderItem(status: "Đang xử lí"),
+                  OrderItem(status: "Đang xử lí"),
+                ],
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Đã huỷ"),
-                Container(),
-              ],
+            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  OrderItem(status: "Đã huỷ"),
+                  OrderItem(status: "Đã huỷ"),
+                  OrderItem(status: "Đã huỷ"),
+                  OrderItem(status: "Đã huỷ"),
+                  OrderItem(status: "Đã huỷ"),
+                  OrderItem(status: "Đã huỷ"),
+                ],
+              ),
             ),
           ),
         ]),

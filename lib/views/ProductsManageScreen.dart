@@ -1,11 +1,5 @@
-import 'package:bangiayhaki/models/BottomBarCustom.dart';
-import 'package:bangiayhaki/models/ItemManage.dart';
-import 'package:bangiayhaki/models/TabBarCustom.dart';
-import 'package:bangiayhaki/presenters/ListArmchair.dart';
-import 'package:bangiayhaki/presenters/ListBed.dart';
-import 'package:bangiayhaki/presenters/ListChari.dart';
-import 'package:bangiayhaki/presenters/ListLamp.dart';
-import 'package:bangiayhaki/presenters/ListTable.dart';
+import 'package:bangiayhaki/presenters/BottomBarCustom.dart';
+import 'package:bangiayhaki/presenters/TabBarCustom.dart';
 import 'package:bangiayhaki/presenters/Manage/ListArmchairManage.dart';
 import 'package:bangiayhaki/presenters/Manage/ListBedManage.dart';
 import 'package:bangiayhaki/presenters/Manage/ListChairManage.dart';
