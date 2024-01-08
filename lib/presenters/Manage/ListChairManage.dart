@@ -1,4 +1,4 @@
-import 'package:bangiayhaki/models/ItemManage.dart';
+import 'package:bangiayhaki/presenters/ItemManage.dart';
 import 'package:flutter/material.dart';
 
 class ListChairManager extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:bangiayhaki/models/BottomBarCustom.dart';
+import 'package:bangiayhaki/presenters/BottomBarCustom.dart';
 import 'package:flutter/material.dart';
 
 class NotiScreen extends StatefulWidget {

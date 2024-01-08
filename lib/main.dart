@@ -3,7 +3,6 @@ import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/RegisterScreen.dart';
-import 'package:bangiayhaki/views/Detail.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
