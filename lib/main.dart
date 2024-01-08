@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context) => CommentsScreen(),
+        "/": (context) => AccoutManageScreen(),
         "/home": (context) => HomeScreen(),
         "/noti": (context) => NotiScreen(),
         "/profile": (context) => ProductsManageScreen(),
