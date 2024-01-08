@@ -1,5 +1,5 @@
-import 'package:bangiayhaki/models/BottomBarCustom.dart';
-import 'package:bangiayhaki/models/TabBarCustom.dart';
+import 'package:bangiayhaki/presenters/BottomBarCustom.dart';
+import 'package:bangiayhaki/presenters/TabBarCustom.dart';
 import 'package:bangiayhaki/presenters/Manage/ListArmchairManage.dart';
 import 'package:bangiayhaki/presenters/Manage/ListBedManage.dart';
 import 'package:bangiayhaki/presenters/Manage/ListChairManage.dart';

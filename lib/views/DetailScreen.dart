@@ -1,6 +1,3 @@
-import 'package:bangiayhaki/models/BottomBarCustom.dart';
-
-import '../models/item.dart';
 import 'Detail.dart';
 import 'package:flutter/material.dart';
 
