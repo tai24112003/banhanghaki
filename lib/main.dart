@@ -1,4 +1,3 @@
-import 'package:bangiayhaki/views/Detail.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';

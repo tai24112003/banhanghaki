@@ -1,4 +1,4 @@
-import 'package:bangiayhaki/views/Addproduct.dart';
+import 'package:bangiayhaki/presenters/Addproduct.dart';
 import 'package:flutter/material.dart';
 
 class AddProductsScreen extends StatefulWidget {

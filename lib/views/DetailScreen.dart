@@ -1,4 +1,4 @@
-import 'Detail.dart';
+import '../presenters/Detail.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatefulWidget {
