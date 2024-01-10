@@ -22,13 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
         length: 5, // Số lượng tab
         child: Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(
+              preferredSize: const Size.fromHeight(
                   130), // Tính kích thước tối ưu cho AppBar và TabBar
               child: Column(
                 children: [
                   AppBar(
                       leading: IconButton(
-                        icon: Icon(Icons.search),
+                        icon: const Icon(Icons.search),
                         onPressed: () {},
                       ),
                       backgroundColor: Colors.transparent,
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           textAlign: TextAlign.center,
                         ),
                       )),
-                  TabbarCustom()
+                  const TabbarCustom()
                 ],
               ),
             ),
@@ -56,17 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ListLamp()
             ]),
             floatingActionButton: FloatingActionButton(
-              backgroundColor: Color.fromARGB(255, 255, 255, 255),
+              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatScreen()),
+                  MaterialPageRoute(builder: (context) => const ChatScreen()),
                 );
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50), // Độ bo góc là 8.0
               ),
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 backgroundImage: AssetImage("assets/message.JPG"),
               ),
               elevation: 0,

@@ -11,7 +11,7 @@ class AddProductsScreen extends StatefulWidget {
 class _AddProductsScreenState extends State<AddProductsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: AddProduct(),
     );
   }

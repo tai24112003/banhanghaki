@@ -17,7 +17,7 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: BottomAppBar(
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: const Color.fromARGB(255, 255, 255, 255),
             height: MediaQuery.of(context).size.height / 13,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

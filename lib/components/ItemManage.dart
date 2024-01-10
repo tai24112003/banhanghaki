@@ -21,11 +21,12 @@ class _ItemManageState extends State<ItemManage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DetailScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const DetailScreen()),
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
@@ -39,7 +40,7 @@ class _ItemManageState extends State<ItemManage> {
               ),
             ],
           ),
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -68,11 +69,11 @@ class _ItemManageState extends State<ItemManage> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             width: 80,
           ),
           Container(
-            child: IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
+            child: IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
           )
         ],
       ),

@@ -23,7 +23,7 @@ class _PreviewState extends State<Preview> {
               Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.asset(
@@ -36,7 +36,7 @@ class _PreviewState extends State<Preview> {
                   ),
                 ],
               ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -75,14 +75,14 @@ class _PreviewState extends State<Preview> {
                       )),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 80,
               ),
             ],
           ),
           Container(
             //container đổ bóng
-            margin: EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 20),
             width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
               boxShadow: [
@@ -90,21 +90,22 @@ class _PreviewState extends State<Preview> {
                   color:
                       const Color.fromARGB(255, 211, 211, 211).withOpacity(0.5),
                   blurRadius: 5,
-                  offset: Offset(3, 3), // Dịch chuyển bóng theo trục x và y
+                  offset:
+                      const Offset(3, 3), // Dịch chuyển bóng theo trục x và y
                 ),
               ],
             ),
             child: Container(
               //container chứa preview
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 251, 251),
+                  color: const Color.fromARGB(255, 255, 251, 251),
                   border: Border.all(
                       width: 1,
                       color: const Color.fromARGB(255, 255, 251, 251)),
                   borderRadius: BorderRadius.circular(8)),
 
-              child: Column(
+              child: const Column(
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     CircleAvatar(
@@ -172,7 +173,7 @@ class _PreviewState extends State<Preview> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 20),
             width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
               boxShadow: [
@@ -180,19 +181,20 @@ class _PreviewState extends State<Preview> {
                   color:
                       const Color.fromARGB(255, 211, 211, 211).withOpacity(0.5),
                   blurRadius: 5,
-                  offset: Offset(3, 3), // Dịch chuyển bóng theo trục x và y
+                  offset:
+                      const Offset(3, 3), // Dịch chuyển bóng theo trục x và y
                 ),
               ],
             ),
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 251, 251),
+                  color: const Color.fromARGB(255, 255, 251, 251),
                   border: Border.all(
                       width: 1,
                       color: const Color.fromARGB(255, 255, 251, 251)),
                   borderRadius: BorderRadius.circular(8)),
-              child: Column(
+              child: const Column(
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     CircleAvatar(
@@ -260,7 +262,7 @@ class _PreviewState extends State<Preview> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 20),
             width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
               boxShadow: [
@@ -268,19 +270,20 @@ class _PreviewState extends State<Preview> {
                   color:
                       const Color.fromARGB(255, 211, 211, 211).withOpacity(0.5),
                   blurRadius: 5,
-                  offset: Offset(3, 3), // Dịch chuyển bóng theo trục x và y
+                  offset:
+                      const Offset(3, 3), // Dịch chuyển bóng theo trục x và y
                 ),
               ],
             ),
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 251, 251),
+                  color: const Color.fromARGB(255, 255, 251, 251),
                   border: Border.all(
                       width: 1,
                       color: const Color.fromARGB(255, 255, 251, 251)),
                   borderRadius: BorderRadius.circular(8)),
-              child: Column(
+              child: const Column(
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     CircleAvatar(
