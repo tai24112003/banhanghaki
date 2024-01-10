@@ -1,4 +1,4 @@
-import 'package:bangiayhaki/presenters/ItemManage.dart';
+import 'package:bangiayhaki/components/ItemManage.dart';
 import 'package:flutter/material.dart';
 
 class ListLampManager extends StatefulWidget {

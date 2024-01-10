@@ -1,14 +1,14 @@
+import 'package:bangiayhaki/components/item.dart';
 import 'package:flutter/material.dart';
-import '../presenters/item.dart';
 
-class ListTable extends StatefulWidget {
-  const ListTable({super.key});
+class ListLamp extends StatefulWidget {
+  const ListLamp({super.key});
 
   @override
-  State<ListTable> createState() => _ListTableState();
+  State<ListLamp> createState() => _ListLampState();
 }
 
-class _ListTableState extends State<ListTable> {
+class _ListLampState extends State<ListLamp> {
   @override
   Widget build(BuildContext context) {
     return ListView(

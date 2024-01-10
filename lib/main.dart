@@ -12,6 +12,7 @@ import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:bangiayhaki/views/PreviewsScreen.dart';
+import 'package:bangiayhaki/views/ProfileScreen.dart';
 import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
@@ -35,10 +36,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context) => CommentsScreen(),
+        "/": (context) => HomeScreen(),
         "/home": (context) => HomeScreen(),
         "/noti": (context) => NotiScreen(),
-        "/profile": (context) => ProductsManageScreen(),
+        "/profile": (context) => ProfileScreen(),
       },
       initialRoute: '/',
     );

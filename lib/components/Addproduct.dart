@@ -36,7 +36,7 @@ class _AddProductState extends State<AddProduct> {
       children: [
         SingleChildScrollView(
           child: Column(children: [
-            Row(
+            const Row(
               children: [
                 SizedBox(
                   width: 10,
@@ -48,17 +48,18 @@ class _AddProductState extends State<AddProduct> {
               children: [
                 Expanded(
                     child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
                                   width: 2,
-                                  color: Color.fromARGB(255, 226, 226, 226))),
+                                  color: const Color.fromARGB(
+                                      255, 226, 226, 226))),
                           child: DropdownButton(
                             value: _selectedItem,
-                            hint: Text('Danh mục'),
+                            hint: const Text('Danh mục'),
                             onChanged: _onDropdownItemSelected,
                             items: _dropdownItems.map((String item) {
                               return DropdownMenuItem(
@@ -70,29 +71,29 @@ class _AddProductState extends State<AddProduct> {
                         )))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 controller: _productName,
                 decoration: InputDecoration(
                   labelText: 'Tên sản phẩm',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Color.fromARGB(255, 155, 155, 155),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
                       width: 2, // Độ dày của border
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(
                           111, 111, 111, 1), // Màu của border khi được chọn
                       width: 2, // Độ dày của border
@@ -101,29 +102,29 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 controller: _price,
                 decoration: InputDecoration(
                   labelText: 'Giá bán',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Color.fromARGB(255, 155, 155, 155),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
                       width: 2, // Độ dày của border
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(
                           111, 111, 111, 1), // Màu của border khi được chọn
                       width: 2, // Độ dày của border
@@ -132,29 +133,29 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 controller: _quantity,
                 decoration: InputDecoration(
                   labelText: 'Số lượng',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Color.fromARGB(255, 155, 155, 155),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
                       width: 2, // Độ dày của border
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(
                           111, 111, 111, 1), // Màu của border khi được chọn
                       width: 2, // Độ dày của border
@@ -163,29 +164,29 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 controller: _urlImage,
                 decoration: InputDecoration(
                   labelText: 'Liên kết hình ảnh',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Color.fromARGB(255, 155, 155, 155),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
                       width: 2, // Độ dày của border
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(
                           111, 111, 111, 1), // Màu của border khi được chọn
                       width: 2, // Độ dày của border
@@ -194,30 +195,30 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 controller: _description,
                 maxLines: null,
                 decoration: InputDecoration(
                   labelText: 'Mô tả',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Color.fromARGB(255, 155, 155, 155),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
                       width: 2, // Độ dày của border
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Color.fromRGBO(
                           111, 111, 111, 1), // Màu của border khi được chọn
                       width: 2, // Độ dày của border
@@ -226,7 +227,7 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Container(
@@ -234,13 +235,13 @@ class _AddProductState extends State<AddProduct> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text("Thêm"),
+                child: const Text("Thêm"),
                 style: ElevatedButton.styleFrom(
-                  primary:
-                      Color.fromARGB(255, 186, 186, 186), // Màu nền của nút
+                  primary: const Color.fromARGB(
+                      255, 186, 186, 186), // Màu nền của nút
                   onPrimary:
                       const Color.fromARGB(255, 59, 59, 59), // Màu chữ trên nút
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                       horizontal: 16.0, vertical: 8.0), // Kích thước lề nút
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0), // Bo góc nút

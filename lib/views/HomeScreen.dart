@@ -1,10 +1,11 @@
-import 'package:bangiayhaki/presenters/BottomBarCustom.dart';
-import 'package:bangiayhaki/presenters/TabBarCustom.dart';
-import 'package:bangiayhaki/presenters/ListArmchair.dart';
-import 'package:bangiayhaki/presenters/ListBed.dart';
-import 'package:bangiayhaki/presenters/ListChari.dart';
-import 'package:bangiayhaki/presenters/ListLamp.dart';
-import 'package:bangiayhaki/presenters/ListTable.dart';
+import 'package:bangiayhaki/components/TabBarCustom.dart';
+import 'package:bangiayhaki/components/BottomBarCustom.dart';
+import 'package:bangiayhaki/components/ListArmchair.dart';
+import 'package:bangiayhaki/components/ListBed.dart';
+import 'package:bangiayhaki/components/ListChari.dart';
+import 'package:bangiayhaki/components/ListLamp.dart';
+import 'package:bangiayhaki/components/ListTable.dart';
+import 'package:bangiayhaki/views/ChatScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,8 +27,18 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   AppBar(
-                    title: Text('Make Home Beautiful'),
-                  ),
+                      leading: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {},
+                      ),
+                      backgroundColor: Colors.transparent,
+                      title: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: const Text(
+                          "Make Home Beautiful",
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
                   TabbarCustom()
                 ],
               ),
@@ -47,7 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButton: FloatingActionButton(
               backgroundColor: Color.fromARGB(255, 255, 255, 255),
               onPressed: () {
-                // Xử lý sự kiện khi nút thứ nhất được nhấn
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatScreen()),
+                );
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50), // Độ bo góc là 8.0

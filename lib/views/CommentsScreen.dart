@@ -1,5 +1,4 @@
 import 'package:bangiayhaki/components/MyReviewItem.dart';
-import 'package:bangiayhaki/presenters/Previews.dart';
 import 'package:flutter/material.dart';
 
 class CommentsScreen extends StatefulWidget {

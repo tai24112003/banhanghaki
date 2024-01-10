@@ -1,14 +1,14 @@
+import 'package:bangiayhaki/components/item.dart';
 import 'package:flutter/material.dart';
-import '../presenters/item.dart';
 
-class ListLamp extends StatefulWidget {
-  const ListLamp({super.key});
+class ListChair extends StatefulWidget {
+  const ListChair({super.key});
 
   @override
-  State<ListLamp> createState() => _ListLampState();
+  State<ListChair> createState() => _ListChairState();
 }
 
-class _ListLampState extends State<ListLamp> {
+class _ListChairState extends State<ListChair> {
   @override
   Widget build(BuildContext context) {
     return ListView(
