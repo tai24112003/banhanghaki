@@ -23,14 +23,14 @@ class _DropdownAddressItemState extends State<DropdownAddressItem> {
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(8.0),
       ),
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12.0,
               color: Colors.black87,
             ),
@@ -50,7 +50,7 @@ class _DropdownAddressItemState extends State<DropdownAddressItem> {
                       child: Text(item),
                     ))
                 .toList(),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
             ),
           ),

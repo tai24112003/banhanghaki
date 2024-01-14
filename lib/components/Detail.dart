@@ -22,9 +22,9 @@ class _DetailState extends State<Detail> {
                 child: Stack(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 40),
+                      padding: const EdgeInsets.only(left: 40),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(40),
                         ),
                         child: Image.asset(
@@ -44,7 +44,7 @@ class _DetailState extends State<Detail> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              icon: Icon(Icons.arrow_back),
+                              icon: const Icon(Icons.arrow_back),
                             ),
                           ],
                         )),
@@ -53,7 +53,7 @@ class _DetailState extends State<Detail> {
                         left: 17,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 238, 238, 238),
+                              color: const Color.fromARGB(255, 238, 238, 238),
                               borderRadius: BorderRadius.circular(40)),
                           child: Column(
                             children: [
@@ -61,7 +61,8 @@ class _DetailState extends State<Detail> {
                                 data: ThemeData(
                                   radioTheme: RadioThemeData(
                                     fillColor: MaterialStateProperty.all(
-                                        Color.fromARGB(255, 255, 255, 255)),
+                                        const Color.fromARGB(
+                                            255, 255, 255, 255)),
                                   ),
                                 ),
                                 child: Radio(
@@ -73,7 +74,7 @@ class _DetailState extends State<Detail> {
                                     });
                                   },
                                   activeColor:
-                                      Color.fromARGB(255, 255, 255, 255),
+                                      const Color.fromARGB(255, 255, 255, 255),
                                 ),
                               ),
                               Theme(
@@ -98,7 +99,7 @@ class _DetailState extends State<Detail> {
                                 data: ThemeData(
                                   radioTheme: RadioThemeData(
                                     fillColor: MaterialStateProperty.all(
-                                        Color.fromARGB(255, 197, 62, 62)),
+                                        const Color.fromARGB(255, 197, 62, 62)),
                                   ), // Màu sắc cho radio button không được chọn
                                 ),
                                 child: Radio(
@@ -109,7 +110,8 @@ class _DetailState extends State<Detail> {
                                       _selectedValue = newValue;
                                     });
                                   },
-                                  activeColor: Color.fromARGB(255, 190, 58, 58),
+                                  activeColor:
+                                      const Color.fromARGB(255, 190, 58, 58),
                                 ),
                               ),
                             ],
@@ -136,10 +138,10 @@ class _DetailState extends State<Detail> {
               ),
               Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("\$ 50",
@@ -161,9 +163,9 @@ class _DetailState extends State<Detail> {
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.remove),
+                            icon: const Icon(Icons.remove),
                           ),
-                          Text("0",
+                          const Text("0",
                               style: TextStyle(
                                 decoration: TextDecoration.none,
                                 fontSize: 20,
@@ -171,7 +173,7 @@ class _DetailState extends State<Detail> {
                               )),
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.add),
+                            icon: const Icon(Icons.add),
                           )
                         ],
                       )
@@ -179,7 +181,7 @@ class _DetailState extends State<Detail> {
                   )
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Icon(
                     Icons.star,
@@ -205,7 +207,7 @@ class _DetailState extends State<Detail> {
                       )),
                 ],
               ),
-              Text(
+              const Text(
                 "Minimal Stand is made of by natural wood. The design that is very simple and minimal. This is truly one of the best furnitures in any family for now. With 3 different colors, you can easily select the best match for your home.",
                 style: TextStyle(
                   decoration: TextDecoration.none,

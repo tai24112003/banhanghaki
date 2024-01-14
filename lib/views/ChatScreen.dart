@@ -40,9 +40,11 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: const [Icon(Icons.video_call_rounded)],
       ),
       body: GestureDetector(
+        onVerticalDragStart: (e) {
+          _focusNode.unfocus();
+        },
         onTap: () {
           _focusNode.unfocus();
-          print("========>>>>${MediaQuery.of(context).size.height}");
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -71,28 +73,33 @@ class _ChatScreenState extends State<ChatScreen> {
                           itemCount: a.length,
                           itemBuilder: (BuildContext context, int idx) {
                             return Container(
+                                width: MediaQuery.of(context).size.width,
                                 child: Row(
-                              mainAxisAlignment: a[idx]["au"] == "s"
-                                  ? MainAxisAlignment.start
-                                  : MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                    margin:
-                                        const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        color: a[idx]["au"] != "s"
-                                            ? Colors.blue
-                                            : Colors.purple,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Text(
-                                      a[idx]["cont"]!,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    )),
-                              ],
-                            ));
+                                  mainAxisAlignment: a[idx]["au"] == "s"
+                                      ? MainAxisAlignment.start
+                                      : MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 5, 0, 5),
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            color: a[idx]["au"] != "s"
+                                                ? Colors.blue
+                                                : Colors.purple,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10))),
+                                        child: Text(
+                                          a[idx]["cont"]!,
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          softWrap: true,
+                                        )),
+                                  ],
+                                ));
                           }),
                     ),
                   ),
@@ -102,8 +109,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
                             height: MediaQuery.of(context).size.height / 12,
-                            width: MediaQuery.of(context).size.width * 0.8,
+                            width: MediaQuery.of(context).size.width * 0.78,
                             child: TextField(
+                              maxLines: null,
+                              expands: true,
+                              minLines: null,
                               focusNode: _focusNode,
                               onTapOutside: (e) {
                                 setState(() {
@@ -166,7 +176,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 a.add(newMes);
                               });
                               _scrollController.animateTo(
-                                _scrollController.position.maxScrollExtent + 50,
+                                _scrollController.position.maxScrollExtent +
+                                    1000,
                                 duration: const Duration(milliseconds: 200),
                                 curve: Curves.easeOut,
                               );
