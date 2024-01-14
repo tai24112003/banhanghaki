@@ -40,4 +40,11 @@ class Order {
       throw Exception('Failed to load data');
     }
   }
+
+  static List<Order> statusfilter(String stt) {
+    if (lstOrder.isEmpty) {
+      return [];
+    }
+    return lstOrder.where((element) => element.status == stt).toList();
+  }
 }
