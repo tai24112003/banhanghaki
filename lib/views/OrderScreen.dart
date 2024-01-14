@@ -1,4 +1,5 @@
 import 'package:bangiayhaki/components/OrderItem.dart';
+import 'package:bangiayhaki/models/Order.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -9,11 +10,24 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  List<Order> lstorder = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    try {
+      await Order.loadData();
+      setState(() {
+        lstorder = Order.lstOrder;
+      });
+    } catch (error) {
+      print('Error loading data: $error');
+    }
   }
 
   @override
@@ -48,31 +62,29 @@ class _OrderScreenState extends State<OrderScreen>
         controller: _tabController,
         children: [
           // Đã Giao Tab
-          SingleChildScrollView(
-              child: Column(
-            children: [
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-            ],
-          )),
+          lstorder.isEmpty
+              ? Center(
+                  child: Text("No orders available."),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.all(8),
+                  itemCount: lstorder.length,
+                  itemBuilder: (context, index) {
+                    return OrderItem(myorder: lstorder[index]);
+                  },
+                ),
 
           SingleChildScrollView(
-              child: Column(
-            children: [
-              OrderItem(status: "Đang xử lí"),
-            ],
-          )),
+            child: Column(
+              children: [Text("Content for Đang Xử Lý")],
+            ),
+          ),
 
           SingleChildScrollView(
-              child: Column(
-            children: [
-              OrderItem(status: "Đã hủy"),
-            ],
-          ))
+            child: Column(
+              children: [Text("Content for Đã Hủy")],
+            ),
+          ),
         ],
       ),
     );
