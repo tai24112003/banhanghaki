@@ -5,9 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
 
 class ApiConstants {
-  static const String host = '0.tcp.ap.ngrok.io';
-  static const int port = 14570;
-  static const String baseUrl = 'http://$host:$port/api';
+  static const String host =
+      'https://33af-2402-800-63b9-bf0b-5b1-576c-401f-87f2.ngrok-free.app/';
+  static const int port = 3000;
+  static const String baseUrl = 'http://$host/api';
+  // static const String baseUrl = 'http://$host:$port/api';
 }
 
 abstract class UserView {
@@ -47,7 +49,7 @@ class UserPresenter {
     required String address,
     required String status,
   }) async {
-    print(email);
+    print('${ApiConstants.baseUrl}/register');
     final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}/register'),
       body: {
@@ -59,7 +61,7 @@ class UserPresenter {
         'status': status,
       },
     );
-
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final User user = User.fromJson(responseData);

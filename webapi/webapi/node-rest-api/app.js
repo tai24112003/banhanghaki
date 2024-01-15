@@ -11,11 +11,11 @@ const PORT = 3000;
 
 // Thay đổi host trong connection
 const connection = mysql.createConnection({
-  host: "0.tcp.ap.ngrok.io",
+  host: "33af-2402-800-63b9-bf0b-5b1-576c-401f-87f2.ngrok-free.app",
   user: 'root',
   password: '',
   database: 'hakistore',
-  port: 19120  // Thay đổi port thành 19120 (port của ngrok)
+  port: 3006
 });
 
 app.listen(PORT, () => {
