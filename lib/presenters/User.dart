@@ -6,7 +6,7 @@ import 'package:bcrypt/bcrypt.dart';
 
 class ApiConstants {
   static const String host =
-      'https://33af-2402-800-63b9-bf0b-5b1-576c-401f-87f2.ngrok-free.app/';
+      'https://eed8-2402-800-63b9-bf0b-5b1-576c-401f-87f2.ngrok-free.app';
   static const int port = 3000;
   static const String baseUrl = 'http://$host/api';
   // static const String baseUrl = 'http://$host:$port/api';

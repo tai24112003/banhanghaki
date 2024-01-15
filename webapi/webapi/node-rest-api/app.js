@@ -3,15 +3,19 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const app = express();
 const mysql = require('mysql');
+const ngrok = require('ngrok')
 app.use(cors());
 
 app.use(express.json());
 
 const PORT = 3000;
 
+const ngrokUrl = await ngrok.connect(PORT);
+console.log('Ngrok tunnel is live at:', ngrokUrl);
+
 // Thay đổi host trong connection
 const connection = mysql.createConnection({
-  host: "33af-2402-800-63b9-bf0b-5b1-576c-401f-87f2.ngrok-free.app",
+  host: "eed8-2402-800-63b9-bf0b-5b1-576c-401f-87f2.ngrok-free.app/",
   user: 'root',
   password: '',
   database: 'hakistore',
