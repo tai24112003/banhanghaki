@@ -5,11 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
 
 class ApiConstants {
-  static const String host =
-      'https://eed8-2402-800-63b9-bf0b-5b1-576c-401f-87f2.ngrok-free.app';
-  static const int port = 3000;
-  static const String baseUrl = 'http://$host/api';
-  // static const String baseUrl = 'http://$host:$port/api';
+  static const String baseUrl =
+      'https://ec37-2402-800-63b9-bf0b-9534-4629-8902-c3ad.ngrok-free.app/api';
 }
 
 abstract class UserView {
@@ -52,18 +49,21 @@ class UserPresenter {
     print('${ApiConstants.baseUrl}/register');
     final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}/register'),
-      body: {
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
         'email': email,
         'password': password,
         'fullName': fullName,
         'phoneNumber': phoneNumber,
         'address': address,
         'status': status,
-      },
+      }),
     );
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
+      print(responseData);
+
       final User user = User.fromJson(responseData);
       _view
           .displayMessage('Registration successful, welcome ${user.Fullname}!');
