@@ -25,16 +25,16 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
   }
 
   void _submitForm() {
-    // if (_formKey.currentState!.validate()) {
-    presenter?.Register(
-      email: emailController.text,
-      password: passwordController.text,
-      fullName: fullNameController.text,
-      phoneNumber: phoneNumberController.text,
-      address: addressController.text,
-      status: '1', // Set the status accordingly
-    );
-    // }
+    if (_formKey.currentState!.validate()) {
+      presenter?.Register(
+        email: emailController.text,
+        password: passwordController.text,
+        fullName: fullNameController.text,
+        phoneNumber: phoneNumberController.text,
+        address: addressController.text,
+        status: '1', // Set the status accordingly
+      );
+    }
   }
 
   @override
@@ -123,6 +123,9 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
                             children: [
                               Text("Đã có tài khoản? "),
                               GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(context, "/");
+                                },
                                 child: Text(
                                   "Đăng nhập",
                                   style: TextStyle(fontWeight: FontWeight.bold),

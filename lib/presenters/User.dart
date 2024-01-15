@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
 
 class ApiConstants {
-  static const String baseUrl =
-      'https://ec37-2402-800-63b9-bf0b-9534-4629-8902-c3ad.ngrok-free.app/api';
+  static const String baseUrl = 'https://cd97-58-187-136-7.ngrok-free.app';
 }
 
 abstract class UserView {
@@ -18,24 +17,26 @@ class UserPresenter {
 
   UserPresenter(this._view);
 
-  Future<void> Login(String email, String password) async {
+  Future<User?> Login({required String email, required String password}) async {
     final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}/login'),
-      body: {
-        'email': email,
-        'password': BCrypt.hashpw(password, BCrypt.gensalt())
-      },
+      Uri.parse('${ApiConstants.baseUrl}/users/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'username': email, 'password': password}),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final User user = User.fromJson(responseData);
-      _view.displayMessage('Login successful, welcome ${user.Fullname}!');
+
+      _view.displayMessage('Login successful, welcome!');
+      return User.fromJson(responseData);
     } else if (response.statusCode == 401) {
-      _view.displayMessage('Invalid email or password');
+      final Map<String, dynamic> responseData = json.decode(response.body);
+
+      _view.displayMessage(responseData['message']);
     } else {
       _view.displayMessage('Failed to login. Please try again.');
     }
+    return null;
   }
 
   Future<void> Register({
@@ -46,13 +47,13 @@ class UserPresenter {
     required String address,
     required String status,
   }) async {
-    print('${ApiConstants.baseUrl}/register');
+    print('${ApiConstants.baseUrl}/users/register');
     final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}/register'),
+      Uri.parse('${ApiConstants.baseUrl}/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'email': email,
-        'password': password,
+        'password': BCrypt.hashpw(password, BCrypt.gensalt()),
         'fullName': fullName,
         'phoneNumber': phoneNumber,
         'address': address,
