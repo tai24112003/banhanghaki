@@ -2,7 +2,13 @@ import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
 
 class Item extends StatefulWidget {
-  const Item({super.key});
+  const Item(
+      {super.key,
+      required this.image,
+      required this.name,
+      required this.price});
+  final String image, name;
+  final double price;
 
   @override
   State<Item> createState() => _ItemState();
@@ -28,7 +34,7 @@ class _ItemState extends State<Item> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
-                      'assets/st.JPG',
+                      widget.image,
                       width: MediaQuery.of(context).size.width / 2.55,
                       fit: BoxFit.cover,
                     ),
@@ -57,7 +63,7 @@ class _ItemState extends State<Item> {
             ],
           ),
           Text(
-            "Minimal Stand",
+            widget.name,
             style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -65,7 +71,7 @@ class _ItemState extends State<Item> {
                 fontFamily: 'Gelasio'),
           ),
           Text(
-            "\$12.00",
+            "\$" + widget.price.toString(),
             style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,

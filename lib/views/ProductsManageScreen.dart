@@ -21,8 +21,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
         length: 5,
         child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(
-                130), // Tính kích thước tối ưu cho AppBar và TabBar
+            preferredSize: const Size.fromHeight(130),
             child: Column(
               children: [
                 AppBar(
@@ -65,7 +64,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
                   backgroundColor: const Color.fromARGB(255, 212, 212, 212),
                   foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                 ),
-              ) // Khoảng cách giữa hai nút
+              )
             ],
           ),
           floatingActionButtonLocation:

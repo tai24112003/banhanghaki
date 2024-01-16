@@ -87,16 +87,15 @@ class _AddProductState extends State<AddProduct> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(231, 231, 231, 1),
+                      width: 2,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          111, 111, 111, 1), // Màu của border khi được chọn
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(111, 111, 111, 1),
+                      width: 2,
                     ),
                   ),
                 ),
@@ -118,16 +117,15 @@ class _AddProductState extends State<AddProduct> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(231, 231, 231, 1),
+                      width: 2,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          111, 111, 111, 1), // Màu của border khi được chọn
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(111, 111, 111, 1),
+                      width: 2,
                     ),
                   ),
                 ),
@@ -149,16 +147,15 @@ class _AddProductState extends State<AddProduct> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(231, 231, 231, 1),
+                      width: 2,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          111, 111, 111, 1), // Màu của border khi được chọn
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(111, 111, 111, 1),
+                      width: 2,
                     ),
                   ),
                 ),
@@ -180,16 +177,15 @@ class _AddProductState extends State<AddProduct> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(231, 231, 231, 1),
+                      width: 2,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          111, 111, 111, 1), // Màu của border khi được chọn
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(111, 111, 111, 1),
+                      width: 2,
                     ),
                   ),
                 ),
@@ -212,16 +208,15 @@ class _AddProductState extends State<AddProduct> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(231, 231, 231, 1), // Màu của border
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(231, 231, 231, 1),
+                      width: 2,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          111, 111, 111, 1), // Màu của border khi được chọn
-                      width: 2, // Độ dày của border
+                      color: Color.fromRGBO(111, 111, 111, 1),
+                      width: 2,
                     ),
                   ),
                 ),
@@ -237,14 +232,12 @@ class _AddProductState extends State<AddProduct> {
                 onPressed: () {},
                 child: const Text("Thêm"),
                 style: ElevatedButton.styleFrom(
-                  primary: const Color.fromARGB(
-                      255, 186, 186, 186), // Màu nền của nút
-                  onPrimary:
-                      const Color.fromARGB(255, 59, 59, 59), // Màu chữ trên nút
+                  primary: const Color.fromARGB(255, 186, 186, 186),
+                  onPrimary: const Color.fromARGB(255, 59, 59, 59),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0), // Kích thước lề nút
+                      horizontal: 16.0, vertical: 8.0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0), // Bo góc nút
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
               ),
