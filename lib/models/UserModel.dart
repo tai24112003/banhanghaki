@@ -1,19 +1,3 @@
-class Address {
-  final NameAddress;
-  final FullAddress;
-
-  Address({
-    required this.NameAddress,
-    required this.FullAddress,
-  });
-
-  factory Address.fromJson(Map<String, dynamic> json) {
-    return Address(
-      NameAddress: json['NameAddress'],
-      FullAddress: json['FullAddress'],
-    );
-  }
-}
 
 class User {
   final Fullname;

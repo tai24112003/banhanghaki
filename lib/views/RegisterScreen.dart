@@ -1,4 +1,4 @@
-import 'package:bangiayhaki/presenters/User.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -31,7 +31,6 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
         password: passwordController.text,
         fullName: fullNameController.text,
         phoneNumber: phoneNumberController.text,
-        address: addressController.text,
         status: '1', // Set the status accordingly
       );
     }
@@ -87,7 +86,6 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
                           buildTextField("Email", emailController),
                           buildTextField(
                               "Số điện thoại", phoneNumberController),
-                          buildTextField("Địa chỉ", addressController),
                           buildTextField("Password", passwordController,
                               isPassword: true),
                           buildTextField(

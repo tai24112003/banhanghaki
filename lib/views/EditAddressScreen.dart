@@ -1,5 +1,7 @@
 import 'package:bangiayhaki/components/AddressItem.dart';
-import 'package:bangiayhaki/models/User.dart';
+import 'package:bangiayhaki/models/AddressModel.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/views/AddAddressScreen.dart';
 import 'package:flutter/material.dart';
 
 class EditAddressScreen extends StatefulWidget {
@@ -53,7 +55,13 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         shape: CircleBorder(),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddAddressScreen(),
+              ));
+        },
         backgroundColor: Colors.white,
         child: Icon(
           Icons.add, // Biểu tượng dấu cộng đen

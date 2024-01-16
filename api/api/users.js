@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     try {
-        const { email, password, fullName, phoneNumber, address, status } = req.body;
+        const { email, password, fullName, phoneNumber, status } = req.body;
         console.log(req.body);
         console.log(email);
         const checkUserQuery = 'SELECT * FROM Users WHERE Email = ?';
@@ -69,11 +69,11 @@ router.post('/register', async (req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const addUserQuery = `
-    INSERT INTO Users (Email, Password, FullName, PhoneNumber, Address, Status)
+    INSERT INTO Users (Email, Password, FullName, PhoneNumber,  Status)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
 
-            connection.query(addUserQuery, [email, password, fullName, phoneNumber, address, status], (err) => {
+            connection.query(addUserQuery, [email, password, fullName, phoneNumber, status], (err) => {
                 if (err) {
                     console.error('Error executing MySQL query:', err);
                     res.status(500).send('Internal Server Error');
@@ -82,7 +82,6 @@ router.post('/register', async (req, res) => {
                         Fullname: fullName,
                         Email: email,
                         Phone: phoneNumber,
-                        address: address,
                         Password: password
                     });
                 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bangiayhaki/models/User.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
 
@@ -44,7 +44,6 @@ class UserPresenter {
     required String password,
     required String fullName,
     required String phoneNumber,
-    required String address,
     required String status,
   }) async {
     print('${ApiConstants.baseUrl}/users/register');
@@ -56,7 +55,6 @@ class UserPresenter {
         'password': BCrypt.hashpw(password, BCrypt.gensalt()),
         'fullName': fullName,
         'phoneNumber': phoneNumber,
-        'address': address,
         'status': status,
       }),
     );

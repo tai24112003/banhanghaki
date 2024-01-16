@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 class DropdownAddressItem extends StatefulWidget {
   final String label;
   final List<String> list;
-
+  final Function(String) onChanged;
   const DropdownAddressItem({
     required this.label,
     required this.list,
+    required this.onChanged,
   });
 
   @override
@@ -14,10 +15,9 @@ class DropdownAddressItem extends StatefulWidget {
 }
 
 class _DropdownAddressItemState extends State<DropdownAddressItem> {
-  String selectedItem = "";
-
   @override
   Widget build(BuildContext context) {
+    String selectedItem = !(widget.list.length > 0) ? "" : widget.list[0];
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[200],
@@ -40,9 +40,8 @@ class _DropdownAddressItemState extends State<DropdownAddressItem> {
             onChanged: (value) {
               setState(() {
                 selectedItem = value!;
+                widget.onChanged(value!);
               });
-
-              updateListBasedOnSelection(value!);
             },
             items: widget.list
                 .map((item) => DropdownMenuItem(
@@ -57,24 +56,5 @@ class _DropdownAddressItemState extends State<DropdownAddressItem> {
         ],
       ),
     );
-  }
-
-  void updateListBasedOnSelection(String value) {
-    if (value == "Thành Phố/Tỉnh") {
-      setState(() {
-        widget.list.clear();
-        widget.list.addAll(["Thành phố A", "Thành phố B", "Thành phố C"]);
-      });
-    } else if (value == "Quận/Huyện") {
-      setState(() {
-        widget.list.clear();
-        widget.list.addAll(["Quận D", "Quận E", "Quận F"]);
-      });
-    } else if (value == "Ấp/Phường") {
-      setState(() {
-        widget.list.clear();
-        widget.list.addAll(["Ấp G", "Ấp H", "Ấp I"]);
-      });
-    }
   }
 }

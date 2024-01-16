@@ -1,5 +1,5 @@
-import 'package:bangiayhaki/models/User.dart';
-import 'package:bangiayhaki/presenters/User.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:flutter/material.dart';
 

@@ -5,7 +5,7 @@ import 'package:bangiayhaki/components/ListBed.dart';
 import 'package:bangiayhaki/components/ListChari.dart';
 import 'package:bangiayhaki/components/ListLamp.dart';
 import 'package:bangiayhaki/components/ListTable.dart';
-import 'package:bangiayhaki/models/User.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/views/ChatScreen.dart';
 import 'package:flutter/material.dart';
 
