@@ -54,7 +54,15 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AddProductsScreen()),
+                          builder: (context) => AddProduct(
+                                id: 0,
+                                image: "",
+                                idCategory: 0,
+                                quantity: 0,
+                                name: "",
+                                price: 0,
+                                descreption: "",
+                              )),
                     );
                   },
                   label: const Text('Thêm sản phẩn'),

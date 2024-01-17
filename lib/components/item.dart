@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 class Item extends StatefulWidget {
   const Item(
       {super.key,
+      required this.id,
       required this.image,
       required this.name,
+      required this.quantity,
+      required this.color,
       required this.price});
-  final String image, name;
+  final String image, name, color;
   final double price;
-
+  final int id, quantity;
   @override
   State<Item> createState() => _ItemState();
 }
@@ -26,7 +29,10 @@ class _ItemState extends State<Item> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DetailScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => DetailScreen(
+                              id: widget.id,
+                            )),
                   );
                 },
                 child: Container(

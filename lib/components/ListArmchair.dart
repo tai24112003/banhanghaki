@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:bangiayhaki/components/item.dart';
+import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/models/Item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,8 +27,8 @@ class _ListArmchairState extends State<ListArmchair> {
 
   Future<List<Product>> fetchProducts() async {
     // Gọi API để lấy dữ liệu
-    final response =
-        await http.get(Uri.parse('http://192.168.1.4:3000/products'));
+    final response = await http
+        .get(Uri.parse('${GlobalVariable().myVariable}/api/product/armchair'));
 
     if (response.statusCode == 200) {
       // Chuyển đổi dữ liệu từ API thành danh sách sản phẩm
@@ -37,10 +37,14 @@ class _ListArmchairState extends State<ListArmchair> {
 
       for (var item in data) {
         Product product = Product(
-          image: item['image'],
-          name: item['name'],
-          price: item['price'],
-        );
+            id: item['ID'],
+            image: item['Image'],
+            idCategory: item['CategoryID'],
+            quantity: item['Quantity'],
+            color: item['Color'],
+            name: item['ProductName'],
+            price: (item['UnitPrice']).toDouble(),
+            description: item['Description']);
         products.add(product);
       }
 
@@ -59,7 +63,10 @@ class _ListArmchairState extends State<ListArmchair> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return Item(
+                id: snapshot.data![index].id,
                 image: snapshot.data![index].image,
+                quantity: snapshot.data![index].quantity,
+                color: snapshot.data![index].color,
                 name: snapshot.data![index].name,
                 price: snapshot.data![index].price,
               );

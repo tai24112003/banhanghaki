@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:bangiayhaki/components/item.dart';
+import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/models/Item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -20,14 +20,13 @@ class _ListChairState extends State<ListChair> {
   @override
   void initState() {
     super.initState();
-    HttpClient().badCertificateCallback =
-        (X509Certificate cert, String host, int port) => true;
+
     futureProducts = fetchProducts();
   }
 
   Future<List<Product>> fetchProducts() async {
-    final response =
-        await http.get(Uri.parse('https://192.168.1.4:3000/products'));
+    final response = await http
+        .get(Uri.parse('${GlobalVariable().myVariable}/api/product/chair'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -35,10 +34,14 @@ class _ListChairState extends State<ListChair> {
 
       for (var item in data) {
         Product product = Product(
-          image: item['Image'],
-          name: item['ProductName'],
-          price: item['SalePrice'],
-        );
+            id: item['ID'],
+            idCategory: item['CategoryID'],
+            image: item['Image'],
+            name: item['ProductName'],
+            quantity: item['Quantity'],
+            color: item['Color'],
+            price: (item['UnitPrice']).toDouble(),
+            description: item['Description']);
         products.add(product);
       }
 
@@ -57,7 +60,10 @@ class _ListChairState extends State<ListChair> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return Item(
+                id: snapshot.data![index].id,
                 image: snapshot.data![index].image,
+                quantity: snapshot.data![index].quantity,
+                color: snapshot.data![index].color,
                 name: snapshot.data![index].name,
                 price: snapshot.data![index].price,
               );

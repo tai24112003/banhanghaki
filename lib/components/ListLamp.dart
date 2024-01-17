@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bangiayhaki/components/item.dart';
+import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/models/Item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,8 +28,8 @@ class _ListLampState extends State<ListLamp> {
 
   Future<List<Product>> fetchProducts() async {
     // Gọi API để lấy dữ liệu
-    final response =
-        await http.get(Uri.parse('http://192.168.1.4:3000/products'));
+    final response = await http
+        .get(Uri.parse('${GlobalVariable().myVariable}/api/product/lamp2'));
 
     if (response.statusCode == 200) {
       // Chuyển đổi dữ liệu từ API thành danh sách sản phẩm
@@ -37,10 +38,14 @@ class _ListLampState extends State<ListLamp> {
 
       for (var item in data) {
         Product product = Product(
-          image: item['Image'],
-          name: item['ProductName'],
-          price: item['SalePrice'],
-        );
+            id: item['ID'],
+            idCategory: item['CategoryID'],
+            image: item['Image'],
+            quantity: item['Quantity'],
+            color: item['Color'],
+            name: item['ProductName'],
+            price: (item['UnitPrice']).toDouble(),
+            description: item['Description']);
         products.add(product);
       }
 
@@ -59,7 +64,10 @@ class _ListLampState extends State<ListLamp> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return Item(
+                id: snapshot.data![index].id,
                 image: snapshot.data![index].image,
+                quantity: snapshot.data![index].quantity,
+                color: snapshot.data![index].color,
                 name: snapshot.data![index].name,
                 price: snapshot.data![index].price,
               );

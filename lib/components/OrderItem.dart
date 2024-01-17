@@ -1,8 +1,9 @@
+import 'package:bangiayhaki/models/Order.dart';
 import 'package:flutter/material.dart';
 
 class OrderItem extends StatefulWidget {
-  const OrderItem({required this.status, super.key});
-  final String status;
+  const OrderItem({required this.myorder, super.key});
+  final Order myorder;
   @override
   State<OrderItem> createState() => _OrderItemState();
 }
@@ -101,7 +102,7 @@ class _OrderItemState extends State<OrderItem> {
                         style: TextStyle(color: Colors.white),
                       )),
                   Text(
-                    widget.status,
+                    widget.myorder.status,
                     style: const TextStyle(color: Colors.green),
                   )
                 ],
