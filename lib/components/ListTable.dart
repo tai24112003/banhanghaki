@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:bangiayhaki/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,31 +22,42 @@ class _ListTableState extends State<ListTable> {
   @override
   void initState() {
     super.initState();
-    HttpClient().badCertificateCallback =
-        (X509Certificate cert, String host, int port) => true;
+
     futureProducts = fetchProducts();
   }
 
+  void reStart() {
+    futureProducts = fetchProducts();
+    setState(() {});
+  }
+
+  late Future<List<Product>> futureProducts;
+
   Future<List<Product>> fetchProducts() async {
-    // Gọi API để lấy dữ liệu
     final response = await http
         .get(Uri.parse('${GlobalVariable().myVariable}/api/product/table'));
 
     if (response.statusCode == 200) {
-      // Chuyển đổi dữ liệu từ API thành danh sách sản phẩm
-      final data = json.decode(response.body);
+      final data = json.decode(response.body) as List<dynamic>;
       List<Product> products = [];
 
       for (var item in data) {
+        dynamic imageValue = item['Image'];
+        List<dynamic> dataList = imageValue['data'];
+
+        List<int> imageData =
+            dataList.map<int>((value) => value as int).toList();
+        Uint8List uint8List = Uint8List.fromList(imageData);
+
         Product product = Product(
-            id: item['ID'],
-            idCategory: item['CategoryID'],
-            image: item['Image'],
-            quantity: item['Quantity'],
-            color: item['Color'],
-            name: item['ProductName'],
-            price: (item['UnitPrice']).toDouble(),
-            description: item['Description']);
+          id: item['ID'],
+          idCategory: item['CategoryID'],
+          image: uint8List,
+          quantity: item['Quantity'],
+          name: item['ProductName'],
+          price: (item['UnitPrice'] as num).toDouble(),
+          description: item['Description'],
+        );
         products.add(product);
       }
 
@@ -67,7 +79,7 @@ class _ListTableState extends State<ListTable> {
                 id: snapshot.data![index].id,
                 image: snapshot.data![index].image,
                 quantity: snapshot.data![index].quantity,
-                color: snapshot.data![index].color,
+                description: snapshot.data![index].description,
                 name: snapshot.data![index].name,
                 price: snapshot.data![index].price,
               );

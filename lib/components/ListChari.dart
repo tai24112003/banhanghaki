@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:bangiayhaki/components/item.dart';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/models/Item.dart';
@@ -24,24 +25,38 @@ class _ListChairState extends State<ListChair> {
     futureProducts = fetchProducts();
   }
 
+  void reStart() {
+    futureProducts = fetchProducts();
+    setState(() {});
+  }
+
+  late Future<List<Product>> futureProducts;
+
   Future<List<Product>> fetchProducts() async {
     final response = await http
         .get(Uri.parse('${GlobalVariable().myVariable}/api/product/chair'));
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+      final data = json.decode(response.body) as List<dynamic>;
       List<Product> products = [];
 
       for (var item in data) {
+        dynamic imageValue = item['Image'];
+        List<dynamic> dataList = imageValue['data'];
+
+        List<int> imageData =
+            dataList.map<int>((value) => value as int).toList();
+        Uint8List uint8List = Uint8List.fromList(imageData);
+
         Product product = Product(
-            id: item['ID'],
-            idCategory: item['CategoryID'],
-            image: item['Image'],
-            name: item['ProductName'],
-            quantity: item['Quantity'],
-            color: item['Color'],
-            price: (item['UnitPrice']).toDouble(),
-            description: item['Description']);
+          id: item['ID'],
+          idCategory: item['CategoryID'],
+          image: uint8List,
+          quantity: item['Quantity'],
+          name: item['ProductName'],
+          price: (item['UnitPrice'] as num).toDouble(),
+          description: item['Description'],
+        );
         products.add(product);
       }
 
@@ -63,7 +78,7 @@ class _ListChairState extends State<ListChair> {
                 id: snapshot.data![index].id,
                 image: snapshot.data![index].image,
                 quantity: snapshot.data![index].quantity,
-                color: snapshot.data![index].color,
+                description: snapshot.data![index].description,
                 name: snapshot.data![index].name,
                 price: snapshot.data![index].price,
               );

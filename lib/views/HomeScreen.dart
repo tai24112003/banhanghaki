@@ -9,8 +9,8 @@ import 'package:bangiayhaki/views/ChatScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
+  const HomeScreen({super.key, required this.user});
+  final user;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }

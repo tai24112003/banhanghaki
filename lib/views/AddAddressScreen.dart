@@ -1,4 +1,6 @@
 import 'package:bangiayhaki/components/DropdownAddressItem.dart';
+import 'package:bangiayhaki/models/AddressModel.dart';
+import 'package:bangiayhaki/presenters/AddressPresenter.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -9,6 +11,33 @@ class AddAddressScreen extends StatefulWidget {
 }
 
 class AddAddressScreenState extends State<AddAddressScreen> {
+  List<City> cities = [];
+  List<District> districts = [];
+  List<Ward> wards = [];
+  City selectedCity = City(name: '', fullName: '', id: 89);
+  District selectedDistrict = District(name: '', fullName: '', id: 886);
+  Ward selectedWard = Ward(name: '', fullName: '', id: 30337);
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCities().then((cityList) {
+      setState(() {
+        cities = cityList;
+      });
+    });
+    fetchWardDetails(selectedDistrict.id).then((ward) {
+      setState(() {
+        wards = ward;
+      });
+    });
+    fetchDistrictDetails(selectedCity.id).then((district) {
+      setState(() {
+        districts = district;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +64,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Họ tên',
+                    'Tên gợi nhớ',
                     style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.black87,
@@ -44,7 +73,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                   TextField(
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Nguyễn Văn A',
+                      hintText: 'Nhà riêng',
                     ),
                   ),
                 ],
@@ -76,14 +105,52 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                 ],
               ),
             ),
-            DropdownAddressItem(label: "Thành Phố/Tỉnh", list: []),
-            DropdownAddressItem(label: "Quận/Huyện", list: []),
-            DropdownAddressItem(label: "Ấp/Phường", list: []),
+            DropdownAddressItem(
+              label: "Thành Phố/Tỉnh",
+              list: cities.map((city) => city.fullName).toList(),
+              onChanged: (selectedValue) async {
+                selectedCity =
+                    cities.firstWhere((city) => city.fullName == selectedValue);
+
+                final district = await fetchDistrictDetails(selectedCity.id);
+                setState(() {
+                  districts = district;
+                  selectedDistrict = districts.first;
+                });
+
+                final ward = await fetchWardDetails(selectedDistrict.id);
+                setState(() {
+                  wards = ward;
+                });
+              },
+            ),
+            DropdownAddressItem(
+              label: "Quận/Huyện",
+              list: districts.map((district) => district.fullName).toList(),
+              onChanged: (selectedValue) async {
+                selectedDistrict = districts.firstWhere(
+                    (district) => district.fullName == selectedValue);
+                final ward = await fetchWardDetails(selectedDistrict.id);
+                setState(() {
+                  wards = ward;
+                });
+              },
+            ),
+            DropdownAddressItem(
+              label: "Ấp/Phường",
+              list: wards.map((ward) => ward.fullName).toList(),
+              onChanged: (selectedValue) {
+                selectedWard = wards
+                    .firstWhere((element) => element.fullName == selectedValue);
+              },
+            ),
             Container(
                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    
+                  },
                   style: ButtonStyle(
                       padding: MaterialStatePropertyAll(
                           EdgeInsets.fromLTRB(0, 15, 0, 15)),

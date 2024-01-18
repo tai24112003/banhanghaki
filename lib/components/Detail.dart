@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:bangiayhaki/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:bangiayhaki/models/Item.dart';
@@ -21,19 +22,27 @@ Future<Product> fetchProduct(int productId) async {
       .get(Uri.parse('${GlobalVariable().myVariable}/api/product/$productId'));
 
   if (response.statusCode == 200) {
-    final jsonData = json.decode(response.body);
-    final productData = jsonData as Map<String, dynamic>;
+    final jsonData = json.decode(response.body) as Map<String, dynamic>;
+
+    // Extracting image data
+    dynamic imageValue = jsonData['Image'];
+    List<dynamic> dataList = imageValue['data'];
+    List<int> imageData = dataList.map<int>((value) => value as int).toList();
+    Uint8List uint8List = Uint8List.fromList(imageData);
+
     Product product = Product(
-        id: productData['ID'],
-        name: productData['ProductName'],
-        idCategory: productData['CategoryID'],
-        image: productData['Image'],
-        quantity: productData['Quantity'],
-        color: productData['Color	'],
-        price: productData['UnitPrice'].toDouble(),
-        description: productData['Description']);
+      id: jsonData['ID'],
+      name: jsonData['ProductName'],
+      idCategory: jsonData['CategoryID'],
+      image: uint8List,
+      quantity: jsonData['Quantity'],
+      price: jsonData['UnitPrice'].toDouble(),
+      description: jsonData['Description'],
+    );
+
     return product;
   }
+
   if (response.statusCode == 404) {
     throw Exception('Product not found');
   }
@@ -78,8 +87,8 @@ class _DetailState extends State<Detail> {
                               borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(40),
                               ),
-                              child: Image.asset(
-                                snapshot.data!.image,
+                              child: Image.memory(
+                                Uint8List.fromList(snapshot.data!.image),
                                 width: MediaQuery.of(context).size.width,
                                 height: 455,
                                 fit: BoxFit.cover,

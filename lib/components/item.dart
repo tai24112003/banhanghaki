@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +10,10 @@ class Item extends StatefulWidget {
       required this.image,
       required this.name,
       required this.quantity,
-      required this.color,
+      required this.description,
       required this.price});
-  final String image, name, color;
+  final List<int> image;
+  final String name, description;
   final double price;
   final int id, quantity;
   @override
@@ -18,6 +21,24 @@ class Item extends StatefulWidget {
 }
 
 class _ItemState extends State<Item> {
+  List<int>? imageBytes;
+  Uint8List? uint8List;
+  @override
+  void initState() {
+    super.initState();
+    try {
+      if (widget.image.isNotEmpty) {
+        imageBytes = widget.image;
+        uint8List = Uint8List.fromList(imageBytes!);
+        print(uint8List);
+      } else {
+        print('Lỗi: Dữ liệu hình ảnh trống.');
+      }
+    } catch (e) {
+      print('Lỗi: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,9 +60,10 @@ class _ItemState extends State<Item> {
                   padding: EdgeInsets.all(20),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      widget.image,
-                      width: MediaQuery.of(context).size.width / 2.55,
+                    child: Image.memory(
+                      uint8List!,
+                      width: MediaQuery.of(context).size.width / 3,
+                      height: MediaQuery.of(context).size.height / 3,
                       fit: BoxFit.cover,
                     ),
                   ),

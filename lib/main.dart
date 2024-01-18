@@ -1,25 +1,10 @@
-import 'package:bangiayhaki/views/AddAddressScreen.dart';
-import 'package:bangiayhaki/views/AccountManageScreen.dart';
-import 'package:bangiayhaki/views/AdminProfileScreen.dart';
-import 'package:bangiayhaki/views/CartScreen.dart';
-import 'package:bangiayhaki/views/ChatScreen.dart';
-import 'package:bangiayhaki/views/CheckoutScreen.dart';
-import 'package:bangiayhaki/views/CommentsScreen.dart';
-import 'package:bangiayhaki/views/EditAddressScreen.dart';
-import 'package:bangiayhaki/views/LoginScreen.dart';
-import 'package:bangiayhaki/views/OrderOfCus.dart';
-import 'package:bangiayhaki/views/CongratScreen.dart';
-import 'package:bangiayhaki/views/EditAddressScreen.dart';
-import 'package:bangiayhaki/views/LoginScreen.dart';
-import 'package:bangiayhaki/views/OrderScreen.dart';
-import 'package:bangiayhaki/views/PayMethodScreen.dart';
-import 'package:bangiayhaki/views/PreviewsScreen.dart';
-import 'package:bangiayhaki/views/ProfileScreen.dart';
-import 'package:bangiayhaki/views/RegisterScreen.dart';
+import 'package:bangiayhaki/components/ListArmchair.dart';
+import 'package:bangiayhaki/components/ListBed.dart';
+import 'package:bangiayhaki/components/ListChari.dart';
+import 'package:bangiayhaki/components/ListLamp.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
-import 'package:bangiayhaki/views/NotiScreen.dart';
+import 'package:bangiayhaki/views/OrderOfCus.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
-import 'package:bangiayhaki/views/SettingScreen.dart';
 import 'package:flutter/material.dart';
 
 class GlobalVariable {
@@ -29,8 +14,7 @@ class GlobalVariable {
 
   GlobalVariable._internal();
 
-  String myVariable =
-      'https://09a6-2402-800-63b7-cf3b-ec12-d092-fbe3-bef.ngrok-free.app';
+  String myVariable = 'https://e39d-103-199-71-8.ngrok-free.app';
 }
 
 void main() {
@@ -48,13 +32,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      routes: {
-        "/": (context) => HomeScreen(), // RegisterScreen(),
-        "/home": (context) => HomeScreen(),
-        "/noti": (context) => NotiScreen(),
-        "/profile": (context) => ProductsManageScreen(),
-      },
-      initialRoute: '/',
+      home: Scaffold(
+        body: ListChair(),
+      ),
     );
   }
 }

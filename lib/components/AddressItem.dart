@@ -1,4 +1,5 @@
-import 'package:bangiayhaki/models/User.dart';
+import 'package:bangiayhaki/models/AddressModel.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:flutter/material.dart';
 
 class AddressItem extends StatelessWidget {
