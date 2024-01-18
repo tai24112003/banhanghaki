@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 
 router.get('/', (req, res) => {
-    connection.query('SELECT * FROM user WHERE status=1', (error, results) => {
+    connection.query('SELECT * FROM account WHERE status=1', (error, results) => {
         if (error) {
             return res.status(500).json({ error: 'Internal server error' });
         }
@@ -19,13 +19,12 @@ router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         console.log(req.body);
-        const query = 'SELECT * FROM Users WHERE Email = ? || PhoneNumber=?';
+        const query = 'SELECT * FROM account WHERE Email = ? || PhoneNumber=?';
         connection.query(query, [username, username], async (err, results) => {
             if (err) {
                 console.error('Error executing MySQL query:', err);
                 res.status(500).send('Internal Server Error');
             } else {
-                console.log(results);
                 if (results.length > 0) {
                     const user = results[0];
                     const match = await bcrypt.compare(password, user.Password);
@@ -52,7 +51,7 @@ router.post('/register', async (req, res) => {
         const { email, password, fullName, phoneNumber, status } = req.body;
         console.log(req.body);
         console.log(email);
-        const checkUserQuery = 'SELECT * FROM Users WHERE Email = ?';
+        const checkUserQuery = 'SELECT * FROM account WHERE Email = ?';
         const userExists = await new Promise((resolve, reject) => {
             connection.query(checkUserQuery, [email], (err, results) => {
                 if (err) {
@@ -69,8 +68,8 @@ router.post('/register', async (req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const addUserQuery = `
-    INSERT INTO Users (Email, Password, FullName, PhoneNumber,  Status)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO account (Email, Password, FullName, PhoneNumber,  Status)
+    VALUES (?, ?, ?, ?, ?)
   `;
 
             connection.query(addUserQuery, [email, password, fullName, phoneNumber, status], (err) => {
