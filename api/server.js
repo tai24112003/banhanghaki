@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const ngrok = require('ngrok');;
 const usersRoute = require('./api/users');
+const oderRoute = require('./api/orders');
+const orderDetailsRoute=require('./api/ordersdetail');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,3 +15,5 @@ app.listen(PORT, async () => {
     console.log(`Ngrok tunnel at: ${ngrokUrl}`)
 });
 app.use('/users', usersRoute);
+app.use(oderRoute);
+app.use(orderDetailsRoute);
