@@ -2,10 +2,15 @@ import 'package:bangiayhaki/components/OrderItem.dart';
 import 'package:bangiayhaki/models/OrderModel.dart';
 import 'package:bangiayhaki/presenters/OrderDetailsPresenter.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
+import 'package:bangiayhaki/views/DetailOrderScreen.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
+  const OrderScreen({required this.id, Key? key}) : super(key: key);
+
+  final int id;
   @override
+  // ignore: library_private_types_in_public_api
   _OrderScreenState createState() => _OrderScreenState();
 }
 
@@ -26,11 +31,11 @@ class _OrderScreenState extends State<OrderScreen>
 
   Future<void> loadData() async {
     try {
-      await OrderPresenter.loadData();
+      await OrderPresenter.loadData(widget.id);
       setState(() {
-        lstorder_dagiao = OrderPresenter.statusfilter("Đã giao");
-        lstorder_dahuy = OrderPresenter.statusfilter("Đã hủy");
-        lstorder_dangxuli = OrderPresenter.statusfilter("Đang xử lí");
+        lstorder_dagiao = OrderPresenter.statusFilter("Đã giao");
+        lstorder_dahuy = OrderPresenter.statusFilter("Đã hủy");
+        lstorder_dangxuli = OrderPresenter.statusFilter("Đang xử lí");
         isLoading = false;
       });
     } catch (error) {

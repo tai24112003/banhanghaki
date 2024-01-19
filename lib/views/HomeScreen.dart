@@ -20,11 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5, // Số lượng tab
+        length: 5,
         child: Scaffold(
             appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(
-                  130), // Tính kích thước tối ưu cho AppBar và TabBar
+              preferredSize: const Size.fromHeight(130),
               child: Column(
                 children: [
                   AppBar(
@@ -45,15 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             body: const TabBarView(children: [
-              // Nội dung cho tab 1
               ListChair(),
-              // Nội dung cho tab 2
               ListTable(),
-              // Nội dung cho tab 3
               ListArmchair(),
-              // Nội dung cho tab 4
               ListBed(),
-              // Nội dung cho tab 5
               ListLamp()
             ]),
             floatingActionButton: FloatingActionButton(
@@ -75,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
             bottomNavigationBar: BottomBarCustom(
+              user: widget.user,
               active: 0,
             )));
   }

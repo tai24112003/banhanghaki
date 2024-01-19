@@ -2,17 +2,17 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('./db');
-router.get('/api/orderdetail/get', async (req, res) => {
+router.post('/api/orderdetail/get', async (req, res) => {
     try {
         const { id } = req.body;
-        const query = 'SELECT * FROM orderdetails WHERE id = ?';
+        const query = 'SELECT * FROM orderdetails WHERE OrderID = ?';
         connection.query(query, [id], async (err, results) => {
             if (err) {
                 console.error('Error executing MySQL query:', err);
                 res.status(500).send('Internal Server Error');
             } else {
                 if (results.length > 0) {
-                    response.json(results);
+                    res.json(results);
                 }
             }
         });

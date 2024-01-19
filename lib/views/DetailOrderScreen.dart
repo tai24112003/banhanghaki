@@ -23,17 +23,12 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
     super.initState();
     loadData();
   }
-  // int totalAmmount(List<OrderDetails> lst){
-  //   for(int i=0;i<lst.length;i++){
 
-  //   }
-  //   return 0;
-  // }
   Future<void> loadData() async {
     try {
-      await OrderDetailPresenter.loadData();
+      await OrderDetailPresenter.loadData(widget.id);
       setState(() {
-        lstdetailorder = OrderDetailPresenter.statusfilter(widget.id);
+        lstdetailorder = OrderDetailPresenter.lstOrderDetails;
         isLoading = false;
       });
     } catch (error) {
@@ -103,7 +98,7 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
               ],
             ),
             isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : Expanded(
@@ -116,17 +111,17 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
                   ),
             Container(
               margin: const EdgeInsets.all(15),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "Tổng tiền:",
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
-                  const Text(
+                  Text(
                     "\$ 95.00:",
                     style: TextStyle(
                         color: Colors.black,
