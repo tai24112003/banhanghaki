@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/ProfileItem.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,12 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        child: MyAppBar(
+          title: "Thông tin cá nhân",
+        ),
+        preferredSize: const Size.fromHeight(95),
+      ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(

@@ -1,4 +1,5 @@
 import 'package:bangiayhaki/components/BottomBarCustom.dart';
+import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/ProfileItem.dart';
 import 'package:flutter/material.dart';
 
@@ -13,19 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-          backgroundColor: Colors.transparent,
-          title: Container(
-            width: MediaQuery.of(context).size.width,
-            child: const Text(
-              "Đặt hàng",
-              textAlign: TextAlign.center,
-            ),
-          )),
+      appBar: MyAppBar(title: "Thông tin cá nhân",),
       bottomNavigationBar: BottomBarCustom(active: 2),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,

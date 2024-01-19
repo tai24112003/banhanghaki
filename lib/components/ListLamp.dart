@@ -72,23 +72,35 @@ class _ListLampState extends State<ListLamp> {
       future: futureProducts,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              return Item(
-                id: snapshot.data![index].id,
-                image: snapshot.data![index].image,
-                quantity: snapshot.data![index].quantity,
-                description: snapshot.data![index].description,
-                name: snapshot.data![index].name,
-                price: snapshot.data![index].price,
-              );
-            },
-          );
+          if (snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('Chưa có sản phẩm thuộc loại đèn'),
+            );
+          } else {
+            return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 5,
+              ),
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return Item(
+                  id: snapshot.data![index].id,
+                  image: snapshot.data![index].image,
+                  quantity: snapshot.data![index].quantity,
+                  description: snapshot.data![index].description,
+                  name: snapshot.data![index].name,
+                  price: snapshot.data![index].price,
+                );
+              },
+            );
+          }
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );

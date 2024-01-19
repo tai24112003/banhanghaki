@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/Previews.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +13,11 @@ class _PreviewsScreenState extends State<PreviewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Đánh giá'),
+      appBar: const PreferredSize(
+        child: MyAppBar(title: "Đánh giá",),
+        preferredSize: Size.fromHeight(100),
       ),
-      body: Preview(),
+      body: const Preview(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -23,12 +25,12 @@ class _PreviewsScreenState extends State<PreviewsScreen> {
             width: MediaQuery.of(context).size.width * 0.7,
             child: FloatingActionButton.extended(
               onPressed: () {},
-              label: Text('Viết đánh giá'),
+              label: const Text('Viết đánh giá'),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0)),
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
-              icon: Icon(Icons.add_shopping_cart),
+              icon: const Icon(Icons.add_shopping_cart),
             ),
           )
         ],

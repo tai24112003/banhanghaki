@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/TabBarCustom.dart';
 import 'package:bangiayhaki/components/BottomBarCustom.dart';
 import 'package:bangiayhaki/components/ListArmchair.dart';
@@ -19,41 +20,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5, // Số lượng tab
+        length: 5,
         child: Scaffold(
             appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(
-                  130), // Tính kích thước tối ưu cho AppBar và TabBar
+              preferredSize: const Size.fromHeight(130),
               child: Column(
-                children: [
-                  AppBar(
-                      leading: IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () {},
-                      ),
-                      backgroundColor: Colors.transparent,
-                      title: Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: const Text(
-                          "Make Home Beautiful",
-                          textAlign: TextAlign.center,
-                        ),
-                      )),
-                  const TabbarCustom()
-                ],
+                children: [MyAppBar(title: "MAKE HOME BEUATYFUL",), const TabbarCustom()],
               ),
             ),
-            body: const TabBarView(children: [
-              // Nội dung cho tab 1
-              ListChair(),
-              // Nội dung cho tab 2
-              ListTable(),
-              // Nội dung cho tab 3
-              ListArmchair(),
-              // Nội dung cho tab 4
-              ListBed(),
-              // Nội dung cho tab 5
-              ListLamp()
+            body: TabBarView(children: [
+              buildGridList(const ListChair()),
+              buildGridList(const ListTable()),
+              buildGridList(const ListArmchair()),
+              buildGridList(const ListBed()),
+              buildGridList(const ListLamp()),
             ]),
             floatingActionButton: FloatingActionButton(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -64,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50), // Độ bo góc là 8.0
+                borderRadius: BorderRadius.circular(50),
               ),
               child: const CircleAvatar(
                 backgroundImage: AssetImage("assets/message.JPG"),
@@ -76,5 +56,16 @@ class _HomeScreenState extends State<HomeScreen> {
             bottomNavigationBar: BottomBarCustom(
               active: 0,
             )));
+  }
+
+  Widget buildGridList(Widget child) {
+    return GridView.count(
+      crossAxisCount: 2, // Number of columns in the grid
+      childAspectRatio:
+          0.7, // Adjust this value to control the aspect ratio of grid items
+      children: [
+        child,
+      ],
+    );
   }
 }
