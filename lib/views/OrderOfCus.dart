@@ -1,14 +1,43 @@
 import 'package:bangiayhaki/components/OrderItem.dart';
+import 'package:bangiayhaki/presenters/OrderPresenter.dart';
 import 'package:flutter/material.dart';
 
 class OrderOfCus extends StatefulWidget {
-  const OrderOfCus({super.key, required this.email});
+  const OrderOfCus({super.key, required this.email, required this.id});
   final String email;
+  final int id;
   @override
   State<OrderOfCus> createState() => _OrderOfCusState();
 }
 
 class _OrderOfCusState extends State<OrderOfCus> {
+  List _lstOr = [];
+  List _lstDG = [];
+  List _lstDXL = [];
+  List _lstDH = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    await OrderPresenter.loadData(widget.id).then((value) {
+      _lstOr = OrderPresenter.lstOrder;
+      _lstDG = _lstOr.where((element) {
+        return element.status == "2";
+      }).toList();
+      _lstDXL = _lstOr.where((element) {
+        return element.status == "1";
+      }).toList();
+      _lstDH = _lstOr.where((element) {
+        return element.status == "3";
+      }).toList();
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -52,19 +81,14 @@ class _OrderOfCusState extends State<OrderOfCus> {
             ),
           ),
         ),
-        body: const TabBarView(children: [
+        body: TabBarView(children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  // OrderItem(status: "Đã giao"),
-                  // OrderItem(status: "Đã giao"),
-                  // OrderItem(status: "Đã giao"),
-                  // OrderItem(status: "Đã giao"),
-                  // OrderItem(status: "Đã giao"),
-                  // OrderItem(status: "Đã giao"),
-                ],
+                children: _lstDG.map((e) {
+                  return OrderItem(myorder: e);
+                }).toList(),
               ),
             ),
           ),
@@ -72,14 +96,9 @@ class _OrderOfCusState extends State<OrderOfCus> {
             padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  // OrderItem(status: "Đang xử lí"),
-                  // OrderItem(status: "Đang xử lí"),
-                  // OrderItem(status: "Đang xử lí"),
-                  // OrderItem(status: "Đang xử lí"),
-                  // OrderItem(status: "Đang xử lí"),
-                  // OrderItem(status: "Đang xử lí"),
-                ],
+                children: _lstDXL.map((e) {
+                  return OrderItem(myorder: e);
+                }).toList(),
               ),
             ),
           ),
@@ -87,14 +106,9 @@ class _OrderOfCusState extends State<OrderOfCus> {
             padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  // OrderItem(status: "Đã huỷ"),
-                  // OrderItem(status: "Đã huỷ"),
-                  // OrderItem(status: "Đã huỷ"),
-                  // OrderItem(status: "Đã huỷ"),
-                  // OrderItem(status: "Đã huỷ"),
-                  // OrderItem(status: "Đã huỷ"),
-                ],
+                children: _lstDH.map((e) {
+                  return OrderItem(myorder: e);
+                }).toList(),
               ),
             ),
           ),

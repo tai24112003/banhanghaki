@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/phraseapp.json": [
+            "output:extension-output-ms-kubernetes-tools.vscode-kubernetes-tools-%231-Kubernetes"
+        ],
+        "https://json.schemastore.org/dart-test.json": "file:///d%3A/flutter/banhanghaki/pubspec.yaml"
+    }
+}

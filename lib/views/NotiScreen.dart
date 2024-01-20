@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/NotiItem.dart';
 import 'package:bangiayhaki/components/BottomBarCustom.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
@@ -14,19 +15,11 @@ class _NotiScreenState extends State<NotiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-          backgroundColor: Colors.transparent,
-          title: Container(
-            width: MediaQuery.of(context).size.width,
-            child: const Text(
-              "Đặt hàng",
-              textAlign: TextAlign.center,
-            ),
-          )),
+      appBar: PreferredSize(
+        child: MyAppBar(title: "Thông báo",),
+        preferredSize: const Size.fromHeight(
+            100), // Tính kích thước tối ưu cho AppBar và TabBar
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [NotiItem()],

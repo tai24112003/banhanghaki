@@ -5,24 +5,26 @@ class User {
   final Phone;
   final address;
   final Password;
+  final Status;
 
-  User({
-    required this.id,
-    required this.Fullname,
-    required this.Email,
-    required this.Phone,
-    required this.address,
-    required this.Password,
-  });
+  User(
+      {required this.id,
+      required this.Fullname,
+      required this.Email,
+      required this.Phone,
+      required this.address,
+      required this.Password,
+      required this.Status});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
         id: json['ID'],
-        Fullname: json['Fullname'],
+        Fullname: json['FullName'],
         Email: json['Email'],
         Phone: json['PhoneNumber'],
         address: json['Address'],
-        Password: json['Password']);
+        Password: json['Password'],
+        Status: json['Status']);
   }
   Map<String, dynamic> toJson() {
     return {
@@ -31,6 +33,7 @@ class User {
       'FullName': Fullname,
       'PhoneNumber': Phone,
       'Address': address,
+      'Status': Status,
     };
   }
 }

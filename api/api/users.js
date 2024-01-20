@@ -5,8 +5,9 @@ const bcrypt = require('bcrypt');
 
 
 router.get('/', (req, res) => {
-    connection.query('SELECT * FROM account WHERE status=1', (error, results) => {
+    connection.query('SELECT * FROM Users WHERE status=1', (error, results) => {
         if (error) {
+            //return res.send(error);
             return res.status(500).json({ error: 'Internal server error' });
         }
         else {
