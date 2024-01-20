@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/testApi.dart';
 import 'package:bangiayhaki/views/AddAddressScreen.dart';
 import 'package:bangiayhaki/views/AccountManageScreen.dart';
 import 'package:bangiayhaki/views/CartScreen.dart';
@@ -18,6 +19,7 @@ import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
 import 'package:bangiayhaki/views/SettingScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context) => AccoutManageScreen(),
+        "/": (context) => Test(),
         "/home": (context) => HomeScreen(),
         "/noti": (context) => NotiScreen(),
         "/profile": (context) => ProductsManageScreen(),
