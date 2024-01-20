@@ -13,6 +13,7 @@ import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
 import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:bangiayhaki/views/PreviewsScreen.dart';
+import 'package:bangiayhaki/views/ProfileAddressScreen.dart';
 import 'package:bangiayhaki/views/ProfileScreen.dart';
 import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: OrderScreen(id: 1),
+      home: LoginScreen(),
     );
   }
 }

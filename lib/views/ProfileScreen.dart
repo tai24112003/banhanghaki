@@ -5,6 +5,7 @@ import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
 import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/SettingScreen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -96,10 +97,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: "Thanh toán",
                   detail: "Bạn có 1 hình thức thanh toán",
                 ),
-                // ProfileItem(
-                //   title: "Cài đặt",
-                //   detail: "Thông báo, đổi mật khẩu, liên hệ",
-                // )
+                ProfileItem(
+                  mywidget: SettingScreen(user: widget.user),
+                  title: "Cài đặt",
+                  detail: "Thông báo, đổi mật khẩu, liên hệ",
+                )
               ]),
         ),
       ),

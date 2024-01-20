@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 
 router.get('/', (req, res) => {
-    connection.query('SELECT * FROM account WHERE status=1', (error, results) => {
+    connection.query('SELECT * FROM Users WHERE status=1', (error, results) => {
         if (error) {
             return res.status(500).json({ error: 'Internal server error' });
         }
@@ -19,7 +19,7 @@ router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         console.log(req.body);
-        const query = 'SELECT * FROM account WHERE Email = ? || PhoneNumber=?';
+        const query = 'SELECT * FROM Users WHERE Email = ? || Phone=?';
         connection.query(query, [username, username], async (err, results) => {
             if (err) {
                 console.error('Error executing MySQL query:', err);
@@ -51,7 +51,7 @@ router.post('/register', async (req, res) => {
         const { email, password, fullName, phoneNumber, status } = req.body;
         console.log(req.body);
         console.log(email);
-        const checkUserQuery = 'SELECT * FROM account WHERE Email = ?';
+        const checkUserQuery = 'SELECT * FROM Users WHERE Email = ?';
         const userExists = await new Promise((resolve, reject) => {
             connection.query(checkUserQuery, [email], (err, results) => {
                 if (err) {
@@ -68,7 +68,7 @@ router.post('/register', async (req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const addUserQuery = `
-    INSERT INTO account (Email, Password, FullName, PhoneNumber,  Status)
+    INSERT INTO Users (Email, Password, FullName, Phone,  Status)
     VALUES (?, ?, ?, ?, ?)
   `;
 
@@ -88,6 +88,46 @@ router.post('/register', async (req, res) => {
         }
     } catch (error) {
         console.error('Error in register route:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+router.put('/update/AddressID', async (req, res) => {
+    try {
+        const { id,address } = req.body;
+
+        const checkUserQuery = 'SELECT * FROM Users WHERE ID = ?';
+        const userExists = await new Promise((resolve, reject) => {
+            connection.query(checkUserQuery, [id], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results.length > 0);
+                }
+            });
+        });
+
+        if (userExists) {
+            const updateUserQuery = `
+                UPDATE Users
+                SET AddressID=?
+                WHERE ID=?
+            `;
+
+            connection.query(updateUserQuery, [ address, id], (err) => {
+                if (err) {
+                    console.error('Error executing MySQL query:', err);
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    res.json({
+                        AddressID:address
+                    });
+                }
+            });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error in update route:', error);
         res.status(500).send('Internal Server Error');
     }
 });

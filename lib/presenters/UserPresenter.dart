@@ -70,4 +70,29 @@ class UserPresenter {
       _view.displayMessage('Failed to register. Please try again.');
     }
   }
+
+  Future<void> updateAddress({
+    required String userId,
+    required String address,
+  }) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${ApiConstants.baseUrl}/users/update/AddressID'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'id': userId, 'address': address}),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        _view.displayMessage('Address updated successfully!');
+      } else if (response.statusCode == 404) {
+        _view.displayMessage('User not found');
+      } else {
+        _view.displayMessage('Failed to update address. Please try again.');
+      }
+    } catch (error) {
+      print('Error in update address request: $error');
+      _view.displayMessage('Internal Server Error');
+    }
+  }
 }

@@ -1,8 +1,9 @@
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({super.key});
-
+  const SettingScreen({required this.user, super.key});
+  final User user;
   @override
   State<SettingScreen> createState() => _SettingScreenState();
 }

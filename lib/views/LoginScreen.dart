@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
       User? user = await presenter?.Login(
           email: emailController.text, password: passwordController.text);
       if (user != null) {
-        print(user.id);
         Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.push(
             context,
