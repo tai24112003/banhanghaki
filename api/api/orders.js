@@ -6,7 +6,7 @@ router.post('/api/order/get', async (req, res) => {
     try {
         const { id } = req.body;
         
-        const query = 'SELECT * FROM Orders WHERE ID_ACCOUNT = ?';
+        const query = 'SELECT * FROM Orders WHERE UserID = ?';
         connection.query(query, [id], async (err, results) => {
             if (err) {
                 console.error('Error executing MySQL query:', err);

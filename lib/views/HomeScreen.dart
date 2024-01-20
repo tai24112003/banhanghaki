@@ -29,7 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(130),
               child: Column(
-                children: [MyAppBar(title: "MAKE HOME BEUATYFUL",), const TabbarCustom()],
+                children: [
+                  MyAppBar(
+                    title: "MAKE HOME BEUATYFUL",
+                  ),
+                  const TabbarCustom()
+                ],
               ),
             ),
             body: TabBarView(children: [
@@ -58,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
             bottomNavigationBar: BottomBarCustom(
-              user: widget.user,
+              userid: widget.id,
               active: 0,
             )));
   }

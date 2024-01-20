@@ -6,6 +6,7 @@ import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
 import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/SettingScreen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,8 +20,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: "Thông tin cá nhân",),
-      bottomNavigationBar: BottomBarCustom(active: 2),
+      appBar: MyAppBar(
+        title: "Thông tin cá nhân",
+      ),
+      bottomNavigationBar: BottomBarCustom(user: widget.user, active: 2),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
@@ -68,24 +71,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 ProfileItem(
-                  mywidget: OrderScreen(id: widget.user.id),
+                  mywidget: OrderScreen(id: widget.user.ID),
                   title: "Đơn hàng của tôi",
                   detail: "Bạn có ${OrderPresenter.lstOrder.length} đơn hàng",
                 ),
                 ProfileItem(
-                  mywidget: OrderScreen(id: widget.user.id),
+                  mywidget: OrderScreen(id: widget.user.ID),
                   title: "Địa chỉ giao hàng",
                   detail: "Bạn có 3 địa chỉ",
                 ),
                 ProfileItem(
-                  mywidget: CheckoutScreen(),
+                  mywidget: CheckoutScreen(id: widget.user.ID),
                   title: "Thanh toán",
                   detail: "Bạn có 1 hình thức thanh toán",
                 ),
-                // ProfileItem(
-                //   title: "Cài đặt",
-                //   detail: "Thông báo, đổi mật khẩu, liên hệ",
-                // )
+                ProfileItem(
+                  mywidget: SettingScreen(user: widget.user),
+                  title: "Cài đặt",
+                  detail: "Thông báo, đổi mật khẩu, liên hệ",
+                )
               ]),
         ),
       ),

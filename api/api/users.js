@@ -99,6 +99,46 @@ router.put('/updateAddressId', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+router.put('/update/AddressID', async (req, res) => {
+    try {
+        const { id,address } = req.body;
+
+        const checkUserQuery = 'SELECT * FROM Users WHERE ID = ?';
+        const userExists = await new Promise((resolve, reject) => {
+            connection.query(checkUserQuery, [id], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results.length > 0);
+                }
+            });
+        });
+
+        if (userExists) {
+            const updateUserQuery = `
+                UPDATE Users
+                SET AddressID=?
+                WHERE ID=?
+            `;
+
+            connection.query(updateUserQuery, [ address, id], (err) => {
+                if (err) {
+                    console.error('Error executing MySQL query:', err);
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    res.json({
+                        AddressID:address
+                    });
+                }
+            });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error in update route:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 module.exports = router;

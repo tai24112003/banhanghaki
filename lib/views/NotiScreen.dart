@@ -16,7 +16,9 @@ class _NotiScreenState extends State<NotiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: MyAppBar(title: "Thông báo",),
+        child: MyAppBar(
+          title: "Thông báo",
+        ),
         preferredSize: const Size.fromHeight(
             100), // Tính kích thước tối ưu cho AppBar và TabBar
       ),
@@ -25,7 +27,7 @@ class _NotiScreenState extends State<NotiScreen> {
           children: [NotiItem()],
         ),
       ),
-      bottomNavigationBar: BottomBarCustom(active: 1, user: widget.user),
+      bottomNavigationBar: BottomBarCustom(active: 1, userid: widget.user.ID),
     );
   }
 }
