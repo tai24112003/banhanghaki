@@ -46,7 +46,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  NotificationServices().requestNotificationPermission();
+  
   runApp(const MyApp());
 }
 

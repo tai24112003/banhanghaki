@@ -4,6 +4,7 @@ import 'package:bangiayhaki/components/DropdownAddressItem.dart';
 import 'package:bangiayhaki/models/AddressModel.dart';
 import 'package:bangiayhaki/presenters/AddressPresenter.dart';
 import 'package:bangiayhaki/presenters/noti_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -28,6 +29,18 @@ class AddAddressScreenState extends State<AddAddressScreen>
   @override
   void initState() {
     super.initState();
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+    notificationServices.isTokenRefresh();
+
+    notificationServices.getDeviceToken().then((value) {
+      if (kDebugMode) {
+        print('device token');
+        print(value);
+      }
+    });
     titleName = TextEditingController();
     numberStreet = TextEditingController();
     presenter = AddressPresenter(this);
