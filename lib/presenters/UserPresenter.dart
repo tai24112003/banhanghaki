@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
-
-class ApiConstants {
-  static const String baseUrl = 'https://cd97-58-187-136-7.ngrok-free.app';
-}
 
 abstract class UserView {
   void displayMessage(String message);
@@ -28,6 +25,7 @@ class UserPresenter {
       final Map<String, dynamic> responseData = json.decode(response.body);
 
       _view.displayMessage('Login successful, welcome!');
+      print(responseData);
       return User.fromJson(responseData);
     } else if (response.statusCode == 401) {
       final Map<String, dynamic> responseData = json.decode(response.body);

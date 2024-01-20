@@ -1,6 +1,7 @@
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
+import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
       User? user = await presenter?.Login(
           email: emailController.text, password: passwordController.text);
       if (user != null) {
+        print(user.id);
         Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.push(
             context,
@@ -124,8 +126,11 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
                           width: MediaQuery.of(context).size.width,
                           child: OutlinedButton(
                             onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, "/register");
+                              Navigator.pop(context);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return RegisterScreen();
+                              }));
                             },
                             style: ButtonStyle(
                                 side: MaterialStateProperty.all(

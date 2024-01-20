@@ -1,10 +1,15 @@
 import 'package:bangiayhaki/components/BottomBarCustom.dart';
 import 'package:bangiayhaki/components/ProfileItem.dart';
+import 'package:bangiayhaki/models/OrderModel.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/OrderPresenter.dart';
+import 'package:bangiayhaki/views/CheckoutScreen.dart';
+import 'package:bangiayhaki/views/OrderScreen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
-
+  const ProfileScreen({required this.user, super.key});
+  final User user;
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -26,7 +31,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               textAlign: TextAlign.center,
             ),
           )),
-      bottomNavigationBar: BottomBarCustom(active: 2),
+      bottomNavigationBar: BottomBarCustom(
+        active: 2,
+        user: widget.user,
+      ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
@@ -52,19 +60,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "QUAN DANG",
-                            style: TextStyle(
+                            widget.user.Fullname,
+                            style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "quandang@gmail.com",
-                            style: TextStyle(
+                            widget.user.Email,
+                            style: const TextStyle(
                                 fontSize: 12,
                                 color: Color.fromRGBO(128, 128, 128, 1)),
                           ),
@@ -74,21 +82,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 ProfileItem(
+                  mywidget: OrderScreen(id: widget.user.id),
                   title: "Đơn hàng của tôi",
-                  detail: "Bạn có 10 món hàng",
+                  detail: "Bạn có ${OrderPresenter.lstOrder.length} đơn hàng",
                 ),
                 ProfileItem(
+                  mywidget: OrderScreen(id: widget.user.id),
                   title: "Địa chỉ giao hàng",
                   detail: "Bạn có 3 địa chỉ",
                 ),
                 ProfileItem(
+                  mywidget: CheckoutScreen(),
                   title: "Thanh toán",
                   detail: "Bạn có 1 hình thức thanh toán",
                 ),
-                ProfileItem(
-                  title: "Cài đặt",
-                  detail: "Thông báo, đổi mật khẩu, liên hệ",
-                )
+                // ProfileItem(
+                //   title: "Cài đặt",
+                //   detail: "Thông báo, đổi mật khẩu, liên hệ",
+                // )
               ]),
         ),
       ),

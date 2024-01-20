@@ -1,10 +1,14 @@
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
+import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 class BottomBarCustom extends StatefulWidget {
-  BottomBarCustom({super.key, required this.active});
+  const BottomBarCustom({required this.user, super.key, required this.active});
   final active;
+  final User user;
   @override
   State<BottomBarCustom> createState() => _BottomBarCustomState();
 }
@@ -25,7 +29,12 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 0)
-                        Navigator.pushReplacementNamed(context, "/home");
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ProfileScreen(
+                            user: widget.user,
+                          );
+                        }));
                     },
                     icon: Icon(
                         widget.active != 0 ? Icons.home_outlined : Icons.home)),
@@ -40,7 +49,12 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 2)
-                        Navigator.pushReplacementNamed(context, "/profile");
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ProfileScreen(
+                            user: widget.user,
+                          );
+                        }));
                     },
                     icon: Icon(widget.active != 2
                         ? Icons.person_outline
