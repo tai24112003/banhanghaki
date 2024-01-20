@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bangiayhaki/main.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/views/SearchScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -149,7 +150,7 @@ class _MyAppBarState extends State<MyAppBar> {
   }
 
   Future<void> addSearchHistory(String content, int userId) async {
-    final url = '${GlobalVariable().myVariable}/api/product/add-history';
+    final url = '${ApiConstants.baseUrl}/api/product/add-history';
 
     final Map<String, dynamic> requestData = {
       'Content': content,
@@ -170,8 +171,7 @@ class _MyAppBarState extends State<MyAppBar> {
   }
 
   Future<List<History>> fetchSearchHistory(int userId) async {
-    final url =
-        '${GlobalVariable().myVariable}/api/product/search-history/$userId';
+    final url = '${ApiConstants.baseUrl}/api/product/search-history/$userId';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -190,7 +190,7 @@ class _MyAppBarState extends State<MyAppBar> {
   }
 
   Future<void> deleteSearchHistory(int id) async {
-    final url = '${GlobalVariable().myVariable}/api/product/delete-history/$id';
+    final url = '${ApiConstants.baseUrl}/api/product/delete-history/$id';
 
     final response = await http.delete(Uri.parse(url));
 

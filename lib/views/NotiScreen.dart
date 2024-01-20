@@ -5,8 +5,8 @@ import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:flutter/material.dart';
 
 class NotiScreen extends StatefulWidget {
-  const NotiScreen({required this.user, super.key});
-  final User user;
+  const NotiScreen({/*required this.user,*/ super.key});
+  // final User user;
   @override
   State<NotiScreen> createState() => _NotiScreenState();
 }
@@ -27,7 +27,7 @@ class _NotiScreenState extends State<NotiScreen> {
           children: [NotiItem()],
         ),
       ),
-      bottomNavigationBar: BottomBarCustom(active: 1, userid: widget.user.ID),
+      // bottomNavigationBar: BottomBarCustom(active: 1, userid: widget.user.ID),
     );
   }
 }

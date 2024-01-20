@@ -4,6 +4,7 @@ import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/item.dart';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,7 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<List<Product>> fetchProducts(String searchTerm) async {
     final url = Uri.parse(
-        '${GlobalVariable().myVariable}/api/product/search?searchTerm=$searchTerm');
+        '${ApiConstants.baseUrl}/api/product/search?searchTerm=$searchTerm');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -71,7 +72,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: MyAppBar(title: "Danh sách tìm kiếm",),
+        child: MyAppBar(
+          title: "Danh sách tìm kiếm",
+        ),
         preferredSize: const Size.fromHeight(100),
       ),
       body: FutureBuilder<List<Product>>(

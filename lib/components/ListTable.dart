@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:bangiayhaki/main.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -34,8 +35,8 @@ class _ListTableState extends State<ListTable> {
   late Future<List<Product>> futureProducts;
 
   Future<List<Product>> fetchProducts() async {
-    final response = await http
-        .get(Uri.parse('${GlobalVariable().myVariable}/api/product/table'));
+    final response =
+        await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/table'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as List<dynamic>;

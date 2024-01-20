@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bangiayhaki/components/DropdownAddressItem.dart';
 import 'package:bangiayhaki/models/AddressModel.dart';
 import 'package:bangiayhaki/presenters/AddressPresenter.dart';
+import 'package:bangiayhaki/presenters/noti_service.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class AddAddressScreen extends StatefulWidget {
 class AddAddressScreenState extends State<AddAddressScreen>
     implements AddressView {
   AddressPresenter? presenter;
-
+  NotificationServices notificationServices = NotificationServices();
   List<City> cities = [];
   List<District> districts = [];
   List<Ward> wards = [];
@@ -176,6 +177,7 @@ class AddAddressScreenState extends State<AddAddressScreen>
                             selectedCity.fullName),
                         titleName: titleName.text,
                         id: widget.id);
+                    sendNotificationAfterAddingAddress();
                   },
                   style: ButtonStyle(
                       padding: MaterialStatePropertyAll(
@@ -192,6 +194,16 @@ class AddAddressScreenState extends State<AddAddressScreen>
           ],
         ),
       ),
+    );
+  }
+
+  void sendNotificationAfterAddingAddress() async {
+    final deviceToken = await notificationServices.getDeviceToken();
+
+    await notificationServices.sendFCMNotification(
+      title: 'New Address Added',
+      body: 'You have added a new address!',
+      deviceToken: deviceToken,
     );
   }
 

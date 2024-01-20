@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bangiayhaki/main.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -408,7 +409,7 @@ class _AddProductState extends State<AddProduct> {
     final File file = File(imagePath);
     final int fileSize = await file.length();
 
-    const int maxSizeInBytes = 350 * 350; 
+    const int maxSizeInBytes = 350 * 350;
     if (fileSize <= maxSizeInBytes) {
       return true;
     } else {
@@ -422,8 +423,7 @@ class _AddProductState extends State<AddProduct> {
       return;
     }
 
-    final url =
-        Uri.parse('${GlobalVariable().myVariable}/api/product/add_Product');
+    final url = Uri.parse('${ApiConstants.baseUrl}/api/product/add_Product');
 
     final bytes = await _imageFile!.readAsBytes();
     final base64Image = base64Encode(bytes);
@@ -457,8 +457,8 @@ class _AddProductState extends State<AddProduct> {
       return;
     }
 
-    final url = Uri.parse(
-        '${GlobalVariable().myVariable}/api/product/update/${widget.id}');
+    final url =
+        Uri.parse('${ApiConstants.baseUrl}/api/product/update/${widget.id}');
 
     final bytes = await _imageFile!.readAsBytes();
     final base64Image = base64Encode(bytes);

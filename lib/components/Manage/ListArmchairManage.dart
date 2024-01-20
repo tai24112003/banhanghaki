@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:bangiayhaki/components/ItemManage.dart';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,7 +33,7 @@ class _ListArmchairManagerState extends State<ListArmchairManager> {
 
   Future<List<Product>> fetchProducts() async {
     final response = await http
-        .get(Uri.parse('${GlobalVariable().myVariable}/api/product/armchair'));
+        .get(Uri.parse('${ApiConstants.baseUrl}/api/product/armchair'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as List<dynamic>;

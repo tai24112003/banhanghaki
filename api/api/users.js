@@ -18,7 +18,7 @@ const executeQuery = async (query, params) => {
 
 router.get('/', async (req, res) => {
     try {
-        const results = await executeQuery('SELECT * FROM usersz WHERE status=1', []);
+        const results = await executeQuery('SELECT * FROM users WHERE status=1', []);
         res.json(results);
     } catch (error) {
         console.error('Error in / route:', error);
@@ -101,7 +101,7 @@ router.put('/updateAddressId', async (req, res) => {
 });
 router.put('/update/AddressID', async (req, res) => {
     try {
-        const { id,address } = req.body;
+        const { id, address } = req.body;
 
         const checkUserQuery = 'SELECT * FROM Users WHERE ID = ?';
         const userExists = await new Promise((resolve, reject) => {
@@ -121,13 +121,13 @@ router.put('/update/AddressID', async (req, res) => {
                 WHERE ID=?
             `;
 
-            connection.query(updateUserQuery, [ address, id], (err) => {
+            connection.query(updateUserQuery, [address, id], (err) => {
                 if (err) {
                     console.error('Error executing MySQL query:', err);
                     res.status(500).send('Internal Server Error');
                 } else {
                     res.json({
-                        AddressID:address
+                        AddressID: address
                     });
                 }
             });

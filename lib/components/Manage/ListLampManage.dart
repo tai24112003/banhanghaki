@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:bangiayhaki/components/ItemManage.dart';
@@ -31,8 +32,8 @@ class _ListLampManagerState extends State<ListLampManager> {
   late Future<List<Product>> futureProducts;
 
   Future<List<Product>> fetchProducts() async {
-    final response = await http
-        .get(Uri.parse('${GlobalVariable().myVariable}/api/product/lamp'));
+    final response =
+        await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/lamp'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as List<dynamic>;
