@@ -1,39 +1,51 @@
+import 'dart:async';
+
 import 'package:bangiayhaki/components/DropdownAddressItem.dart';
 import 'package:bangiayhaki/models/AddressModel.dart';
 import 'package:bangiayhaki/presenters/AddressPresenter.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressScreen extends StatefulWidget {
-  const AddAddressScreen({super.key});
-
+  const AddAddressScreen({super.key, required this.id});
+  final int id;
   @override
   State<AddAddressScreen> createState() => AddAddressScreenState();
 }
 
-class AddAddressScreenState extends State<AddAddressScreen> {
+class AddAddressScreenState extends State<AddAddressScreen>
+    implements AddressView {
+  AddressPresenter? presenter;
+
   List<City> cities = [];
   List<District> districts = [];
   List<Ward> wards = [];
   City selectedCity = City(name: '', fullName: '', id: 89);
   District selectedDistrict = District(name: '', fullName: '', id: 886);
   Ward selectedWard = Ward(name: '', fullName: '', id: 30337);
-
+  late TextEditingController titleName;
+  late TextEditingController numberStreet;
   @override
   void initState() {
     super.initState();
-    fetchCities().then((cityList) {
+    titleName = TextEditingController();
+    numberStreet = TextEditingController();
+    presenter = AddressPresenter(this);
+    presenter?.fetchCities().then((cityList) {
       setState(() {
         cities = cityList;
+        selectedCity = cities[0];
       });
     });
-    fetchWardDetails(selectedDistrict.id).then((ward) {
+    presenter?.fetchWardDetails(selectedDistrict.id).then((ward) {
       setState(() {
         wards = ward;
+        selectedWard = wards[0];
       });
     });
-    fetchDistrictDetails(selectedCity.id).then((district) {
+    presenter?.fetchDistrictDetails(selectedCity.id).then((district) {
       setState(() {
         districts = district;
+        selectedDistrict = districts[0];
       });
     });
   }
@@ -46,7 +58,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
           title: Container(
             width: MediaQuery.of(context).size.width,
             child: const Text(
-              "Đặt hàng",
+              "Thêm địa chỉ",
               textAlign: TextAlign.center,
             ),
           )),
@@ -71,6 +83,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                     ),
                   ),
                   TextField(
+                    controller: titleName,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Nhà riêng',
@@ -97,6 +110,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                     ),
                   ),
                   TextField(
+                    controller: numberStreet,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: '244 Thái Văn Lung',
@@ -112,15 +126,17 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                 selectedCity =
                     cities.firstWhere((city) => city.fullName == selectedValue);
 
-                final district = await fetchDistrictDetails(selectedCity.id);
+                final district =
+                    await presenter?.fetchDistrictDetails(selectedCity.id);
                 setState(() {
-                  districts = district;
+                  districts = district!;
                   selectedDistrict = districts.first;
                 });
 
-                final ward = await fetchWardDetails(selectedDistrict.id);
+                final ward =
+                    await presenter?.fetchWardDetails(selectedDistrict.id);
                 setState(() {
-                  wards = ward;
+                  wards = ward!;
                 });
               },
             ),
@@ -130,9 +146,10 @@ class AddAddressScreenState extends State<AddAddressScreen> {
               onChanged: (selectedValue) async {
                 selectedDistrict = districts.firstWhere(
                     (district) => district.fullName == selectedValue);
-                final ward = await fetchWardDetails(selectedDistrict.id);
+                final ward =
+                    await presenter?.fetchWardDetails(selectedDistrict.id);
                 setState(() {
-                  wards = ward;
+                  wards = ward!;
                 });
               },
             ),
@@ -149,7 +166,16 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
                   onPressed: () {
-                    
+                    presenter?.addAddress(
+                        fullName: (numberStreet.text +
+                            " " +
+                            selectedWard.fullName +
+                            " " +
+                            selectedDistrict.fullName +
+                            " " +
+                            selectedCity.fullName),
+                        titleName: titleName.text,
+                        id: widget.id);
                   },
                   style: ButtonStyle(
                       padding: MaterialStatePropertyAll(
@@ -165,6 +191,15 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                 ))
           ],
         ),
+      ),
+    );
+  }
+
+  @override
+  void displayMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
       ),
     );
   }

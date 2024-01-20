@@ -10,8 +10,9 @@ import 'package:bangiayhaki/views/ChatScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.user});
-  final User user;
+  const HomeScreen({super.key, required this.id});
+  final int id;
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -19,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    print("id home");
+
+    print(widget.id);
     return DefaultTabController(
         length: 5, // Số lượng tab
         child: Scaffold(

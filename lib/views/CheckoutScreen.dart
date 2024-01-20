@@ -1,18 +1,44 @@
 import 'package:bangiayhaki/components/AddressItem.dart';
 import 'package:bangiayhaki/models/AddressModel.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/AddressPresenter.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
-
+  const CheckoutScreen({super.key, required this.id});
+  final id;
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
-class _CheckoutScreenState extends State<CheckoutScreen> {
+class _CheckoutScreenState extends State<CheckoutScreen>
+    implements AddressView, UserView {
+  List<Address> lstAddress = [];
+  late AddressPresenter presenter;
+  Address curAdd = Address(ID: 0, NameAddress: "", FullAddress: "");
+  late UserPresenter userPresenter;
+  @override
+  void initState() {
+    super.initState();
+    presenter = AddressPresenter(this);
+    userPresenter = UserPresenter(this);
+    loadAddresses();
+  }
+
+  Future<void> loadAddresses() async {
+    if (!mounted) return;
+    final user = await userPresenter.getUserById(widget.id);
+    final addresses = await presenter.getAddressByUserId(widget.id);
+    print(user);
+    setState(() {
+      lstAddress = addresses;
+      curAdd = lstAddress.firstWhere((element) => element.ID == user?.address);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,22 +59,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               title: Text("Địa chỉ giao hàng",
                   style: TextStyle(color: Colors.grey)),
               trailing: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditAddressScreen(),
-                        ));
-                  },
-                  icon: Icon(Icons.edit)),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditAddressScreen(id: widget.id),
+                    ),
+                  );
+                  loadAddresses();
+                },
+                icon: Icon(Icons.edit),
+              ),
             ),
             const SizedBox(
               height: 10,
             ),
-            AddressItem(
-                address: Address(
-                    FullAddress: "54 phan huy on P19 quan binh thanh",
-                    NameAddress: "Tài")),
+            AddressItem(address: curAdd),
             ListTile(
               title: Text("Thanh toán", style: TextStyle(color: Colors.grey)),
               trailing: IconButton(
@@ -168,5 +194,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }
