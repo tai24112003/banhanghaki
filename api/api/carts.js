@@ -32,9 +32,10 @@ router.put('/:number', (req, res) => {
 router.post('/',(req, res) => {
     var id = req.body.id;
     var idpro = req.body.idpro;
+    var quan = req.body.quan;
     Promise.all([getMaxid(),isExist(idpro,id)]).then((results)=>{
         if(results.length==2 && !results[1]){
-            return addItemCart(idpro,results[0]+1,id);
+            return addItemCart(idpro,results[0]+1,id,quan);
         }else if(results[1]){
             res.json({error: 'Đã tồn tại sản phẩm trong giỏ'});
         }else{
@@ -47,22 +48,11 @@ router.post('/',(req, res) => {
     }).catch((error) => {
         res.send(error.message);
     });
-
-
-    // connection.query('DELETE FROM `CartDetails` WHERE (`ID` = ?);',[id], (error, results) => {
-    //     if (error) {
-    //         //return res.send(error.message);
-    //         return res.status(500).json({ error: 'Internal server error' });
-    //     }
-    //     else {
-    //         return res.status(200).json({ results: "success" });
-    //     }
-    // });
 });
 
-function addItemCart(idpro ,id,idc){
+function addItemCart(idpro ,id,idc,quan){
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO `hakistore`.`CartDetails` (`ID`, `CartID`, `ProductID`, `Quantity`, `Status`) VALUES (?, ?, ?, ?, 1);',[id,idc,idpro,1,1], (error, results) => {
+        connection.query('INSERT INTO `hakistore`.`CartDetails` (`ID`, `CartID`, `ProductID`, `Quantity`, `Status`) VALUES (?, ?, ?, ?, 1);',[id,idc,idpro,quan,1], (error, results) => {
             if (error) {
                 reject('Internal server error');
             }
