@@ -1,13 +1,9 @@
 import 'dart:convert';
 
 import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
-
-class ApiConstants {
-  static const String baseUrl =
-      'https://0b5b-2402-800-63b9-bf0b-28ed-9969-13ad-e28d.ngrok-free.app';
-}
 
 abstract class UserView {
   void displayMessage(String message);

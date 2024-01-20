@@ -127,11 +127,11 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
                           width: MediaQuery.of(context).size.width,
                           child: OutlinedButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RegisterScreen(),
-                                  ));
+                              Navigator.pop(context);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return RegisterScreen();
+                              }));
                             },
                             style: ButtonStyle(
                                 side: MaterialStateProperty.all(

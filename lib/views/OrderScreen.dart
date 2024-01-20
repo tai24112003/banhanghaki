@@ -1,9 +1,16 @@
 import 'package:bangiayhaki/components/OrderItem.dart';
-import 'package:bangiayhaki/models/Order.dart';
+import 'package:bangiayhaki/models/OrderModel.dart';
+import 'package:bangiayhaki/presenters/OrderDetailsPresenter.dart';
+import 'package:bangiayhaki/presenters/OrderPresenter.dart';
+import 'package:bangiayhaki/views/DetailOrderScreen.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
+  const OrderScreen({required this.id, Key? key}) : super(key: key);
+
+  final int id;
   @override
+  // ignore: library_private_types_in_public_api
   _OrderScreenState createState() => _OrderScreenState();
 }
 
@@ -13,6 +20,8 @@ class _OrderScreenState extends State<OrderScreen>
   List<Order> lstorder_dahuy = [];
   List<Order> lstorder_dangxuli = [];
   List<Order> lstorder_dagiao = [];
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -22,14 +31,18 @@ class _OrderScreenState extends State<OrderScreen>
 
   Future<void> loadData() async {
     try {
-      await Order.loadData();
+      await OrderPresenter.loadData(widget.id);
       setState(() {
-        lstorder_dagiao = Order.statusfilter("Đã giao");
-        lstorder_dahuy = Order.statusfilter("Đã hủy");
-        lstorder_dangxuli = Order.statusfilter("Đang xử lí");
+        lstorder_dagiao = OrderPresenter.statusFilter("Đã giao");
+        lstorder_dahuy = OrderPresenter.statusFilter("Đã hủy");
+        lstorder_dangxuli = OrderPresenter.statusFilter("Đang xử lí");
+        isLoading = false;
       });
     } catch (error) {
       print('Error loading data: $error');
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -52,7 +65,7 @@ class _OrderScreenState extends State<OrderScreen>
           dividerColor: Colors.transparent,
           indicatorColor: Colors.black,
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(
               text: 'Đã Giao',
             ),
@@ -64,41 +77,27 @@ class _OrderScreenState extends State<OrderScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          lstorder_dagiao.isEmpty
-              ? const Center(
-                  child: Text("No orders available."),
-                )
-              : ListView.builder(
-                  padding: EdgeInsets.all(8),
-                  itemCount: lstorder_dagiao.length,
-                  itemBuilder: (context, index) {
-                    return OrderItem(myorder: lstorder_dagiao[index]);
-                  },
-                ),
-          lstorder_dangxuli.isEmpty
-              ? const Center(
-                  child: Text("No orders available."),
-                )
-              : ListView.builder(
-                  padding: EdgeInsets.all(8),
-                  itemCount: lstorder_dangxuli.length,
-                  itemBuilder: (context, index) {
-                    return OrderItem(myorder: lstorder_dangxuli[index]);
-                  },
-                ),
-          lstorder_dahuy.isEmpty
-              ? const Center(
-                  child: Text("No orders available."),
-                )
-              : ListView.builder(
-                  padding: EdgeInsets.all(8),
-                  itemCount: lstorder_dahuy.length,
-                  itemBuilder: (context, index) {
-                    return OrderItem(myorder: lstorder_dahuy[index]);
-                  },
-                ),
+          _buildOrderList(lstorder_dagiao),
+          _buildOrderList(lstorder_dangxuli),
+          _buildOrderList(lstorder_dahuy),
         ],
       ),
     );
+  }
+
+  Widget _buildOrderList(List<Order> orders) {
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    } else if (orders.isEmpty) {
+      return Center(child: Text("No orders available."));
+    } else {
+      return ListView.builder(
+        padding: EdgeInsets.all(8),
+        itemCount: orders.length,
+        itemBuilder: (context, index) {
+          return OrderItem(myorder: orders[index]);
+        },
+      );
+    }
   }
 }

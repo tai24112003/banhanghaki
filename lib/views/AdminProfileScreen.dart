@@ -57,26 +57,26 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                   )
                 ],
               ),
-              ProfileItem(
-                title: "Đơn hàng chờ xác nhận",
-                detail: "Bạn có 10 món hàng",
-              ),
-              ProfileItem(
-                title: "Khách hàng hôm nay",
-                detail: "Bạn có 22 thông báo",
-              ),
-              ProfileItem(
-                title: "Sản phẩm của tôi",
-                detail: "Bạn có 22 thông báo",
-              ),
-              ProfileItem(
-                title: "Phương thức thanh toán",
-                detail: "Bạn có 1 hình thức thanh toán",
-              ),
-              ProfileItem(
-                title: "Cài đặt",
-                detail: "Thông báo, đổi mật khẩu, liên hệ",
-              )
+              // ProfileItem(
+              //   title: "Đơn hàng chờ xác nhận",
+              //   detail: "Bạn có 10 món hàng",
+              // ),
+              // ProfileItem(
+              //   title: "Khách hàng hôm nay",
+              //   detail: "Bạn có 22 thông báo",
+              // ),
+              // ProfileItem(
+              //   title: "Sản phẩm của tôi",
+              //   detail: "Bạn có 22 thông báo",
+              // ),
+              // ProfileItem(
+              //   title: "Phương thức thanh toán",
+              //   detail: "Bạn có 1 hình thức thanh toán",
+              // ),
+              // ProfileItem(
+              //   title: "Cài đặt",
+              //   detail: "Thông báo, đổi mật khẩu, liên hệ",
+              // )
             ]),
       ),
     );
