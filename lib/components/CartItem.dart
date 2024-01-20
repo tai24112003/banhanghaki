@@ -20,12 +20,10 @@ class CartItem extends StatefulWidget {
 class _CartItemState extends State<CartItem> {
   int quan = 1;
   bool isSelect = false;
-  void _setQuan(int Increa) {
-    setState(() {
-      quan += Increa;
-      quan = quan < 0 ? 0 : quan;
-      widget.onUpdateQuan(widget.cartIt.id, quan);
-    });
+  void _setQuan(int increa) {
+    quan += increa;
+    quan = quan < 0 ? 0 : quan;
+    widget.onUpdateQuan(widget.cartIt.id, quan);
   }
 
   @override
@@ -43,6 +41,7 @@ class _CartItemState extends State<CartItem> {
 
   @override
   Widget build(BuildContext context) {
+    setupQuan();
     return Container(
       decoration: BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(
@@ -60,7 +59,7 @@ class _CartItemState extends State<CartItem> {
                   onChanged: (a) {
                     setState(() {
                       widget.onChecked(widget.cartIt, a!);
-                      isSelect = a!;
+                      isSelect = a;
                     });
                   }),
               Container(
@@ -82,12 +81,12 @@ class _CartItemState extends State<CartItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(widget.cartIt.product.name,
-                        style: TextStyle(color: Colors.grey)),
+                        style: const TextStyle(color: Colors.grey)),
                     GestureDetector(
                       onTap: () {
                         widget.onDelete(widget.cartIt.id);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.cancel_outlined,
                         size: 30,
                       ),
@@ -95,7 +94,7 @@ class _CartItemState extends State<CartItem> {
                   ],
                 ),
                 Text("${widget.cartIt.product.price}\$",
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.bold)),

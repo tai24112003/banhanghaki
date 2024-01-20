@@ -29,6 +29,79 @@ router.put('/:number', (req, res) => {
     });
 });
 
+router.post('/',(req, res) => {
+    var id = req.body.id;
+    var idpro = req.body.idpro;
+    Promise.all([getMaxid(),isExist(idpro,id)]).then((results)=>{
+        if(results.length==2 && !results[1]){
+            return addItemCart(idpro,results[0]+1,id);
+        }else if(results[1]){
+            res.json({error: 'Đã tồn tại sản phẩm trong giỏ'});
+        }else{
+            res.json({error: 'Internal server error'});
+        }
+    }).then((results)=>{
+        if(results){
+            res.status(200).json({status:"Success"});
+        }
+    }).catch((error) => {
+        res.send(error.message);
+    });
+
+
+    // connection.query('DELETE FROM `CartDetails` WHERE (`ID` = ?);',[id], (error, results) => {
+    //     if (error) {
+    //         //return res.send(error.message);
+    //         return res.status(500).json({ error: 'Internal server error' });
+    //     }
+    //     else {
+    //         return res.status(200).json({ results: "success" });
+    //     }
+    // });
+});
+
+function addItemCart(idpro ,id,idc){
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO `hakistore`.`CartDetails` (`ID`, `CartID`, `ProductID`, `Quantity`, `Status`) VALUES (?, ?, ?, ?, 1);',[id,idc,idpro,1,1], (error, results) => {
+            if (error) {
+                reject('Internal server error');
+            }
+            else {
+                resolve(true);
+            }
+        });
+    })
+}
+
+function isExist(idpro ,id){
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT ID FROM CartDetails where CartID =? AND ProductID = ?;',[id,idpro], (error, results) => {
+            if (error) {
+                reject('Internal server error');
+            }
+            else {
+                var rs = results.length!=0?true:false;
+                resolve(rs);
+            }
+        });
+    })
+}
+
+function getMaxid(){
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT max(ID) as maxid FROM CartDetails;', (error, results) => {
+            if (error) {
+                //return res.send(error.message);
+                reject('Internal server error');
+            }
+            else {
+                var maxid = results[0].maxid??0;
+                resolve(maxid);
+            }
+        });
+    });
+}
+
 router.delete('/:id', (req, res) => {
     var id = req.params.id;
     connection.query('DELETE FROM `CartDetails` WHERE (`ID` = ?);',[id], (error, results) => {

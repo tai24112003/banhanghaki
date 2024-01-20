@@ -70,6 +70,7 @@ class _CartScreenState extends State<CartScreen> {
   void deleteItem(int id) {
     CartPresenter.deleteItemInCartById(id).then((value) {
       if (value) {
+        _selectedCartItem.removeWhere((element) => element.id == id);
         loadData();
       }
     });
@@ -78,6 +79,7 @@ class _CartScreenState extends State<CartScreen> {
   void deleteAllItem() {
     CartPresenter.deleteItemInCart(1).then((value) {
       if (value) {
+        _selectedCartItem.clear();
         loadData();
       }
     });
@@ -86,8 +88,8 @@ class _CartScreenState extends State<CartScreen> {
   void loadData() {
     CartPresenter.loadData(1).then((value) => {
           setState(() {
-            quan();
             _lstCartItem = CartPresenter.lstProIncart;
+            quan();
           })
         });
   }
