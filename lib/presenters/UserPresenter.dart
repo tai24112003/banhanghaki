@@ -13,8 +13,7 @@ class UserPresenter {
   final UserView _view;
 
   UserPresenter(this._view);
-  Future<User?> 
-  getUserById(int id) async {
+  Future<User?> getUserById(int id) async {
     final response = await http.get(
       Uri.parse('${ApiConstants.baseUrl}/api/users/'),
     );

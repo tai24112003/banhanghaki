@@ -15,61 +15,73 @@ class ProductsManageScreen extends StatefulWidget {
 }
 
 class _ProductsManageScreenState extends State<ProductsManageScreen> {
+  void test() {
+    setState(() {
+      print("Thêm ++++++++");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(
-                130), // Tính kích thước tối ưu cho AppBar và TabBar
-            child: Column(
-              children: [
-                AppBar(
-                  title: const Text('Make Home Beautiful'),
-                ),
-                const TabbarCustom()
-              ],
-            ),
-          ),
-          body: const TabBarView(children: [
-            // Nội dung cho tab 1
-            ListChairManager(),
-            // Nội dung cho tab 2
-            ListTableManager(),
-            // Nội dung cho tab 3
-            ListArmchairManager(),
-            // Nội dung cho tab 4
-            ListBedManager(),
-            // Nội dung cho tab 5
-            ListLampManager(),
-          ]),
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      length: 5,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(130),
+          child: Column(
             children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 50),
-                width: MediaQuery.of(context).size.width * 0.96,
-                child: FloatingActionButton.extended(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AddProductsScreen()),
-                    );
-                  },
-                  label: const Text('Thêm sản phẩn'),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 212, 212, 212),
-                  foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                ),
-              ) // Khoảng cách giữa hai nút
+              AppBar(
+                title: const Text('Make Home Beautiful'),
+              ),
+              const TabbarCustom()
             ],
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.miniCenterDocked,
-        ));
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: TabBarView(
+                children: [
+                  ListChairManager(),
+                  ListTableManager(),
+                  ListArmchairManager(),
+                  ListBedManager(),
+                  ListLampManager(),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 50),
+              width: MediaQuery.of(context).size.width * 0.96,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddProduct(
+                        id: 0,
+                        image: [],
+                        idCategory: 0,
+                        quantity: 0,
+                        name: "",
+                        price: 0,
+                        descreption: "",
+                        onRestart: test,
+                      ),
+                    ),
+                  );
+                },
+                label: const Text('Thêm sản phẩm'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                backgroundColor: const Color.fromARGB(255, 212, 212, 212),
+                foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
