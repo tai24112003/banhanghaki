@@ -1,5 +1,5 @@
 import 'package:bangiayhaki/components/AddressItem.dart';
-import 'package:bangiayhaki/models/User.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:flutter/material.dart';
 
 class PayMethodScreen extends StatefulWidget {

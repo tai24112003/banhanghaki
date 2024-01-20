@@ -1,5 +1,8 @@
 import 'package:bangiayhaki/components/AddressItem.dart';
-import 'package:bangiayhaki/models/User.dart';
+import 'package:bangiayhaki/models/AddressModel.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/views/EditAddressScreen.dart';
+import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -26,10 +29,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const ListTile(
+            ListTile(
               title: Text("Địa chỉ giao hàng",
                   style: TextStyle(color: Colors.grey)),
-              trailing: Icon(Icons.edit),
+              trailing: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditAddressScreen(),
+                        ));
+                  },
+                  icon: Icon(Icons.edit)),
             ),
             const SizedBox(
               height: 10,
@@ -38,9 +49,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 address: Address(
                     FullAddress: "54 phan huy on P19 quan binh thanh",
                     NameAddress: "Tài")),
-            const ListTile(
+            ListTile(
               title: Text("Thanh toán", style: TextStyle(color: Colors.grey)),
-              trailing: Icon(Icons.edit),
+              trailing: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PayMethodScreen(),
+                        ));
+                  },
+                  icon: Icon(Icons.edit)),
             ),
             const Padding(
               padding: EdgeInsets.all(16),

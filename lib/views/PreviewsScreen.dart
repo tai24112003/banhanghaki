@@ -1,4 +1,4 @@
-import 'package:bangiayhaki/presenters/Previews.dart';
+import 'package:bangiayhaki/components/Previews.dart';
 import 'package:flutter/material.dart';
 
 class PreviewsScreen extends StatefulWidget {

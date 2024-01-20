@@ -1,144 +1,139 @@
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen> implements UserView {
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  UserPresenter? presenter;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    presenter = UserPresenter(this);
+    ;
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      presenter?.Register(
+        email: emailController.text,
+        password: passwordController.text,
+        fullName: fullNameController.text,
+        phoneNumber: phoneNumberController.text,
+        status: '1', // Set the status accordingly
+      );
+    }
+  }
+
+  @override
+  void displayMessage(String message) {
+    // Hiển thị thông báo cho người dùng (ví dụ: sử dụng SnackBar)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Divider(),
-                    ),
-                  ),
-                  Image(image: AssetImage('assets/logo.png')),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Divider(),
-                    ),
-                  ),
-                ],
-              ),
+              const Image(image: AssetImage('assets/logo.png'), height: 100),
+              const SizedBox(height: 20),
               Text(
                 "Đăng Ký",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  )
-                ]),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Họ và tên",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      const TextField(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      const Text(
-                        "Email",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      const TextField(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      const Text(
-                        "Số điện thoại",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      const TextField(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      const Text(
-                        "Địa chỉ",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      const TextField(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      const Text(
-                        "Password",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      const TextField(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      const Text(
-                        "Confirm Password",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      const TextField(),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                              backgroundColor: const MaterialStatePropertyAll(
-                                Colors.black,
-                              ),
-                              shape: MaterialStatePropertyAll(
+                padding: const EdgeInsets.all(15.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Form(
+                    key: _formKey,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildTextField("Họ và tên", fullNameController),
+                          buildTextField("Email", emailController),
+                          buildTextField(
+                              "Số điện thoại", phoneNumberController),
+                          buildTextField("Password", passwordController,
+                              isPassword: true),
+                          buildTextField(
+                              "Confirm Password", confirmPasswordController,
+                              isPassword: true),
+                          const SizedBox(height: 25),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: ElevatedButton(
+                              onPressed: _submitForm,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black),
+                                shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10)))),
-                          child: const Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Text(
-                              "Đăng Ký",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(15.0),
+                                child: Text(
+                                  "Đăng Ký",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Đã có tài khoản? "),
-                          GestureDetector(
-                            child: Text(
-                              "Đăng nhập",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Đã có tài khoản? "),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(context, "/");
+                                },
+                                child: Text(
+                                  "Đăng nhập",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -146,6 +141,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildTextField(String label, TextEditingController controller,
+      {bool isPassword = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+        TextFormField(
+          controller: controller,
+          obscureText: isPassword,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter $label';
+            } else if (isPassword && value.length < 6) {
+              return 'Password must be at least 6 characters';
+            } else if (isPassword && value != passwordController.text) {
+              return 'Passwords do not match';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 25),
+      ],
     );
   }
 }

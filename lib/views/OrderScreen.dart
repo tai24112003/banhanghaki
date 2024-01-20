@@ -1,4 +1,5 @@
 import 'package:bangiayhaki/components/OrderItem.dart';
+import 'package:bangiayhaki/models/Order.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -9,11 +10,27 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
+  List<Order> lstorder_dahuy = [];
+  List<Order> lstorder_dangxuli = [];
+  List<Order> lstorder_dagiao = [];
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    try {
+      await Order.loadData();
+      setState(() {
+        lstorder_dagiao = Order.statusfilter("Đã giao");
+        lstorder_dahuy = Order.statusfilter("Đã hủy");
+        lstorder_dangxuli = Order.statusfilter("Đang xử lí");
+      });
+    } catch (error) {
+      print('Error loading data: $error');
+    }
   }
 
   @override
@@ -47,32 +64,39 @@ class _OrderScreenState extends State<OrderScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Đã Giao Tab
-          SingleChildScrollView(
-              child: Column(
-            children: [
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-              OrderItem(status: "Đã giao"),
-            ],
-          )),
-
-          SingleChildScrollView(
-              child: Column(
-            children: [
-              OrderItem(status: "Đang xử lí"),
-            ],
-          )),
-
-          SingleChildScrollView(
-              child: Column(
-            children: [
-              OrderItem(status: "Đã hủy"),
-            ],
-          ))
+          lstorder_dagiao.isEmpty
+              ? const Center(
+                  child: Text("No orders available."),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.all(8),
+                  itemCount: lstorder_dagiao.length,
+                  itemBuilder: (context, index) {
+                    return OrderItem(myorder: lstorder_dagiao[index]);
+                  },
+                ),
+          lstorder_dangxuli.isEmpty
+              ? const Center(
+                  child: Text("No orders available."),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.all(8),
+                  itemCount: lstorder_dangxuli.length,
+                  itemBuilder: (context, index) {
+                    return OrderItem(myorder: lstorder_dangxuli[index]);
+                  },
+                ),
+          lstorder_dahuy.isEmpty
+              ? const Center(
+                  child: Text("No orders available."),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.all(8),
+                  itemCount: lstorder_dahuy.length,
+                  itemBuilder: (context, index) {
+                    return OrderItem(myorder: lstorder_dahuy[index]);
+                  },
+                ),
         ],
       ),
     );

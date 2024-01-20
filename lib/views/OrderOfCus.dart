@@ -58,12 +58,12 @@ class _OrderOfCusState extends State<OrderOfCus> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  OrderItem(status: "Đã giao"),
-                  OrderItem(status: "Đã giao"),
-                  OrderItem(status: "Đã giao"),
-                  OrderItem(status: "Đã giao"),
-                  OrderItem(status: "Đã giao"),
-                  OrderItem(status: "Đã giao"),
+                  // OrderItem(status: "Đã giao"),
+                  // OrderItem(status: "Đã giao"),
+                  // OrderItem(status: "Đã giao"),
+                  // OrderItem(status: "Đã giao"),
+                  // OrderItem(status: "Đã giao"),
+                  // OrderItem(status: "Đã giao"),
                 ],
               ),
             ),
@@ -73,12 +73,12 @@ class _OrderOfCusState extends State<OrderOfCus> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  OrderItem(status: "Đang xử lí"),
-                  OrderItem(status: "Đang xử lí"),
-                  OrderItem(status: "Đang xử lí"),
-                  OrderItem(status: "Đang xử lí"),
-                  OrderItem(status: "Đang xử lí"),
-                  OrderItem(status: "Đang xử lí"),
+                  // OrderItem(status: "Đang xử lí"),
+                  // OrderItem(status: "Đang xử lí"),
+                  // OrderItem(status: "Đang xử lí"),
+                  // OrderItem(status: "Đang xử lí"),
+                  // OrderItem(status: "Đang xử lí"),
+                  // OrderItem(status: "Đang xử lí"),
                 ],
               ),
             ),
@@ -88,12 +88,12 @@ class _OrderOfCusState extends State<OrderOfCus> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  OrderItem(status: "Đã huỷ"),
-                  OrderItem(status: "Đã huỷ"),
-                  OrderItem(status: "Đã huỷ"),
-                  OrderItem(status: "Đã huỷ"),
-                  OrderItem(status: "Đã huỷ"),
-                  OrderItem(status: "Đã huỷ"),
+                  // OrderItem(status: "Đã huỷ"),
+                  // OrderItem(status: "Đã huỷ"),
+                  // OrderItem(status: "Đã huỷ"),
+                  // OrderItem(status: "Đã huỷ"),
+                  // OrderItem(status: "Đã huỷ"),
+                  // OrderItem(status: "Đã huỷ"),
                 ],
               ),
             ),

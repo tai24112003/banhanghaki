@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<<<<<<< HEAD
     <!-- Required to fetch data from the internet. -->
     <uses-permission android:name="android.permission.INTERNET" />
+=======
+<uses-permission android:name="android.permission.INTERNET"/>
+>>>>>>> cb9af467362e323998d8dbc472ebe85b517d6bbd
     <application
         android:label="bangiayhaki"
         android:name="${applicationName}"
