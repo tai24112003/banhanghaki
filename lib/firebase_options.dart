@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCFdDgOLS9CbLvAX37PeU6GZLrgyCJt9hY',
-    appId: '1:325384984044:android:545f1615540fdf2152dcc9',
+    appId: '1:325384984044:android:7aa2eb258e84c32252dcc9',
     messagingSenderId: '325384984044',
     projectId: 'hakistore-93f57',
     storageBucket: 'hakistore-93f57.appspot.com',

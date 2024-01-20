@@ -13,8 +13,20 @@ const executeQuery = async (query, params) => {
                 resolve(results);
             }
         });
+    })
+}
+
+router.get('/', (req, res) => {
+    connection.query('SELECT * FROM Users WHERE status=1', (error, results) => {
+        if (error) {
+            //return res.send(error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        else {
+            return res.json(results);
+        }
     });
-};
+});
 
 router.get('/', async (req, res) => {
     try {

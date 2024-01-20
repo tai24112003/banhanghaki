@@ -5,7 +5,6 @@ import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/views/AddproductScreen.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 
 class ItemManage extends StatefulWidget {
