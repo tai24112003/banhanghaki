@@ -1,8 +1,18 @@
+import 'package:bangiayhaki/models/CartItemModel.dart';
+import 'package:bangiayhaki/models/Item.dart';
 import 'package:flutter/material.dart';
 
 class CartItem extends StatefulWidget {
-  const CartItem({super.key});
-
+  const CartItem(
+      {super.key,
+      required this.cartIt,
+      required this.onDelete,
+      required this.onUpdateQuan,
+      required this.onChecked});
+  final CartItemModel cartIt;
+  final Function(int) onDelete;
+  final Function(int, int) onUpdateQuan;
+  final Function(CartItemModel, bool) onChecked;
   @override
   State<CartItem> createState() => _CartItemState();
 }
@@ -14,6 +24,20 @@ class _CartItemState extends State<CartItem> {
     setState(() {
       quan += Increa;
       quan = quan < 0 ? 0 : quan;
+      widget.onUpdateQuan(widget.cartIt.id, quan);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setupQuan();
+  }
+
+  void setupQuan() {
+    setState(() {
+      quan = widget.cartIt.quantity;
     });
   }
 
@@ -35,6 +59,7 @@ class _CartItemState extends State<CartItem> {
                   value: isSelect,
                   onChanged: (a) {
                     setState(() {
+                      widget.onChecked(widget.cartIt, a!);
                       isSelect = a!;
                     });
                   }),
@@ -53,17 +78,23 @@ class _CartItemState extends State<CartItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Item1", style: TextStyle(color: Colors.grey)),
-                    Icon(
-                      Icons.cancel_outlined,
-                      size: 30,
+                    Text(widget.cartIt.product.name,
+                        style: TextStyle(color: Colors.grey)),
+                    GestureDetector(
+                      onTap: () {
+                        widget.onDelete(widget.cartIt.id);
+                      },
+                      child: Icon(
+                        Icons.cancel_outlined,
+                        size: 30,
+                      ),
                     )
                   ],
                 ),
-                const Text("25\$",
+                Text("${widget.cartIt.product.price}\$",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,

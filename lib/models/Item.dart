@@ -16,4 +16,15 @@ class Product {
       required this.quantity,
       required this.price,
       required this.description});
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+        id: json['ID'] as int,
+        quantity: json['Quantity'] ?? 0 as int,
+        idCategory: json['Category'] ?? 0 as int,
+        image: json['Image'] ?? List<int>.empty() as List<int>,
+        name: json['ProductName'],
+        price: json['Price'].toDouble(),
+        description: json['Description'] ?? "");
+  }
 }

@@ -7,6 +7,7 @@ const orderDetailsRoute=require('./api/ordersdetail');
 const cartsRoute = require('./api/carts');
 const accountRoute = require('./api/account');
 
+
 const PORT = 3000;
 const app = express();
 app.use(cors({ origin: '*' }));

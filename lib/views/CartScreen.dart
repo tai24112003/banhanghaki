@@ -1,5 +1,7 @@
 import 'package:bangiayhaki/components/CartItem.dart';
 import 'package:bangiayhaki/components/DetailOrderItem.dart';
+import 'package:bangiayhaki/models/CartItemModel.dart';
+import 'package:bangiayhaki/presenters/CartPresenter.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
@@ -10,6 +12,86 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  List _lstCartItem = [];
+  List _selectedCartItem = [];
+  double _total = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  void onUpdateQuan(int id, int quan) {
+    CartPresenter.updateItemInCart(id, quan).then((value) {
+      if (value) {
+        loadData();
+        var a = _selectedCartItem.firstWhere((element) => element.id == id,
+            orElse: () => null);
+        if (a != null) {
+          a.setQuantity = quan;
+        }
+      }
+    });
+  }
+
+  void quan() {
+    _total = 0;
+    _selectedCartItem.forEach((element) {
+      _total += element.quantity * element.product.price;
+    });
+  }
+
+  void processSelected(CartItemModel model, bool isSelected) {
+    if (isSelected) {
+      CartItemModel? tmp = _selectedCartItem.firstWhere((element) {
+        return element.id == model.id;
+      }, orElse: () => null);
+      if (tmp != null) {
+        _selectedCartItem.remove(tmp);
+      }
+      _selectedCartItem.add(model);
+      // _total += model.quantity * model.product.price;
+    } else if (!isSelected) {
+      CartItemModel? tmp = _selectedCartItem.firstWhere((element) {
+        return element.id == model.id;
+      }, orElse: () => null);
+      if (tmp != null) {
+        _selectedCartItem.remove(tmp);
+        //_total -= tmp.quantity * tmp.product.price;
+      }
+    }
+    setState(() {
+      quan();
+    });
+    print(_selectedCartItem.length);
+  }
+
+  void deleteItem(int id) {
+    CartPresenter.deleteItemInCartById(id).then((value) {
+      if (value) {
+        loadData();
+      }
+    });
+  }
+
+  void deleteAllItem() {
+    CartPresenter.deleteItemInCart(1).then((value) {
+      if (value) {
+        loadData();
+      }
+    });
+  }
+
+  void loadData() {
+    CartPresenter.loadData(1).then((value) => {
+          setState(() {
+            quan();
+            _lstCartItem = CartPresenter.lstProIncart;
+          })
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +118,11 @@ class _CartScreenState extends State<CartScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(5)))),
                     backgroundColor: MaterialStatePropertyAll(Colors.black),
                   ),
-                  child: const Text(
+                  onPressed: deleteAllItem,
+                  child: Text(
                     "Xoá hết",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {},
                 ),
               ],
             ),
@@ -50,14 +132,15 @@ class _CartScreenState extends State<CartScreen> {
             child: SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(8),
-                child: const Column(
-                  children: [
-                    CartItem(),
-                    CartItem(),
-                    CartItem(),
-                    CartItem(),
-                    CartItem(),
-                  ],
+                child: Column(
+                  children: _lstCartItem.map((e) {
+                    return CartItem(
+                      cartIt: e,
+                      onDelete: deleteItem,
+                      onChecked: processSelected,
+                      onUpdateQuan: onUpdateQuan,
+                    );
+                  }).toList(),
                 ),
               ),
             ),
@@ -67,12 +150,12 @@ class _CartScreenState extends State<CartScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(16),
+                Padding(
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Tổng tiền:",
                         style: TextStyle(
                             color: Colors.grey,
@@ -80,7 +163,7 @@ class _CartScreenState extends State<CartScreen> {
                             fontSize: 20),
                       ),
                       Text(
-                        "\$ 95.00",
+                        "\$ $_total",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
