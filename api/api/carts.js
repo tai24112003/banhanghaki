@@ -37,16 +37,16 @@ router.post('/',(req, res) => {
         if(results.length==2 && !results[1]){
             return addItemCart(idpro,results[0]+1,id,quan);
         }else if(results[1]){
-            res.json({error: 'Đã tồn tại sản phẩm trong giỏ'});
+            res.status(400).json({error: 'Đã tồn tại sản phẩm trong giỏ'});
         }else{
-            res.json({error: 'Internal server error'});
+            res.status(500).json({error: 'Internal server error'});
         }
     }).then((results)=>{
         if(results){
             res.status(200).json({status:"Success"});
         }
     }).catch((error) => {
-        res.send(error.message);
+        res.status(500).json({error: 'Internal server error'});
     });
 });
 

@@ -25,7 +25,7 @@ class OrderPresenter {
     } else {
       print('Failed to load data. Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
-      throw Exception('Failed to load data');
+      //throw Exception('Failed to load data');
     }
   }
 

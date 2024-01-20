@@ -26,7 +26,8 @@ class CartPresenter {
           .map((orderdetaildata) => CartItemModel.fromJson(orderdetaildata))
           .toList();
     } else {
-      throw Exception('Failed to load data');
+      //throw Exception('Failed to load data');
+      lstProIncart = [];
     }
   }
 
@@ -42,7 +43,7 @@ class CartPresenter {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('Failed to load data');
+      //throw Exception('Failed to load data');
       return false;
     }
   }
@@ -58,7 +59,7 @@ class CartPresenter {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('Failed to load data');
+      //throw Exception('Failed to load data');
       return false;
     }
   }
@@ -75,7 +76,7 @@ class CartPresenter {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('Failed to load data');
+      //throw Exception('Failed to load data');
       return false;
     }
   }
