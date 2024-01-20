@@ -1,4 +1,5 @@
 import 'package:bangiayhaki/components/BottomBarCustom.dart';
+import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/ProfileItem.dart';
 import 'package:bangiayhaki/models/OrderModel.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
@@ -19,23 +20,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-          backgroundColor: Colors.transparent,
-          title: Container(
-            width: MediaQuery.of(context).size.width,
-            child: const Text(
-              "Đặt hàng",
-              textAlign: TextAlign.center,
-            ),
-          )),
-      bottomNavigationBar: BottomBarCustom(
-        active: 2,
-        user: widget.user,
+      appBar: MyAppBar(
+        title: "Thông tin cá nhân",
       ),
+      bottomNavigationBar: BottomBarCustom(user: widget.user, active: 2),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
@@ -83,17 +71,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 ProfileItem(
-                  mywidget: OrderScreen(id: widget.user.id),
+                  mywidget: OrderScreen(id: widget.user.ID),
                   title: "Đơn hàng của tôi",
                   detail: "Bạn có ${OrderPresenter.lstOrder.length} đơn hàng",
                 ),
                 ProfileItem(
-                  mywidget: OrderScreen(id: widget.user.id),
+                  mywidget: OrderScreen(id: widget.user.ID),
                   title: "Địa chỉ giao hàng",
                   detail: "Bạn có 3 địa chỉ",
                 ),
                 ProfileItem(
-                  mywidget: CheckoutScreen(),
+                  mywidget: CheckoutScreen(id: widget.user.ID),
                   title: "Thanh toán",
                   detail: "Bạn có 1 hình thức thanh toán",
                 ),

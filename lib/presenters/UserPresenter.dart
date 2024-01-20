@@ -13,17 +13,32 @@ class UserPresenter {
   final UserView _view;
 
   UserPresenter(this._view);
+  Future<User?> getUserById(int id) async {
+    final response = await http.get(
+      Uri.parse('${ApiConstants.baseUrl}/api/users/'),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      print("object");
+      print(responseData);
+      return User.fromJson(
+          responseData.firstWhere((element) => element['ID'] == id));
+    } else {
+      print('Failed to load user. Status code: ${response.statusCode}');
+      return null;
+    }
+  }
 
   Future<User?> Login({required String email, required String password}) async {
     final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}/users/login'),
+      Uri.parse('${ApiConstants.baseUrl}/api/users/login'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'username': email, 'password': password}),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-
       _view.displayMessage('Login successful, welcome!');
       print(responseData);
       return User.fromJson(responseData);
@@ -44,9 +59,9 @@ class UserPresenter {
     required String phoneNumber,
     required String status,
   }) async {
-    print('${ApiConstants.baseUrl}/users/register');
+    print('${ApiConstants.baseUrl}/api/users/register');
     final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}/users/register'),
+      Uri.parse('${ApiConstants.baseUrl}/api/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'email': email,

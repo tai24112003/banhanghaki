@@ -1,5 +1,5 @@
 class User {
-  final id;
+  final int ID;
   final Fullname;
   final Email;
   final Phone;
@@ -7,7 +7,7 @@ class User {
   final Password;
 
   User({
-    required this.id,
+    required this.ID,
     required this.Fullname,
     required this.Email,
     required this.Phone,
@@ -17,20 +17,26 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        id: json['ID'],
-        Fullname: json['Fullname'],
-        Email: json['Email'],
-        Phone: json['PhoneNumber'],
-        address: json['Address'],
-        Password: json['Password']);
+        ID: json['ID'] ?? "",
+        Fullname: json['Fullname'] ?? "",
+        Email: json['Email'] ?? "",
+        Phone: json['PhoneNumber'] ?? "",
+        address: json['AddressID'] ?? "",
+        Password: json['Password'] ?? "");
   }
   Map<String, dynamic> toJson() {
     return {
+      'ID': ID,
       'Email': Email,
       'Password': Password,
       'FullName': Fullname,
       'PhoneNumber': Phone,
       'Address': address,
     };
+  }
+
+  @override
+  String toString() {
+    return 'User { Fullname: $Fullname, Email: $Email, Phone: $Phone, Address: $address, Password: $Password }';
   }
 }

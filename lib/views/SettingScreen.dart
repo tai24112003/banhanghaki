@@ -1,3 +1,4 @@
+import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:flutter/material.dart';
 
@@ -16,14 +17,14 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Cài đặt chung",
-          textAlign: TextAlign.center,
+      appBar: const PreferredSize(
+        child: MyAppBar(
+          title: "Cài đặt chung",
         ),
+        preferredSize: Size.fromHeight(100),
       ),
       body: Container(
-        margin: EdgeInsets.all(15),
+        margin: const EdgeInsets.all(15),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         color: Colors.white,
@@ -50,7 +51,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
                 shadows: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Color(0x338A959E),
                     blurRadius: 40,
                     offset: Offset(0, 2),
@@ -69,21 +70,21 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
-                  label: Text(
+                  label: const Text(
                     "Tên",
                     style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
@@ -97,7 +98,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
                 shadows: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Color(0x338A959E),
                     blurRadius: 40,
                     offset: Offset(0, 2),
@@ -117,29 +118,29 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
-                  label: Text(
+                  label: const Text(
                     "Email",
                     style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
+            const Padding(
+              padding: EdgeInsets.only(top: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -162,7 +163,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
                 shadows: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Color(0x338A959E),
                     blurRadius: 40,
                     offset: Offset(0, 2),
@@ -181,21 +182,21 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: const BorderSide(color: Colors.transparent),
                   ),
-                  label: Text(
+                  label: const Text(
                     "Mật khẩu",
                     style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
@@ -203,8 +204,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 obscureText: true,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
+            const Padding(
+              padding: EdgeInsets.only(top: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -221,7 +222,7 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+              margin: const EdgeInsets.fromLTRB(0, 15, 0, 15),
               alignment: Alignment.center,
               width: 350,
               height: 54,
@@ -230,7 +231,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
                 shadows: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Color(0x338A959E),
                     blurRadius: 40,
                     offset: Offset(0, 2),
@@ -239,7 +240,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
               child: SwitchListTile(
-                title: Text(
+                title: const Text(
                   "Khuyến mãi",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -255,7 +256,7 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+              margin: const EdgeInsets.fromLTRB(0, 15, 0, 15),
               alignment: Alignment.center,
               width: 350,
               height: 54,
@@ -264,7 +265,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
                 shadows: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Color(0x338A959E),
                     blurRadius: 40,
                     offset: Offset(0, 2),
@@ -273,7 +274,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
               child: SwitchListTile(
-                title: Text(
+                title: const Text(
                   "Hàng mới về",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),

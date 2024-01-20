@@ -1,5 +1,7 @@
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/views/AddAddressScreen.dart';
+import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(user: user),
+              builder: (context) => CheckoutScreen(id: user.ID),
             ));
       }
     }
