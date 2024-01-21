@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(id: user.ID),
+              builder: (context) => CheckoutScreen(id: user.ID),
             ));
       }
     }
