@@ -29,10 +29,50 @@ class OrderPresenter {
     }
   }
 
+  static Future<bool> updateStt(int id) async {
+    HttpClient client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
+    final req = new IOClient(client);
+    final response = await req.put(
+      Uri.parse('${ApiConstants.baseUrl}/api/order/$id'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Failed to load data. Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      //throw Exception('Failed to load data');
+      return false;
+    }
+  }
+
   static List<Order> statusFilter(String stt) {
     if (lstOrder.isEmpty) {
       return [];
     }
     return lstOrder.where((element) => element.status == stt).toList();
+  }
+
+  static Future<List<Order>> loadOrderStt() async {
+    HttpClient client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
+    final req = new IOClient(client);
+    final response = await req.get(
+      Uri.parse('${ApiConstants.baseUrl}/api/order/stt-xn'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      lstOrder = data.map((orderData) => Order.fromJson(orderData)).toList();
+      return lstOrder;
+    } else {
+      print('Failed to load data. Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      //throw Exception('Failed to load data');
+      return List<Order>.empty();
+    }
   }
 }
