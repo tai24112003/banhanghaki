@@ -1,9 +1,9 @@
-class History {
+class HistorySearch {
   final int id;
   final String content;
   final int idUser;
 
-  History({
+  HistorySearch({
     required this.id,
     required this.content,
     required this.idUser,

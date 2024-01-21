@@ -8,6 +8,8 @@ const orderDetailsRoute = require('./api/ordersdetail');
 const productsRoute = require('./api/products');
 const cartsRoute = require('./api/carts');
 const accountRoute = require('./api/account');
+const historysRoute = require('./api/historysearch');
+
 
 
 const PORT = 3000;
@@ -29,3 +31,5 @@ app.use(oderRoute);
 app.use(orderDetailsRoute);
 app.use('/cart', cartsRoute);
 app.use('/account', accountRoute);
+app.use('/api/history', historysRoute);
+

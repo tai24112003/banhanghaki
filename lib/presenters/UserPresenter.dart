@@ -65,7 +65,7 @@ class UserPresenter {
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'email': email,
-        'password': BCrypt.hashpw(password, BCrypt.gensalt()),
+        'password': password,
         'fullName': fullName,
         'phoneNumber': phoneNumber,
         'status': status,

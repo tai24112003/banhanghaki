@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -325,7 +326,7 @@ class _AddProductState extends State<AddProduct> {
                           ? ElevatedButton(
                               onPressed: () {
                                 if (Test()) {
-                                  updateProduct();
+                                 ProductPresenter.updateProduct(_imageFile,_dropdownItems.indexOf(_selectedItem.toString())+1 ,_productName.text, _quantity.text, _price.text,_description.text,widget.id);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -354,7 +355,7 @@ class _AddProductState extends State<AddProduct> {
                           : ElevatedButton(
                               onPressed: () {
                                 if (Test()) {
-                                  addProduct();
+                                 ProductPresenter.addProduct(_imageFile,_dropdownItems.indexOf(_selectedItem.toString())+1 ,_productName.text, _quantity.text, _price.text,_description.text);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -417,72 +418,9 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 
-  Future<void> addProduct() async {
-    if (_imageFile == null) {
-      print('Lỗi: Hình ảnh không tồn tại');
-      return;
-    }
+ 
 
-    final url = Uri.parse('${ApiConstants.baseUrl}/api/product/add_Product');
-
-    final bytes = await _imageFile!.readAsBytes();
-    final base64Image = base64Encode(bytes);
-
-    final product = {
-      'CategoryID': _dropdownItems.indexOf(_selectedItem!) + 1,
-      'ProductName': _productName.text,
-      'Image': base64Image,
-      'Quantity': int.parse(_quantity.text),
-      'UnitPrice': double.parse(_price.text),
-      'Color': "White",
-      'Description': _description.text,
-    };
-
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(product),
-    );
-
-    if (response.statusCode == 200) {
-      print('Sản phẩm đã được thêm thành công');
-    } else {
-      print('Lỗi thêm sản phẩm: ${response.reasonPhrase}');
-    }
-  }
-
-  Future<void> updateProduct() async {
-    if (_imageFile == null) {
-      print('Lỗi: Hình ảnh không tồn tại');
-      return;
-    }
-
-    final url =
-        Uri.parse('${ApiConstants.baseUrl}/api/product/update/${widget.id}');
-
-    final bytes = await _imageFile!.readAsBytes();
-    final base64Image = base64Encode(bytes);
-
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({
-      'ID': widget.id,
-      'CategoryID': _dropdownItems.indexOf(_selectedItem!) + 1,
-      'ProductName': _productName.text,
-      'Image': base64Image,
-      'Quantity': int.parse(_quantity.text),
-      'UnitPrice': double.parse(_price.text),
-      'Color': "White",
-      'Description': _description.text,
-    });
-
-    final response = await http.put(url, headers: headers, body: body);
-
-    if (response.statusCode == 200) {
-      print('Sản phẩm đã được cập nhật thành công');
-    } else {
-      print('Lỗi cập nhật sản phẩm: ${response.reasonPhrase}');
-    }
-  }
+  
 
   bool Test() {
     if (_selectedItem == null) {

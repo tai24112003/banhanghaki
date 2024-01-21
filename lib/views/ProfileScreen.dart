@@ -99,7 +99,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   detail: "Bạn có 1 hình thức thanh toán",
                 ),
                 ProfileItem(
-                  mywidget: SettingScreen(user: widget.user),
+                  mywidget: SettingScreen(
+                    user: widget.user,
+                    id: widget.user.ID,
+                  ),
                   title: "Cài đặt",
                   detail: "Thông báo, đổi mật khẩu, liên hệ",
                 )

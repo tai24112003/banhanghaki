@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
@@ -162,7 +163,7 @@ class NotificationServices {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NotiScreen(),
+            builder: (context) => LoginScreen(),
           ));
     }
   }

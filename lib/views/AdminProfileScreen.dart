@@ -16,6 +16,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
         appBar: PreferredSize(
           child: MyAppBar(
             title: "Thông tin cá nhân",
+            UserId: 1,
           ),
           preferredSize: const Size.fromHeight(95),
         ),
