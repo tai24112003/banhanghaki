@@ -10,8 +10,9 @@ import 'package:bangiayhaki/views/ChatScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.user});
-  final user;
+  const HomeScreen({super.key, required this.id});
+  final int id;
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -19,13 +20,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    print("id home");
+
+    print(widget.id);
     return DefaultTabController(
         length: 5,
         child: Scaffold(
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(130),
               child: Column(
-                children: [MyAppBar(title: "MAKE HOME BEUATYFUL",), const TabbarCustom()],
+                children: [
+                  MyAppBar(
+                    title: "MAKE HOME BEUATYFUL",
+                    UserId: widget.id,
+                  ),
+                  const TabbarCustom()
+                ],
               ),
             ),
             body: TabBarView(children: [
@@ -54,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
             bottomNavigationBar: BottomBarCustom(
+              userid: widget.id,
               active: 0,
             )));
   }

@@ -1,15 +1,39 @@
+import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
+import 'package:bangiayhaki/views/NotiScreen.dart';
+import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 class BottomBarCustom extends StatefulWidget {
-  BottomBarCustom({super.key, required this.active});
+  const BottomBarCustom(
+      {required this.userid, super.key, required this.active});
   final active;
+  final userid;
   @override
   State<BottomBarCustom> createState() => _BottomBarCustomState();
 }
 
 class _BottomBarCustomState extends State<BottomBarCustom> {
+  late User user;
+  UserPresenter? tmp;
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    try {
+      user = (await tmp?.getUserById(widget.userid))!;
+      setState(() {});
+    } catch (error) {
+      print('Error loading data: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,15 +48,27 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
               children: [
                 IconButton(
                     onPressed: () {
-                      if (widget.active != 0)
-                        Navigator.pushReplacementNamed(context, "/home");
+                      if (widget.active != 0) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ProfileScreen(
+                            user: user,
+                          );
+                        }));
+                      }
                     },
                     icon: Icon(
                         widget.active != 0 ? Icons.home_outlined : Icons.home)),
                 IconButton(
                     onPressed: () {
                       if (widget.active != 1)
-                        Navigator.pushReplacementNamed(context, "/noti");
+                       Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => NotiScreen(userId: widget.userid),
+    fullscreenDialog: true, // Đặt fullscreenDialog thành true
+  ),
+);
                     },
                     icon: Icon(widget.active != 1
                         ? Icons.notifications_active_outlined
@@ -40,7 +76,12 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 2)
-                        Navigator.pushReplacementNamed(context, "/profile");
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ProfileScreen(
+                            user: user,
+                          );
+                        }));
                     },
                     icon: Icon(widget.active != 2
                         ? Icons.person_outline

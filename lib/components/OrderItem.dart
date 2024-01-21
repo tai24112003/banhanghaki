@@ -1,4 +1,5 @@
-import 'package:bangiayhaki/models/Order.dart';
+import 'package:bangiayhaki/models/OrderModel.dart';
+import 'package:bangiayhaki/views/DetailOrderScreen.dart';
 import 'package:flutter/material.dart';
 
 class OrderItem extends StatefulWidget {
@@ -9,6 +10,10 @@ class OrderItem extends StatefulWidget {
 }
 
 class _OrderItemState extends State<OrderItem> {
+  String dateformat(DateTime dateTime) {
+    return "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,19 +36,20 @@ class _OrderItemState extends State<OrderItem> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "No00000000",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    "#${widget.myorder.id.toString().padLeft(5, '0')}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "1/1/2003",
-                    style: TextStyle(color: Color.fromRGBO(128, 128, 128, 1)),
+                    dateformat(widget.myorder.date),
+                    style: const TextStyle(
+                        color: Color.fromRGBO(128, 128, 128, 1)),
                   ),
                 ],
               ),
@@ -56,27 +62,27 @@ class _OrderItemState extends State<OrderItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RichText(
-                    text: const TextSpan(
-                        style:
-                            TextStyle(color: Color.fromRGBO(128, 128, 128, 1)),
+                    text: TextSpan(
+                        style: const TextStyle(
+                            color: Color.fromRGBO(128, 128, 128, 1)),
                         text: "Số lượng: ",
                         children: [
                           TextSpan(
-                              text: "03",
-                              style: TextStyle(
+                              text: widget.myorder.quantity.toString(),
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black)),
                         ]),
                   ),
                   RichText(
-                    text: const TextSpan(
-                        style:
-                            TextStyle(color: Color.fromRGBO(128, 128, 128, 1)),
+                    text: TextSpan(
+                        style: const TextStyle(
+                            color: Color.fromRGBO(128, 128, 128, 1)),
                         text: "Tổng tiền: ",
                         children: [
                           TextSpan(
-                              text: "\$150",
-                              style: TextStyle(
+                              text: "\$ ${widget.myorder.totalAmount}",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black)),
                         ]),
@@ -96,7 +102,15 @@ class _OrderItemState extends State<OrderItem> {
                           shape: MaterialStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5)))),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return DetailOrderScreen(
+                                id: widget.myorder.id,
+                                stt: widget.myorder.status);
+                          },
+                        ));
+                      },
                       child: const Text(
                         "Chi tiết",
                         style: TextStyle(color: Colors.white),

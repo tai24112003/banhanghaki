@@ -1,6 +1,11 @@
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/presenters/noti_service.dart';
+import 'package:bangiayhaki/views/AddAddressScreen.dart';
+import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
+import 'package:bangiayhaki/views/RegisterScreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   UserPresenter? presenter;
-
+  NotificationServices notificationServices = NotificationServices();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _submitForm() async {
@@ -26,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(user: user),
+              builder: (context) => CheckoutScreen(id: user.ID),
             ));
       }
     }
@@ -34,7 +39,18 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
 
   void initState() {
     presenter = UserPresenter(this);
-    ;
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+    notificationServices.isTokenRefresh();
+
+    notificationServices.getDeviceToken().then((value) {
+      if (kDebugMode) {
+        print('device token');
+        print(value);
+      }
+    });
   }
 
   @override
@@ -124,8 +140,11 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
                           width: MediaQuery.of(context).size.width,
                           child: OutlinedButton(
                             onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, "/register");
+                              Navigator.pop(context);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return RegisterScreen();
+                              }));
                             },
                             style: ButtonStyle(
                                 side: MaterialStateProperty.all(

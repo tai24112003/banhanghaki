@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
-
-class ApiConstants {
-  static const String baseUrl = 'https://cd97-58-187-136-7.ngrok-free.app';
-}
 
 abstract class UserView {
   void displayMessage(String message);
@@ -16,18 +13,34 @@ class UserPresenter {
   final UserView _view;
 
   UserPresenter(this._view);
+  Future<User?> getUserById(int id) async {
+    final response = await http.get(
+      Uri.parse('${ApiConstants.baseUrl}/api/users/'),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      print("object");
+      print(responseData);
+      return User.fromJson(
+          responseData.firstWhere((element) => element['ID'] == id));
+    } else {
+      print('Failed to load user. Status code: ${response.statusCode}');
+      return null;
+    }
+  }
 
   Future<User?> Login({required String email, required String password}) async {
     final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}/users/login'),
+      Uri.parse('${ApiConstants.baseUrl}/api/users/login'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'username': email, 'password': password}),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-
       _view.displayMessage('Login successful, welcome!');
+      print(responseData);
       return User.fromJson(responseData);
     } else if (response.statusCode == 401) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -46,13 +59,13 @@ class UserPresenter {
     required String phoneNumber,
     required String status,
   }) async {
-    print('${ApiConstants.baseUrl}/users/register');
+    print('${ApiConstants.baseUrl}/api/users/register');
     final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}/users/register'),
+      Uri.parse('${ApiConstants.baseUrl}/api/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'email': email,
-        'password': BCrypt.hashpw(password, BCrypt.gensalt()),
+        'password': password,
         'fullName': fullName,
         'phoneNumber': phoneNumber,
         'status': status,
@@ -70,6 +83,31 @@ class UserPresenter {
       _view.displayMessage('Email is already registered');
     } else {
       _view.displayMessage('Failed to register. Please try again.');
+    }
+  }
+
+  Future<void> updateAddress({
+    required String userId,
+    required String address,
+  }) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${ApiConstants.baseUrl}/users/update/AddressID'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'id': userId, 'address': address}),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        _view.displayMessage('Address updated successfully!');
+      } else if (response.statusCode == 404) {
+        _view.displayMessage('User not found');
+      } else {
+        _view.displayMessage('Failed to update address. Please try again.');
+      }
+    } catch (error) {
+      print('Error in update address request: $error');
+      _view.displayMessage('Internal Server Error');
     }
   }
 }

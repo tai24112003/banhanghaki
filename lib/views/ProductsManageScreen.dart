@@ -17,8 +17,7 @@ class ProductsManageScreen extends StatefulWidget {
 class _ProductsManageScreenState extends State<ProductsManageScreen> {
   void test() {
     setState(() {
-      print("Thêm ++++++++");
-    });
+          });
   }
 
   @override
@@ -31,7 +30,11 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
           child: Column(
             children: [
               AppBar(
-                title: const Text('Make Home Beautiful'),
+                backgroundColor: Colors.white,
+                title: const Text(
+                  'Quản lý sản phẩm',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               const TabbarCustom()
             ],

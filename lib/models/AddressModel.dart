@@ -1,16 +1,19 @@
 class Address {
+  final ID;
   final NameAddress;
   final FullAddress;
 
   Address({
+    required this.ID,
     required this.NameAddress,
     required this.FullAddress,
   });
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
-      NameAddress: json['NameAddress'],
-      FullAddress: json['FullAddress'],
+      ID: json['ID'],
+      NameAddress: json['TitleName'],
+      FullAddress: json['FullName'],
     );
   }
 }
@@ -29,7 +32,7 @@ class City {
   factory City.fromJson(Map<String, dynamic> json) {
     return City(
       name: json['name'],
-      fullName: json['name'],
+      fullName: json['full_name'],
       id: json['id'],
     );
   }

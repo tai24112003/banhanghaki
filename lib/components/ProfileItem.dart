@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ProfileItem extends StatefulWidget {
-  const ProfileItem({required this.detail, required this.title, super.key});
+  const ProfileItem(
+      {required this.mywidget,
+      required this.detail,
+      required this.title,
+      super.key});
   // ignore: prefer_typing_uninitialized_variables
   final title;
   // ignore: prefer_typing_uninitialized_variables
   final detail;
-
+  final Widget mywidget;
   @override
   State<ProfileItem> createState() => _ProfileItemState();
 }
@@ -19,7 +23,11 @@ class _ProfileItemState extends State<ProfileItem> {
           shape: MaterialStatePropertyAll(
               BeveledRectangleBorder(borderRadius: BorderRadius.circular(5))),
           padding: const MaterialStatePropertyAll(EdgeInsets.all(0.01))),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return widget.mywidget;
+        }));
+      },
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(

@@ -1,10 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:bangiayhaki/main.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:bangiayhaki/views/AddproductScreen.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 
 class ItemManage extends StatefulWidget {
@@ -35,21 +36,7 @@ class _ItemManageState extends State<ItemManage> {
     setState(() {});
   }
 
-  void deleteProduct(int productId) async {
-    final url = '${GlobalVariable().myVariable}/api/product/delete/$productId';
-
-    try {
-      final response = await http.put(Uri.parse(url));
-      if (response.statusCode == 200) {
-        print('Sản phẩm đã được xóa thành công');
-        widget.onReStart();
-      } else {
-        print('Lỗi xóa sản phẩm: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Lỗi kết nối: $e');
-    }
-  }
+  
 
   List<int>? imageBytes;
   Uint8List? uint8List;
@@ -164,7 +151,8 @@ class _ItemManageState extends State<ItemManage> {
                 Container(
                   child: IconButton(
                     onPressed: () {
-                      deleteProduct(widget.id);
+                     ProductPresenter.deleteProduct(widget.id);
+                     widget.onReStart();
                     },
                     icon: const Icon(Icons.delete),
                   ),

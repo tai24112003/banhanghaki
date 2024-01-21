@@ -1,9 +1,10 @@
 import 'package:bangiayhaki/components/MyAppBar.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({super.key});
-
+  const SettingScreen({required this.user, super.key,required this.id});
+  final User user;final int id;
   @override
   State<SettingScreen> createState() => _SettingScreenState();
 }
@@ -16,8 +17,11 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        child: MyAppBar(title: "Cài đặt chung",),
+      appBar:  PreferredSize(
+        child: MyAppBar(
+          title: "Cài đặt chung",
+          UserId: widget.id,
+        ),
         preferredSize: Size.fromHeight(100),
       ),
       body: Container(

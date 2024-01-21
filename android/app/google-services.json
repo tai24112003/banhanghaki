@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "325384984044",
+    "project_id": "hakistore-93f57",
+    "storage_bucket": "hakistore-93f57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325384984044:android:545f1615540fdf2152dcc9",
+        "android_client_info": {
+          "package_name": "com.example.bangiayhaki"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFdDgOLS9CbLvAX37PeU6GZLrgyCJt9hY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325384984044:android:7aa2eb258e84c32252dcc9",
+        "android_client_info": {
+          "package_name": "com.example.banhanghaki"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFdDgOLS9CbLvAX37PeU6GZLrgyCJt9hY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
