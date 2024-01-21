@@ -1,8 +1,11 @@
-import 'package:bangiayhaki/components/OrderItem.dart';
 import 'package:bangiayhaki/components/OrderWithConfirmBtn.dart';
 import 'package:bangiayhaki/models/OrderModel.dart';
+import 'package:bangiayhaki/presenters/NotiPresenter.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin fln = FlutterLocalNotificationsPlugin();
 
 class ConfirmOrderScreen extends StatefulWidget {
   const ConfirmOrderScreen({super.key});
@@ -17,6 +20,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    NotiPresenter.init(fln);
     loadOrder();
   }
 
@@ -30,6 +34,10 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
 
   void onClick(int id) {
     OrderPresenter.updateStt(id).then((value) {
+      NotiPresenter.showNoti(
+          title: "Xác nhận thành công",
+          body: "Đơn hàng đã được bạn xác nhận",
+          fln: fln);
       loadOrder();
     });
   }
