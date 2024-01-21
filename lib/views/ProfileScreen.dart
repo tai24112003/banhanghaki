@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: MyAppBar(
         title: "Thông tin cá nhân",
       ),
-      bottomNavigationBar: BottomBarCustom(user: widget.user, active: 2),
+      bottomNavigationBar: BottomBarCustom(userid: widget.user, active: 2),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
