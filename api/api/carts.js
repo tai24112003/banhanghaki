@@ -15,6 +15,19 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.get('/userOf/:id', (req, res) => {
+    var id = req.params.id;
+    connection.query('SELECT CartID FROM Carts WHERE UserID = ?;',[id], (error, results) => {
+        if (error) {
+            //return res.send(error.message);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        else {
+            return res.status(200).json(results[0].CartID);
+        }
+    });
+});
+
 router.put('/:number', (req, res) => {
     var num = req.params.number;
     var {id} = req.body;
