@@ -29,6 +29,25 @@ router.put('/:number', (req, res) => {
     });
 });
 
+//create new Cart
+router.post('/:userid',(req, res) => {
+    var id = req.params.userid;
+    getMaxidCart().then((rs) => {
+        var idcart = rs+1;
+        connection.query('INSERT INTO `Carts` (`CartID`, `UserID`, `Status`) VALUES (?, ?, 1);',[idcart,id], (error, results) => {
+            if (error) {
+                //return res.send(error.message);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+            return res.status(200).json({ results: "success" });
+        });
+    }).catch((err) => {
+        var msg = err.message;
+        res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+
 router.post('/',(req, res) => {
     var id = req.body.id;
     var idpro = req.body.idpro;
@@ -75,6 +94,21 @@ function isExist(idpro ,id){
             }
         });
     })
+}
+
+function getMaxidCart(){
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT max(CartID) as maxid FROM Carts;', (error, results) => {
+            if (error) {
+                //return res.send(error.message);
+                reject('Internal server error');
+            }
+            else {
+                var maxid = results[0].maxid??0;
+                resolve(maxid);
+            }
+        });
+    });
 }
 
 function getMaxid(){

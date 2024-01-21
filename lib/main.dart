@@ -11,6 +11,7 @@ import 'package:bangiayhaki/views/AccountManageScreen.dart';
 import 'package:bangiayhaki/views/CartScreen.dart';
 import 'package:bangiayhaki/views/ChatScreen.dart';
 import 'package:bangiayhaki/views/CheckoutScreen.dart';
+import 'package:bangiayhaki/views/CofirmOrderScreen.dart';
 import 'package:bangiayhaki/views/CommentsScreen.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
