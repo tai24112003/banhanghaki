@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TabbarCustom extends StatefulWidget {
-  const TabbarCustom({super.key});
+
+  const TabbarCustom({Key? key});
 
   @override
   State<TabbarCustom> createState() => _TabbarCustomState();
@@ -21,8 +22,8 @@ class _TabbarCustomState extends State<TabbarCustom> {
               width: 40,
               height: 40,
             ),
-          ), // Hình ảnh cho tab 1
-          text: 'Ghế', // Tiêu đề cho tab 1
+          ), 
+          text: 'Ghế', 
         ),
         Tab(
           icon: ClipRRect(
@@ -35,8 +36,8 @@ class _TabbarCustomState extends State<TabbarCustom> {
               height: 40,
               fit: BoxFit.cover,
             ),
-          ), // Hình ảnh cho tab 2
-          text: 'Bàn', // Tiêu đề cho tab 2
+          ), 
+          text: 'Bàn', 
         ),
         Tab(
           icon: ClipRRect(
@@ -47,8 +48,8 @@ class _TabbarCustomState extends State<TabbarCustom> {
               height: 40,
               fit: BoxFit.cover,
             ),
-          ), // Hình ảnh cho tab 3
-          text: 'Ghế bành', // Tiêu đề cho tab 3
+          ),
+          text: 'Ghế bành',
         ),
         Tab(
           icon: ClipRRect(
@@ -59,7 +60,7 @@ class _TabbarCustomState extends State<TabbarCustom> {
               width: 40,
               height: 40,
             ),
-          ), // Hình ảnh cho tab 4
+          ), 
           text: 'Giường', // Tiêu đề cho tab 4
         ),
         Tab(

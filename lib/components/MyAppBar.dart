@@ -22,21 +22,21 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class _MyAppBarState extends State<MyAppBar>/* implements UserView */{
+class _MyAppBarState extends State<MyAppBar> implements UserView {
   bool _isSearching = false;
   late TextEditingController _searchController;
-  // late User? user;
+  late User? user;
   late UserPresenter presenter;
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    // presenter = UserPresenter(this);
-    // loadUser();
+    presenter = UserPresenter(this);
+    loadUser();
   }
 
   void loadUser() async {
-    // user = await presenter.getUserById(widget.UserId);
+    user = await presenter.getUserById(widget.UserId);
   }
 
   List<String> _searchHistory = [];

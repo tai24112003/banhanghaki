@@ -64,6 +64,23 @@ class CartPresenter {
     }
   }
 
+  static Future<String> getCartID(int idU) async {
+    HttpClient client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
+    final req = new IOClient(client);
+    final response = await req.get(
+      Uri.parse('${ApiConstants.baseUrl}/cart/userOf/$idU'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return response.body.toString();
+    } else {
+      //throw Exception('Failed to load data');
+      return "-1";
+    }
+  }
+
   static Future<bool> updateItemInCart(int id, int quan) async {
     HttpClient client = new HttpClient();
     client.badCertificateCallback =

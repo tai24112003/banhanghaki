@@ -23,8 +23,21 @@ static Future<List<Product>> getProducts(int idCategory) async {
     return [];
   }
 }
+static Future<List<Product>> getProduct(int productId) async {
+  final prefs = await SharedPreferences.getInstance();
+  final categoryKey = '$productsKey:$productId';
+  final List<String>? productsJsonList = prefs.getStringList(categoryKey);
+  if (productsJsonList != null) {
+    return productsJsonList.map((jsonString) => Product.fromJson(json.decode(jsonString))).toList();
+  } else {
+    return [];
+  }
+}
 } 
 class LocalProduct {
+
+  final int productId;
+
   final int categoryId;
   final String productName;
   final String imageBase64;
@@ -34,6 +47,8 @@ class LocalProduct {
   bool isSynced; // Trạng thái đồng bộ
 
   LocalProduct({
+    required this.productId,
+
     required this.categoryId,
     required this.productName,
     required this.imageBase64,
@@ -45,6 +60,8 @@ class LocalProduct {
 
   Map<String, dynamic> toJson() {
     return {
+      'ProductID': productId,
+
       'CategoryID': categoryId,
       'ProductName': productName,
       'Image': imageBase64,

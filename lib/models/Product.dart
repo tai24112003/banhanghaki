@@ -21,10 +21,10 @@ class Product {
   return Product(
     id: json['ID'] as int,
     quantity: json['Quantity'] ?? 0 as int,
-    idCategory: json['CategoryID'] ?? 0 as int, // Thay đổi key từ 'Category' thành 'CategoryID'
-    image: (json['Image'] as List<dynamic>?)?.cast<int>() ?? List<int>.empty(), // Chuyển đổi thành List<int>
-    name: json['ProductName'] ?? "", // Đảm bảo giá trị không bị null
-    price: (json['Price'] as num?)?.toDouble() ?? 0.0, // Chuyển đổi thành double
+    idCategory: json['CategoryID'] ?? 0 as int, 
+    image: (json['Image'] as List<dynamic>?)?.cast<int>() ?? List<int>.empty(), 
+    name: json['ProductName'] ?? "",
+    price: (json['Price'] as num?)?.toDouble() ?? 0.0,
     description: json['Description'] ?? "",
   );
 }
@@ -32,7 +32,7 @@ class Product {
 Map<String, dynamic> toJson() {
   return {
     'ID': id,
-    'CategoryID': idCategory, // Thay đổi key thành 'CategoryID'
+    'CategoryID': idCategory,
     'Image': image,
     'Quantity': quantity,
     'ProductName': name,

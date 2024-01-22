@@ -50,7 +50,9 @@ class _ListArmchairState extends State<ListArmchair> {
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 5,
+                  crossAxisSpacing: 10,
+                  mainAxisExtent: 300,
+                  mainAxisSpacing: 10,
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {

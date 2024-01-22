@@ -10,41 +10,49 @@ import 'package:bangiayhaki/views/ChatScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.id});
+  const HomeScreen({Key? key, required this.id});
+
   final int id;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 5, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("id home");
-
-    print(widget.id);
     return DefaultTabController(
-        length: 5,
-        child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(130),
-              child: Column(
-                children: [
-                  MyAppBar(
-                    title: "MAKE HOME BEUATYFUL",
-                    UserId: widget.id,
-                  ),
-                  const TabbarCustom()
-                ],
-              ),
-            ),
-            body: TabBarView(children: [
-              buildGridList(const ListChair()),
-              buildGridList(const ListTable()),
-              buildGridList(const ListArmchair()),
-              buildGridList(const ListBed()),
-              buildGridList(const ListLamp()),
-            ]),
+      length: 5,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(130),
+          child: Column(
+            children: [
+               MyAppBar(title: "MAKE HOME BEAUTIFUL",UserId: widget.id), // Chú ý: không có UserId vì không sử dụng ở đây
+              TabbarCustom(),
+            ],
+          ),
+        ),
+        body:Column(
+          children: [
+            Expanded(
+              child:  TabBarView(
+          children: [
+            ListChair(),
+            const ListTable(),
+            const ListArmchair(),
+            const ListBed(),
+            const ListLamp(),]))
+          ]),
+        
             floatingActionButton: FloatingActionButton(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               onPressed: () {
