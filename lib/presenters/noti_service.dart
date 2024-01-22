@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
@@ -161,7 +162,7 @@ class NotificationServices implements UserView {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) async {
-    int userid = await UserPresenter(this).getLocalId();
+    int userid = await Stored.loadStoredText("UserID");
     Navigator.push(
         context,
         MaterialPageRoute(

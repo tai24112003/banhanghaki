@@ -24,15 +24,26 @@ router.post('/api/orderdetail/get', async (req, res) => {
 
 router.post('/api/orderdetail/', async (req, res) => {
     const { detailOrders, orderID } = req.body;
-
+    console.log(detailOrders);
     try {
-        const query = 'INSERT INTO `orderdetails`(`OrderID`, `Quantity`, `ProductID`) VALUES (?, ?, ?)';
+        const queryadd = 'INSERT INTO `orderdetails`(`OrderID`, `Quantity`, `ProductID`) VALUES (?, ?, ?)';
+        const queyrdelete = 'DELETE FROM `cartdetails` WHERE ProductID=? &&CartID=?';
 
         await Promise.all(detailOrders.map(async (orderDetail) => {
-            const { Quantity, Product } = orderDetail;
+            const { CartID, Product } = orderDetail;
 
             await new Promise((resolve, reject) => {
-                connection.query(query, [orderID, Quantity, Product['ID']], (err, results) => {
+                connection.query(queryadd, [orderID, Product['Quantity'], Product['ID']], (err, results) => {
+                    if (err) {
+                        console.error('Error executing MySQL query:', err);
+                        reject(err);
+                    } else {
+                        resolve(results);
+                    }
+                });
+            });
+            await new Promise((resolve, reject) => {
+                connection.query(queyrdelete, [Product['ID'], CartID], (err, results) => {
                     if (err) {
                         console.error('Error executing MySQL query:', err);
                         reject(err);

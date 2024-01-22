@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
 import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,9 +44,7 @@ class UserPresenter {
       _view.displayMessage('Login successful, welcome!');
       print(responseData);
       final User user = User.fromJson(responseData);
-
-      await saveLocalId(user.ID);
-
+      Stored.saveText('UserID', user.ID);
       return user;
     } else if (response.statusCode == 401) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -181,15 +180,5 @@ class UserPresenter {
       _view.displayMessage('Internal Server Error');
     }
     return false;
-  }
-
-  Future<void> saveLocalId(int localId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('UserID', localId);
-  }
-
-  Future<int> getLocalId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('UserID') ?? 0;
   }
 }

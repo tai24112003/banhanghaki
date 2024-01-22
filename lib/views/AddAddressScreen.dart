@@ -169,6 +169,10 @@ class AddAddressScreenState extends State<AddAddressScreen>
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
                   onPressed: () async {
+                    if (titleName.text.isEmpty || numberStreet.text.isEmpty) {
+                      displayMessage("Bạn chưa nhập đủ thông tin");
+                      return;
+                    }
                     bool? check = await presenter?.addAddress(
                         fullName: (numberStreet.text +
                             " " +

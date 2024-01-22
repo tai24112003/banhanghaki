@@ -7,6 +7,7 @@ class NotiItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(8),
       color: Colors.grey[200],
       child: Stack(
         children: [

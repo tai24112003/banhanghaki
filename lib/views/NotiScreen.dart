@@ -43,9 +43,10 @@ class _NotiScreenState extends State<NotiScreen> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height - 100,
               child: ListView.builder(
                 itemCount: lstNotifications.length,
+                padding: EdgeInsets.all(8),
                 itemBuilder: (context, index) {
                   return NotiItem(
                       title: lstNotifications[index].name,

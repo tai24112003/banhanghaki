@@ -104,7 +104,8 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
               child: Container(
                   height: 60,
                   child: FutureBuilder<List<HistorySearch>>(
-                    future: HitstoryPresenter.fetchAndSaveSearchHistory(widget.UserId),
+                    future: HitstoryPresenter.fetchAndSaveSearchHistory(
+                        widget.UserId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
