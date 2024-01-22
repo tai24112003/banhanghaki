@@ -1,28 +1,76 @@
-import 'dart:math';
-
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
-
+  const ChatScreen({super.key, required this.idUser, required this.toUser});
+  final int idUser;
+  final int toUser;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  late io.Socket socket;
+
+  List<String> messages = [];
   FocusNode _focusNode = FocusNode();
   TextEditingController _controller = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
   double heightChatBox = 0.0;
   List<Map<String, String>> a = [
-    {"au": "k", "cont": "Hi Shop"},
-    {"au": "s", "cont": "Hi you, Can I help you?"}
+    {
+      "au": "s",
+      "cont":
+          "Hi you, Can I help you?Hi you, Can I help you?Hi you, Can I help you?"
+    }
   ];
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    socket.disconnect();
+    socket.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void upUi(dynamic data) {
+    a.add({"au": data["content"]["from"], "cont": data["content"]["content"]});
+    setState(() {});
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _scrollController = ScrollController();
+    print("hello");
+    socket = io.io(ApiConstants.baseUrl, <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+    socket.connect();
+    socket.on('message', (data) {
+      if ((data["content"]["to"] == widget.idUser.toString() &&
+              widget.idUser.toString() != "1") ||
+          (data["content"]["to"] == "1" &&
+              data["content"]["from"] == widget.toUser.toString())) {
+        upUi(data);
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 10000000,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+        print(data);
+      }
+    });
+    if (widget.idUser < 2) {
+      print("admin");
+      socket.emit('admin', {"from": widget.idUser, "to": widget.toUser});
+    } else {
+      socket.emit('client', {"from": widget.idUser, "to": 1});
+    }
   }
 
   @override
@@ -75,18 +123,24 @@ class _ChatScreenState extends State<ChatScreen> {
                             return Container(
                                 width: MediaQuery.of(context).size.width,
                                 child: Row(
-                                  mainAxisAlignment: a[idx]["au"] == "s"
-                                      ? MainAxisAlignment.start
-                                      : MainAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      a[idx]["au"] != widget.idUser.toString()
+                                          ? MainAxisAlignment.start
+                                          : MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
+                                        constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7, // Giới hạn chiều rộng tối đa của container
+                                        ),
                                         margin: const EdgeInsets.fromLTRB(
                                             0, 5, 0, 5),
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                            color: a[idx]["au"] != "s"
+                                            color: a[idx]["au"] !=
+                                                    widget.idUser.toString()
                                                 ? Colors.blue
                                                 : Colors.purple,
                                             borderRadius:
@@ -124,7 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               onEditingComplete: () {
                                 if (_controller.text.trim() != '') {
                                   Map<String, String> newMes = {
-                                    "au": "k",
+                                    "au": widget.idUser.toString(),
                                     "cont": _controller.text
                                   };
                                   setState(() {
@@ -165,22 +219,22 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                           onPressed: () {
                             if (_controller.text.trim() != '') {
-                              Map<String, String> newMes = {
-                                "au": "k",
-                                "cont": _controller.text
-                              };
+                              socket.emit('message', {
+                                'from': widget.idUser.toString(),
+                                'to': widget.toUser.toString(),
+                                'content': _controller.text,
+                              });
+
                               setState(() {
+                                a.add({
+                                  "au": widget.idUser.toString(),
+                                  "cont": _controller.text
+                                });
                                 heightChatBox =
                                     MediaQuery.of(context).size.height * 0.25;
                                 _controller.text = "";
-                                a.add(newMes);
+                                // a.add(newMes);
                               });
-                              _scrollController.animateTo(
-                                _scrollController.position.maxScrollExtent +
-                                    1000,
-                                duration: const Duration(milliseconds: 200),
-                                curve: Curves.easeOut,
-                              );
                             } else {
                               setState(() {
                                 heightChatBox =

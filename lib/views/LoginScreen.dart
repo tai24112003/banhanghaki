@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/views/ChatScreen.dart';
+import 'package:bangiayhaki/views/ChatsScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:flutter/material.dart';
@@ -103,7 +107,31 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: OutlinedButton(
-                            onPressed: _submitForm,
+                            //onPressed: _submitForm,
+                            onPressed: () {
+                              Random random = Random();
+
+                              // Sinh số nguyên ngẫu nhiên trong khoảng từ 0 đến 9
+                              int randomInt = random.nextInt(10) + 1;
+                              if (emailController.text.isNotEmpty) {
+                                randomInt = 1;
+                              }
+                              Navigator.pop(context);
+                              if (randomInt == 1) {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return ChatsScreen();
+                                }));
+                              } else {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return ChatScreen(
+                                    idUser: randomInt,
+                                    toUser: 1,
+                                  );
+                                }));
+                              }
+                            },
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                   Colors.black,

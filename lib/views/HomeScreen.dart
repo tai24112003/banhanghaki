@@ -45,7 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ChatScreen(
+                            idUser: 1,
+                            toUser: 2,
+                          )),
                 );
               },
               shape: RoundedRectangleBorder(
