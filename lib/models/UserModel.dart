@@ -5,6 +5,7 @@ class User {
   final Phone;
   final address;
   final Password;
+  final DVToken;
   final Status;
 
   User(
@@ -14,6 +15,7 @@ class User {
       required this.Phone,
       required this.address,
       required this.Password,
+      required this.DVToken,
       required this.Status});
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class User {
         Email: json['Email'],
         Phone: json['PhoneNumber'],
         address: json['AddressID'],
+        DVToken: json['DVToken'],
         Password: json['Password'],
         Status: json['Status']);
   }
@@ -35,6 +38,7 @@ class User {
       'Phone': Phone,
       'Address': address,
       'Status': Status,
+      'DVToken': DVToken,
     };
   }
 

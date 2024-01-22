@@ -33,7 +33,7 @@ router.put('/updateToken', async (req, res) => {
     try {
         const { UserID, deviceToken } = req.body;
         const query = 'update users set DVToken = ? Where ID=? ';
-        const resultts = await executeQuery(query, [UserID, deviceToken]);
+        const resultts = await executeQuery(query, [deviceToken, UserID]);
         if (resultts) {
             res.status(200).send("Update DeviceToken");
         }

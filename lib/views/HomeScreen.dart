@@ -7,6 +7,7 @@ import 'package:bangiayhaki/components/ListChair.dart';
 import 'package:bangiayhaki/components/ListLamp.dart';
 import 'package:bangiayhaki/components/ListTable.dart';
 import 'package:bangiayhaki/views/ChatScreen.dart';
+import 'package:bangiayhaki/views/ChatsScreen.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -61,10 +62,22 @@ class _HomeScreenState extends State<HomeScreen>
             floatingActionButton: FloatingActionButton(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ChatScreen()),
-                );
+                if (widget.id == 1)
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChatsScreen()),
+                  );
+                else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                              idUser: widget.id,
+                              toUser: 1,
+                            )),
+                  );
+                }
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),

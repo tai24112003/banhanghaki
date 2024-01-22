@@ -36,6 +36,8 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String token = '';
   void _submitForm() async {
+    token = await NotificationServices().getDeviceToken();
+    print("Token" + token);
     if (_formKey.currentState!.validate()) {
       User? user = await presenter?.Login(
           email: emailController.text, password: passwordController.text);
