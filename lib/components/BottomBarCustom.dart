@@ -28,6 +28,7 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
   Future<void> loadData() async {
     try {
       user = (await tmp?.getUserById(widget.userid))!;
+      print("object" + user.Fullname);
       setState(() {});
     } catch (error) {
       print('Error loading data: $error');
@@ -49,6 +50,7 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 0) {
+                        Navigator.popUntil(context, (route) => route.isFirst);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return ProfileScreen(
@@ -62,26 +64,29 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 1)
-                       Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => NotiScreen(userId: widget.userid),
-    fullscreenDialog: true, // Đặt fullscreenDialog thành true
-  ),
-);
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                NotiScreen(userId: widget.userid),
+                          ));
                     },
                     icon: Icon(widget.active != 1
                         ? Icons.notifications_active_outlined
                         : Icons.notifications_active)),
                 IconButton(
                     onPressed: () {
-                      if (widget.active != 2)
+                      if (widget.active != 2) {
+                        Navigator.popUntil(context, (route) => route.isFirst);
+
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return ProfileScreen(
                             user: user,
                           );
                         }));
+                      }
                     },
                     icon: Icon(widget.active != 2
                         ? Icons.person_outline

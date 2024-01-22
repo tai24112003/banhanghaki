@@ -28,15 +28,6 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/', async (req, res) => {
-    try {
-        const results = await executeQuery('SELECT * FROM users WHERE status=1', []);
-        res.json(results);
-    } catch (error) {
-        console.error('Error in / route:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
 
 router.post('/login', async (req, res) => {
     try {
@@ -74,22 +65,34 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         const { email, password, fullName, phoneNumber, status } = req.body;
-        const checkUserQuery = 'SELECT * FROM Users WHERE Email = ?';
-        const userExists = await executeQuery(checkUserQuery, [email]);
+        const checkUserQuery = 'SELECT * FROM Users WHERE Email = ? || PhoneNumber=?';
+        const userExists = await executeQuery(checkUserQuery, [email, phoneNumber]);
 
         if (userExists.length > 0) {
-            res.status(400).json({ success: false, message: 'Email is already registered' });
+            res.status(400).json({ success: false, message: 'Email or phone number is already registered' });
         } else {
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+
             const addUserQuery = 'INSERT INTO Users (Email, Password, FullName, PhoneNumber, Status) VALUES (?, ?, ?, ?, ?)';
 
             await executeQuery(addUserQuery, [email, hashedPassword, fullName, phoneNumber, status]);
+            const query = 'SELECT * FROM Users WHERE Email = ? || PhoneNumber=?';
+            const results = await executeQuery(query, [email, phoneNumber]);
 
+            const user = results[0];
+
+            connection.query('INSERT INTO `Carts` ( `UserID`, `Status`) VALUES ( ?, 1);', [user.ID], (error, results) => {
+                if (error) {
+                    // return res.status(500).json({ error: 'Internal server error' });
+                }
+                // return res.status(200).json({ results: "success" });
+            });
             res.json({
                 Fullname: fullName,
                 Email: email,
                 Phone: phoneNumber,
-                Password: hashedPassword,
+                Password: password,
             });
         }
     } catch (error) {

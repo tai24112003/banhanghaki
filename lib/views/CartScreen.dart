@@ -2,11 +2,12 @@ import 'package:bangiayhaki/components/CartItem.dart';
 import 'package:bangiayhaki/components/DetailOrderItem.dart';
 import 'package:bangiayhaki/models/CartItemModel.dart';
 import 'package:bangiayhaki/presenters/CartPresenter.dart';
+import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
-
+  const CartScreen({super.key, required this.id});
+  final id;
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -182,7 +183,14 @@ class _CartScreenState extends State<CartScreen> {
                     margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                     width: MediaQuery.of(context).size.width,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CheckoutScreen(id: widget.id),
+                            ));
+                      },
                       style: ButtonStyle(
                           padding: const MaterialStatePropertyAll(
                               EdgeInsets.fromLTRB(0, 15, 0, 15)),

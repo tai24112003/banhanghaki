@@ -75,4 +75,36 @@ class OrderPresenter {
       return List<Order>.empty();
     }
   }
+
+  Future<void> Checkout(
+      {required String quantity,
+      required String totalAmount,
+      required String addressID,
+      required int userID,
+      required List detailOrders}) async {
+    final response = await http.post(
+      Uri.parse('${ApiConstants.baseUrl}/api/order'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'quantity': quantity,
+        'totalAmount': totalAmount,
+        'addressID': addressID,
+        'userID': userID,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      print(responseData['OrderID']);
+      int orderID = responseData['OrderID'];
+      final res = await http.post(
+        Uri.parse('${ApiConstants.baseUrl}/api/orderdetail'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'detailOrders': detailOrders,
+          'orderID': orderID,
+        }),
+      );
+    }
+  }
 }

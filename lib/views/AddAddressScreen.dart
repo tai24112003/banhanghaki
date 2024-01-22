@@ -214,10 +214,9 @@ class AddAddressScreenState extends State<AddAddressScreen>
     final deviceToken = await notificationServices.getDeviceToken();
 
     await notificationServices.sendFCMNotification(
-      title: 'New Address Added',
-      body: 'You have added a new address!',
-      deviceToken: deviceToken,
-    );
+        title: 'New Address Added',
+        body: 'You have added a new address!',
+        deviceToken: deviceToken);
   }
 
   @override

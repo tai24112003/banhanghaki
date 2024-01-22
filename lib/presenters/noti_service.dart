@@ -89,12 +89,13 @@ class NotificationServices {
   // function to show visible notification when app is active
   Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
-        message.notification!.android!.channelId.toString(),
-        message.notification!.android!.channelId.toString(),
-        importance: Importance.max,
-        showBadge: true,
-        playSound: true,
-        sound: const RawResourceAndroidNotificationSound('jetsons_doorbell'));
+      message.notification!.android!.channelId.toString(),
+      message.notification!.android!.channelId.toString(),
+      importance: Importance.max,
+      showBadge: true,
+      playSound: true,
+      // sound: const RawResourceAndroidNotificationSound('jetsons_doorbell')
+    );
 
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(

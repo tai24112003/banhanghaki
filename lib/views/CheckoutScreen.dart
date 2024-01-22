@@ -5,6 +5,7 @@ import 'package:bangiayhaki/presenters/AddressPresenter.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/PayMethodScreen.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -18,7 +19,8 @@ class _CheckoutScreenState extends State<CheckoutScreen>
     implements AddressView, UserView {
   List<Address> lstAddress = [];
   late AddressPresenter presenter;
-  Address curAdd = Address(ID: 0, NameAddress: "", FullAddress: "");
+  Address curAdd =
+      Address(ID: 0, NameAddress: "Chưa có", FullAddress: "Chưa có");
   late UserPresenter userPresenter;
   @override
   void initState() {
@@ -35,7 +37,9 @@ class _CheckoutScreenState extends State<CheckoutScreen>
     print(user);
     setState(() {
       lstAddress = addresses;
-      curAdd = lstAddress.firstWhere((element) => element.ID == user?.address);
+      curAdd = lstAddress
+              .firstWhereOrNull((element) => element.ID == user?.address) ??
+          curAdd;
     });
   }
 
