@@ -59,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
+                  mainAxisExtent: 300,
                   crossAxisSpacing: 5,
                 ),
                 itemCount: snapshot.data!.length,

@@ -15,6 +15,8 @@ class ProductsManageScreen extends StatefulWidget {
 }
 
 class _ProductsManageScreenState extends State<ProductsManageScreen> {
+  late TabController _tabController;
+
   void test() {
     setState(() {
           });

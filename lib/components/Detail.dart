@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:http/http.dart' as http;
 import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
@@ -11,66 +13,50 @@ late String productName;
 
 class Detail extends StatefulWidget {
   const Detail({super.key, required this.id});
-  final id;
+  final int id;
 
   @override
   State<Detail> createState() => _DetailState();
 }
 
-Future<Product> fetchProduct(int productId) async {
-  final response = await http
-      .get(Uri.parse('${ApiConstants.baseUrl}/api/product/$productId'));
 
-  if (response.statusCode == 200) {
-    final jsonData = json.decode(response.body) as Map<String, dynamic>;
-
-    dynamic imageValue = jsonData['Image'];
-    List<dynamic> dataList = imageValue['data'];
-    List<int> imageData = dataList.map<int>((value) => value as int).toList();
-    Uint8List uint8List = Uint8List.fromList(imageData);
-
-    Product product = Product(
-      id: jsonData['ID'],
-      name: jsonData['ProductName'],
-      idCategory: jsonData['CategoryID'],
-      image: uint8List,
-      quantity: jsonData['Quantity'],
-      price: jsonData['UnitPrice'].toDouble(),
-      description: jsonData['Description'],
-    );
-
-    return product;
-  }
-
-  if (response.statusCode == 404) {
-    throw Exception('Product not found');
-  }
-
-  throw Exception('Failed to fetch product');
-}
 
 class _DetailState extends State<Detail> {
+  int quan = 1;
+
+  late Future<Product?> futureProduct;
+
+  Future<void> fetchData() async {
+    try {
+      Product? product = await ProductPresenter.fetchProduct(widget.id);
+      if (product != null) {
+        setState(() {
+          productName = product.name;
+        });
+      } else {
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    futureProduct = fetchProduct(widget.id).then((product) {
-      setState(() {
-        productName = product.name;
-      });
-      return product;
-    });
+    futureProduct = ProductPresenter.fetchProduct(widget.id);
   }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Product>(
+    return FutureBuilder<Product?>(
       future: futureProduct,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
+Uint8List? uint8list;
+        uint8list=  Uint8List.fromList(snapshot.data!.image);
           return Container(
             color: Colors.white,
             child: SingleChildScrollView(
@@ -87,7 +73,7 @@ class _DetailState extends State<Detail> {
                               bottomLeft: Radius.circular(40),
                             ),
                             child: Image.memory(
-                              Uint8List.fromList(snapshot.data!.image),
+                             uint8list,
                               width: MediaQuery.of(context).size.width,
                               height: 455,
                               fit: BoxFit.cover,
@@ -152,11 +138,15 @@ class _DetailState extends State<Detail> {
                           Row(
                             children: [
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    quan == 1 ? quan = 1 : quan -= 1;
+                                  });
+                                },
                                 icon: const Icon(Icons.remove),
                               ),
-                              const Text(
-                                "0",
+                              Text(
+                                quan.toString(),
                                 style: TextStyle(
                                   decoration: TextDecoration.none,
                                   fontSize: 20,
@@ -164,7 +154,11 @@ class _DetailState extends State<Detail> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    quan += 1;
+                                  });
+                                },
                                 icon: const Icon(Icons.add),
                               ),
                             ],
@@ -226,3 +220,5 @@ class _DetailState extends State<Detail> {
     );
   }
 }
+
+

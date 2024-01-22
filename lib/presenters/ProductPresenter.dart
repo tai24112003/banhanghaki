@@ -9,6 +9,36 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductPresenter {
+ static Future<Product?> fetchProduct(int productId) async {
+  try {
+    final response = await http.get(Uri.parse('${ApiConstants.baseUrl}api/product/pro/$productId'));
+    
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body) as Map<String, dynamic>;
+
+      List<int> imageData = (jsonData['Image']['data'] as List<dynamic>).cast<int>();
+      Uint8List uint8List = Uint8List.fromList(imageData);
+      Product product = Product(
+        id: jsonData['ID'],
+        idCategory: jsonData['CategoryID'],
+        image: uint8List,
+        quantity: jsonData['Quantity'],
+        name: jsonData['ProductName'],
+        price: (jsonData['Price'] as num?)?.toDouble() ?? 0.0,
+        description: jsonData['Description'],
+      );
+
+      return product;
+    } else {
+      print('Failed to fetch product from API');
+      return null;
+    }
+  } catch (e) {
+    print('Error: $e');
+    return null;
+  }
+}
+
  static Future<List<Product>> fetchProducts(int idCategory) async {
   try {
     final response = await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
@@ -36,16 +66,13 @@ class ProductPresenter {
         products.add(product);
       }
 
-      // Lưu dữ liệu xuống SharedPreferences theo danh mục
       await LocalStorage.saveProducts(idCategory, products);
 
       return products;
     } else {
-      // Nếu không thành công, thử đọc từ SharedPreferences theo danh mục
       return LocalStorage.getProducts(idCategory);
     }
   } catch (e) {
-    // Nếu có lỗi khi fetch, thử đọc từ SharedPreferences theo danh mục
     return LocalStorage.getProducts(idCategory);
   }
 }
@@ -86,6 +113,7 @@ static Future<void> addProduct(
       print('Sản phẩm đã được thêm thành công');
     } else {
      final localProduct = LocalProduct(
+      productId: 0,
         categoryId: _selectedItem, 
         productName: _productName,
         imageBase64: base64Image,
@@ -93,7 +121,7 @@ static Future<void> addProduct(
         price: double.parse(_price),
         description: _description,
       );
-      await addLocalProduct(localProduct);
+      await LocalStorage.addLocalProduct(localProduct);
       print('Lỗi thêm sản phẩm: ${response.reasonPhrase}');
     }
   } catch (e) {
@@ -101,14 +129,7 @@ static Future<void> addProduct(
   }
 }
 
-    static const String localProductsKey = 'localProducts';
-
-    static Future<void> addLocalProduct(LocalProduct localProduct) async {
-      final prefs = await SharedPreferences.getInstance();
-      final localProductsJsonList = prefs.getStringList(localProductsKey) ?? [];
-      localProductsJsonList.add(jsonEncode(localProduct.toJson()));
-      prefs.setStringList(localProductsKey, localProductsJsonList);
-    }
+    
 
   static Future<void> updateProduct(
       File? _imageFile,

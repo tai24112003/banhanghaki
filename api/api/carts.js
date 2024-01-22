@@ -73,19 +73,25 @@ router.post('/:userid', (req, res) => {
 
 
 router.post('/', (req, res) => {
-    var id = req.body.id;
+    var id = req.body.idc;
     var idpro = req.body.idpro;
     var quan = req.body.quan;
     Promise.all([getMaxid(), isExist(idpro, id)]).then((results) => {
+        console.log("=========>")
         if (results.length == 2 && !results[1]) {
-            return addItemCart(idpro, results[0] + 1, id, quan);
+            console.log("=========>thanh cong")
+            return addItemCart(idpro, id, quan);
         } else if (results[1]) {
+            console.log("=========>da tồn tại")
             res.status(400).json({ error: 'Đã tồn tại sản phẩm trong giỏ' });
         } else {
+            console.log("=========>faile")
             res.status(500).json({ error: 'Internal server error' });
         }
     }).then((results) => {
         if (results) {
+            console.log("=========>thanh cong222222")
+
             res.status(200).json({ status: "Success" });
         }
     }).catch((error) => {
@@ -93,9 +99,11 @@ router.post('/', (req, res) => {
     });
 });
 
-function addItemCart(idpro, id, idc, quan) {
+function addItemCart(idpro, idc, quan) {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO `hakistore`.`CartDetails` (`ID`, `CartID`, `ProductID`, `Quantity`, `Status`) VALUES (?, ?, ?, ?, 1);', [id, idc, idpro, quan, 1], (error, results) => {
+        console.log(idpro,idc,quan)
+        
+        connection.query('INSERT INTO `CartDetails` ( `CartID`, `ProductID`, `Quantity`, `Status`) VALUES ( ?, ?, ?, 1);', [ idc, idpro, quan, 1], (error, results) => {
             if (error) {
                 reject('Internal server error');
             }

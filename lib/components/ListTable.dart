@@ -24,7 +24,7 @@ class _ListTableState extends State<ListTable> {
   void initState() {
     super.initState();
 
-    futureProducts = ProductPresenter.fetchProducts(22);
+    futureProducts = ProductPresenter.fetchProducts(2);
   }
 
   void reStart() {
@@ -41,19 +41,25 @@ class _ListTableState extends State<ListTable> {
       future: futureProducts,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              return Item(
-                id: snapshot.data![index].id,
-                image: snapshot.data![index].image,
-                quantity: snapshot.data![index].quantity,
-                description: snapshot.data![index].description,
-                name: snapshot.data![index].name,
-                price: snapshot.data![index].price,
-              );
-            },
-          );
+          return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+               crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisExtent: 300,
+                  mainAxisSpacing: 10,
+              ),
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return Item(
+                  id: snapshot.data![index].id,
+                  image: snapshot.data![index].image,
+                  quantity: snapshot.data![index].quantity,
+                  description: snapshot.data![index].description,
+                  name: snapshot.data![index].name,
+                  price: snapshot.data![index].price,
+                );
+              },
+            );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {

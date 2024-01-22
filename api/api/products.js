@@ -16,10 +16,10 @@ router.get('/:idCategory', function (req, res) {
     }
   });
 });
-router.get('/:id', function (req, res) {
+router.get('/pro/:id', function (req, res) {
   const productId = req.params.id;
   const query = `SELECT * FROM products WHERE ID = ${productId}`;
-
+  console.log(productId);
   connection.query(query, (err, rows, fields) => {
     if (err) {
       console.error('Error executing query:', err);
@@ -27,6 +27,7 @@ router.get('/:id', function (req, res) {
     } else if (rows.length === 0) {
       res.status(404).json({ error: 'Product not found' });
     } else {
+      console.log(rows[0]);
       res.json(rows[0]);
     }
   });

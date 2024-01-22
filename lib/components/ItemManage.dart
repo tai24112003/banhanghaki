@@ -96,8 +96,8 @@ class _ItemManageState extends State<ItemManage> {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.memory(
                             uint8List!,
-                            width: 60, // Set width here
-                            height: 60, // Set height here
+                            width: MediaQuery.of(context).size.width/4, 
+                            height: MediaQuery.of(context).size.width/4,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               print('Lỗi tải hình ảnh: $error');
@@ -149,14 +149,38 @@ class _ItemManageState extends State<ItemManage> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
-                  child: IconButton(
-                    onPressed: () {
-                     ProductPresenter.deleteProduct(widget.id);
-                     widget.onReStart();
-                    },
-                    icon: const Icon(Icons.delete),
-                  ),
-                )
+  child: IconButton(
+    onPressed: () {
+      // Hiển thị hộp thoại xác nhận xóa
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Xác nhận xóa'),
+            content: Text('Bạn có chắc chắn muốn xóa sản phẩm ${widget.name}?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); 
+                },
+                child: Text('Hủy'),
+              ),
+              TextButton(
+                onPressed: () {
+                  ProductPresenter.deleteProduct(widget.id);
+                  widget.onReStart();
+                  Navigator.of(context).pop();
+                },
+                child: Text('Xác nhận'),
+              ),
+            ],
+          );
+        },
+      );
+    },
+    icon: const Icon(Icons.delete),
+  ),
+)
               ],
             )
           ],
