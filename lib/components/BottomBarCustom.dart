@@ -70,7 +70,7 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                ProductsManageScreen(),
+                                NotiScreen(userId: widget.userid),
                           ));
                     },
                     icon: Icon(widget.active != 1

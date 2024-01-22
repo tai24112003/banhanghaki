@@ -66,7 +66,7 @@ class AddressPresenter {
     }
   }
 
-  Future<void> addAddress(
+  Future<bool> addAddress(
       {required String fullName,
       required String titleName,
       required int id}) async {
@@ -80,8 +80,10 @@ class AddressPresenter {
 
     if (response.statusCode == 200) {
       _view.displayMessage('Add Addresses successful');
+      return true;
     } else {
       _view.displayMessage('Failed to register. Please try again.');
+      return false;
     }
   }
 

@@ -8,6 +8,7 @@ const orderDetailsRoute = require('./api/ordersdetail');
 const productsRoute = require('./api/products');
 const cartsRoute = require('./api/carts');
 const accountRoute = require('./api/account');
+const notificationsRoute = require('./api/notifications');
 const historysRoute = require('./api/historysearch');
 
 
@@ -31,5 +32,6 @@ app.use(oderRoute);
 app.use(orderDetailsRoute);
 app.use('/cart', cartsRoute);
 app.use('/account', accountRoute);
+app.use('/api/notifications', notificationsRoute);
 app.use('/api/history', historysRoute);
 

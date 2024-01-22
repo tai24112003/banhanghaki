@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NotiItem extends StatelessWidget {
-  const NotiItem({Key? key});
-
+  const NotiItem({Key? key, required this.title, required this.content});
+  final String title;
+  final String content;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,40 +12,22 @@ class NotiItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Image(
-                image: AssetImage("assets/st.JPG"),
-                width: 100,
-                height: 100,
-              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Đơn hàng asjkfbhkjasbfkjsdgb của bạn đã được xác nhận",
+                      title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
                       ),
                     ),
-                    Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. adipiscing nec",
-                    ),
+                    Text(content),
                   ],
                 ),
               ),
             ],
-          ),
-          Positioned(
-            bottom: 8.0,
-            right: 8.0,
-            child: Text(
-              "New!",
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
         ],
       ),
