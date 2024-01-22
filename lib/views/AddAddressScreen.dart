@@ -28,7 +28,6 @@ class AddAddressScreenState extends State<AddAddressScreen>
   late TextEditingController numberStreet;
   @override
   void initState() {
-    GlobalServices.initService(context);
     super.initState();
     titleName = TextEditingController();
     numberStreet = TextEditingController();

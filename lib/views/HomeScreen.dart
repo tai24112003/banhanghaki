@@ -7,6 +7,7 @@ import 'package:bangiayhaki/components/ListChari.dart';
 import 'package:bangiayhaki/components/ListLamp.dart';
 import 'package:bangiayhaki/components/ListTable.dart';
 import 'package:bangiayhaki/views/ChatScreen.dart';
+import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,42 +19,43 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
+    GlobalServices.initService(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(170),
-          child: Column(
-            children: [
-               Expanded(child: MyAppBar(title: "MAKE HOME BEAUTIFUL",UserId: widget.id)), 
-               
-              TabbarCustom(),
-            ],
-          ),
-        ),
-        body:Column(
-          children: [
-            Expanded(
-              child:  TabBarView(
-          children: [
-            ListChair(),
-            const ListTable(),
-            const ListArmchair(),
-            const ListBed(),
-            const ListLamp(),]))
-          ]),
-        
+        length: 5,
+        child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(170),
+              child: Column(
+                children: [
+                  Expanded(
+                      child: MyAppBar(
+                          title: "MAKE HOME BEAUTIFUL", UserId: widget.id)),
+                  TabbarCustom(),
+                ],
+              ),
+            ),
+            body: Column(children: [
+              Expanded(
+                  child: TabBarView(children: [
+                ListChair(),
+                const ListTable(),
+                const ListArmchair(),
+                const ListBed(),
+                const ListLamp(),
+              ]))
+            ]),
             floatingActionButton: FloatingActionButton(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               onPressed: () {

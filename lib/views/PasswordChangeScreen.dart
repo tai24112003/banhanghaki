@@ -1,46 +1,30 @@
 import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
-import 'package:bangiayhaki/views/PasswordChangeScreen.dart';
 import 'package:flutter/material.dart';
 
-class SettingScreen extends StatefulWidget {
-  const SettingScreen({required this.user, required this.id, Key? key})
-      : super(key: key);
+class PassWordChangeScreen extends StatefulWidget {
+  const PassWordChangeScreen({required this.id, Key? key}) : super(key: key);
 
-  final User user;
   final int id;
 
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
+  State<PassWordChangeScreen> createState() => _SettingScreenState();
 }
 
-class _SettingScreenState extends State<SettingScreen> implements UserView {
-  late TextEditingController username =
-      TextEditingController(text: widget.user.Fullname);
-  late TextEditingController email =
-      TextEditingController(text: widget.user.Email);
-  late TextEditingController phone =
-      TextEditingController(text: widget.user.Phone);
-  bool switchValue = false;
-  bool switchValue2 = false;
+class _SettingScreenState extends State<PassWordChangeScreen>
+    implements UserView {
+  late TextEditingController pass = TextEditingController(text: "");
+  late TextEditingController repass = TextEditingController(text: "");
   UserPresenter? presenter;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     presenter = UserPresenter(this);
-  }
-
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Không được bỏ trống Email';
-    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-        .hasMatch(value)) {
-      return 'Vui lòng nhập một địa chỉ email hợp lệ';
-    }
-    return null;
   }
 
   String? _validatePassword(String? value) {
@@ -54,17 +38,30 @@ class _SettingScreenState extends State<SettingScreen> implements UserView {
 
   @override
   Widget build(BuildContext context) {
+    void submitForm() async {
+      if (_formKey.currentState!.validate()) {
+        setState(() {
+          _isLoading = true;
+        });
+
+        bool success = await presenter?.updatePassword(
+                userId: widget.id.toString(), password: pass.text) ??
+            false;
+
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (success) {
+          // ignore: use_build_context_synchronously
+          Navigator.pop(context);
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cài đặt chung"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              // Handle edit action
-            },
-          ),
-        ],
+        title: const Text("Đổi mật khẩu"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -76,28 +73,21 @@ class _SettingScreenState extends State<SettingScreen> implements UserView {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildTextField("Thông tin cá nhân",
-                    label: "Tên", controller: username),
-                buildTextField("", label: "Email", controller: email),
-                buildTextField("", label: "Phone", controller: phone),
+                buildTextField("", label: "Mật khẩu", controller: pass),
+                buildTextField("",
+                    label: "Xác nhận mật khẩu", controller: repass),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _submitForm,
-                      child: const Text("Lưu"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (e) {
-                          return PassWordChangeScreen(id: widget.user.ID);
-                        }));
-                      },
-                      child: const Text("Đổi mật khẩu"),
-                    ),
-                  ],
-                ),
+                _isLoading
+                    ? CircularProgressIndicator()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: submitForm,
+                            child: const Text("Lưu"),
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),
@@ -169,8 +159,11 @@ class _SettingScreenState extends State<SettingScreen> implements UserView {
             ),
             obscureText: isPassword,
             validator: (value) {
-              if (label == "Email") return _validateEmail(value);
               if (label == "Mật khẩu") return _validatePassword(value);
+              if (label == "Xác nhận mật khẩu") {
+                if (repass.text != pass.text)
+                  return 'Mật khẩu không giống nhau';
+              }
               if (value == null || value.isEmpty) {
                 return 'Không được bỏ trống $label';
               } else {
@@ -181,26 +174,6 @@ class _SettingScreenState extends State<SettingScreen> implements UserView {
         ),
       ],
     );
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // Check if the data is different from the initial data
-      if (phone.text == widget.user.Phone &&
-          username.text == widget.user.Fullname &&
-          email.text == widget.user.Email) {
-        // No changes, do not update
-        displayMessage('Không có thay đổi nên không cập nhật.');
-      } else {
-        // Call the update method
-        presenter?.updateUser(
-          phone: phone.text,
-          userId: widget.user.ID.toString(),
-          Fullname: username.text,
-          email: email.text,
-        );
-      }
-    }
   }
 
   @override

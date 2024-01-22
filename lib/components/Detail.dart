@@ -19,8 +19,6 @@ class Detail extends StatefulWidget {
   State<Detail> createState() => _DetailState();
 }
 
-
-
 class _DetailState extends State<Detail> {
   int quan = 1;
 
@@ -33,8 +31,7 @@ class _DetailState extends State<Detail> {
         setState(() {
           productName = product.name;
         });
-      } else {
-      }
+      } else {}
     } catch (e) {
       print('Error: $e');
     }
@@ -45,6 +42,7 @@ class _DetailState extends State<Detail> {
     super.initState();
     futureProduct = ProductPresenter.fetchProduct(widget.id);
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Product?>(
@@ -55,8 +53,8 @@ class _DetailState extends State<Detail> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
-Uint8List? uint8list;
-        uint8list=  Uint8List.fromList(snapshot.data!.image);
+          Uint8List? uint8list;
+          uint8list = Uint8List.fromList(snapshot.data!.image);
           return Container(
             color: Colors.white,
             child: SingleChildScrollView(
@@ -73,7 +71,7 @@ Uint8List? uint8list;
                               bottomLeft: Radius.circular(40),
                             ),
                             child: Image.memory(
-                             uint8list,
+                              uint8list,
                               width: MediaQuery.of(context).size.width,
                               height: 455,
                               fit: BoxFit.cover,
@@ -220,5 +218,3 @@ Uint8List? uint8list;
     );
   }
 }
-
-

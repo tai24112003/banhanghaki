@@ -30,7 +30,6 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   UserPresenter? presenter;
-  NotificationServices notificationServices = NotificationServices();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String token = '';
   void _submitForm() async {
@@ -43,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(id: user.ID),
+              builder: (context) => CheckoutScreen(id: user.ID),
             ));
       }
     }
@@ -51,20 +50,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
 
   void initState() {
     presenter = UserPresenter(this);
-    notificationServices = GlobalServices.notificationServices;
-    notificationServices.requestNotificationPermission();
-    notificationServices.forgroundMessage();
-    notificationServices.firebaseInit(context);
-    notificationServices.setupInteractMessage(context);
-    notificationServices.isTokenRefresh();
-
-    notificationServices.getDeviceToken().then((value) {
-      if (kDebugMode) {
-        print('device token');
-        print(value);
-        token = value;
-      }
-    });
+    GlobalServices.initService(context);
     initLocal();
   }
 

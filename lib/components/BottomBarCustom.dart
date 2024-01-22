@@ -9,33 +9,18 @@ import 'package:bangiayhaki/views/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 class BottomBarCustom extends StatefulWidget {
-  const BottomBarCustom(
-      {required this.userid, super.key, required this.active});
-  final active;
-  final userid;
+  const BottomBarCustom({required this.userid, Key? key, required this.active})
+      : super(key: key);
+
+  final int active;
+  final int userid;
+
   @override
   State<BottomBarCustom> createState() => _BottomBarCustomState();
 }
 
 class _BottomBarCustomState extends State<BottomBarCustom> {
-  late User user;
-  UserPresenter? tmp;
   @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
-
-  Future<void> loadData() async {
-    try {
-      user = (await tmp?.getUserById(widget.userid))!;
-      print("object" + user.Fullname);
-      setState(() {});
-    } catch (error) {
-      print('Error loading data: $error');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -51,11 +36,10 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 0) {
-                        Navigator.popUntil(context, (route) => route.isFirst);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return ProfileScreen(
-                            user: user,
+                            id: widget.userid,
                           );
                         }));
                       }
@@ -78,16 +62,13 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                         : Icons.notifications_active)),
                 IconButton(
                     onPressed: () {
-                      if (widget.active != 2) {
-                        Navigator.popUntil(context, (route) => route.isFirst);
-
+                      if (widget.active != 2)
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return ProfileScreen(
-                            user: user,
+                            id: widget.userid,
                           );
                         }));
-                      }
                     },
                     icon: Icon(widget.active != 2
                         ? Icons.person_outline

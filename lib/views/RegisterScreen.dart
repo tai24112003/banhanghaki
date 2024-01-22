@@ -12,12 +12,12 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
   UserPresenter? presenter;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     presenter = UserPresenter(this);
@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
                               isPassword: true),
                           buildTextField(
                               "Confirm Password", confirmPasswordController,
-                              isPassword: true),
+                              isPassword: true, isConfirm: true),
                           const SizedBox(height: 25),
                           SizedBox(
                             width: MediaQuery.of(context).size.width,
@@ -145,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
   }
 
   Widget buildTextField(String label, TextEditingController controller,
-      {bool isPassword = false}) {
+      {bool isPassword = false, bool isConfirm = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -158,11 +158,11 @@ class _RegisterScreenState extends State<RegisterScreen> implements UserView {
           obscureText: isPassword,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter $label';
+              return 'Không được bỏ trống $label';
             } else if (isPassword && value.length < 6) {
-              return 'Password must be at least 6 characters';
-            } else if (isPassword && value != passwordController.text) {
-              return 'Passwords do not match';
+              return 'Mật khẩu có ít nhất 6 ký tự';
+            } else if (isConfirm && value != passwordController.text) {
+              return 'Mật khẩu không khớp';
             }
             return null;
           },
