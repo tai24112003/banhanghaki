@@ -1,7 +1,10 @@
 import 'package:bangiayhaki/models/MessageModel.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/presenters/Message.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/presenters/noti_service.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/material.dart';
 
@@ -13,7 +16,7 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> implements UserView {
   late io.Socket socket;
 
   List<String> messages = [];
@@ -22,7 +25,8 @@ class _ChatScreenState extends State<ChatScreen> {
   late final ScrollController _scrollController;
   double heightChatBox = 0.0;
   List<MessageConvert> a = [];
-
+  late User user;
+  late User userto;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -40,17 +44,28 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {});
   }
 
-  void loadDt() {
+  void loadDt() async {
+    user = (await UserPresenter(this).getUserById(widget.idUser))!;
+    userto = (await UserPresenter(this).getUserById(widget.toUser))!;
+    print(userto.ID.toString() + "ID ne");
     if (widget.idUser != 1) {
       MessagePresenter.loadData(widget.idUser).then((value) {
         setState(() {
           a = MessagePresenter.lstProIncart;
+        });
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          _scrollController
+              .jumpTo(_scrollController.position.maxScrollExtent + 1000);
         });
       });
     } else {
       MessagePresenter.loadDataAdmin(widget.toUser).then((value) {
         setState(() {
           a = MessagePresenter.lstProIncart;
+        });
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          _scrollController
+              .jumpTo(_scrollController.position.maxScrollExtent + 1000);
         });
       });
     }
@@ -62,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _scrollController = ScrollController();
     loadDt();
+
     socket = io.io(ApiConstants.baseUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
@@ -73,11 +89,6 @@ class _ChatScreenState extends State<ChatScreen> {
           (data["content"]["to"] == "1" &&
               data["content"]["from"] == widget.toUser.toString())) {
         loadDt();
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent + 10000000,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-        );
       }
     });
     if (widget.idUser < 2) {
@@ -174,7 +185,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
                             height: MediaQuery.of(context).size.height / 11,
-                            width: MediaQuery.of(context).size.width * 0.78,
+                            width: MediaQuery.of(context).size.width * 0.75,
                             child: TextField(
                               maxLines: null,
                               expands: true,
@@ -196,11 +207,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                     _controller.text = "";
                                     a.add(MessageConvert.fromJson(newMes));
                                   });
-                                  _scrollController.animateTo(
+                                  _scrollController.jumpTo(
                                     _scrollController.position.maxScrollExtent +
                                         50,
-                                    duration: const Duration(milliseconds: 200),
-                                    curve: Curves.easeOut,
                                   );
                                 } else {}
                               },
@@ -209,11 +218,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   heightChatBox =
                                       MediaQuery.of(context).size.height * 0.25;
                                 });
-                                _scrollController.animateTo(
+                                _scrollController.jumpTo(
                                   _scrollController.position.maxScrollExtent +
-                                      500,
-                                  duration: const Duration(milliseconds: 200),
-                                  curve: Curves.easeOut,
+                                      1000,
                                 );
                               },
                               controller: _controller,
@@ -235,25 +242,23 @@ class _ChatScreenState extends State<ChatScreen> {
                                 'to': widget.toUser.toString(),
                                 'content': _controller.text,
                               });
-                              _focusNode.unfocus();
                               setState(() {
+                                heightChatBox =
+                                    MediaQuery.of(context).size.height * 0.25;
                                 a.add(MessageConvert.fromJson({
                                   "FromID": widget.idUser,
                                   "MessageText": _controller.text
                                 }));
                                 _controller.text = "";
-                                _scrollController.animateTo(
+                                _scrollController.jumpTo(
                                   _scrollController.position.maxScrollExtent +
-                                      10000000,
-                                  duration: const Duration(milliseconds: 200),
-                                  curve: Curves.easeOut,
+                                      1000,
                                 );
                                 // a.add(newMes);
                                 NotificationServices().sendFCMNotification(
-                                    title: "TIn N",
-                                    body: "body",
-                                    deviceToken:
-                                        "d5uAdaXJQsWSeS1gdFzNav:APA91bE6cnepEFyz2L2AvcAgbWtkNPGQKS1o8ytgfkYQQ-_FUHJouNU6nqKARgPSzai35YRjan0dAl2CLG1Nt0dHFmFop23MidOMTOPxMBaxmkUWg_RNV786fQpKPY0q7FhYJCVOfXi4");
+                                    title: user.Fullname + "vừa gửi tin nhắn",
+                                    body: _controller.text,
+                                    deviceToken: userto.DVToken);
                               });
                             } else {
                               setState(() {
@@ -275,5 +280,10 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }
