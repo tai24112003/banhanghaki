@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:bangiayhaki/presenters/CartPresenter.dart';
+import 'package:bangiayhaki/views/CartScreen.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +23,18 @@ class Item extends StatefulWidget {
 }
 
 class _ItemState extends State<Item> {
+  int idCart = -1;
   List<int>? imageBytes;
   Uint8List? uint8List;
+  void getIdCart(int idU) {
+    CartPresenter.getCartID(idU).then((value) {
+      idCart = int.parse(value);
+    });
+  }
   @override
   void initState() {
     super.initState();
+    getIdCart(1);
     try {
       if (widget.image.isNotEmpty) {
         imageBytes = widget.image;
@@ -77,7 +86,13 @@ class _ItemState extends State<Item> {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {CartPresenter.addItemToCart(widget.id, idCart, 1);Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartScreen(idUser: 1,
+                  ),
+                ),
+              );},
                   child: Container(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),

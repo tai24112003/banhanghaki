@@ -22,7 +22,9 @@ class Product {
     id: json['ID'] as int,
     quantity: json['Quantity'] ?? 0 as int,
     idCategory: json['CategoryID'] ?? 0 as int, 
-    image: (json['Image'] as List<dynamic>?)?.cast<int>() ?? List<int>.empty(), 
+   image: (json['Image'] != null && json['Image']['data'] is List<dynamic>)
+        ? (json['Image']['data'] as List<dynamic>).cast<int>().toList()
+        : List<int>.empty(),
     name: json['ProductName'] ?? "",
     price: (json['Price'] as num?)?.toDouble() ?? 0.0,
     description: json['Description'] ?? "",

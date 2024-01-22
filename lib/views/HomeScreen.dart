@@ -33,10 +33,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       length: 5,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(130),
+          preferredSize: const Size.fromHeight(170),
           child: Column(
             children: [
-               MyAppBar(title: "MAKE HOME BEAUTIFUL",UserId: widget.id), // Chú ý: không có UserId vì không sử dụng ở đây
+               Expanded(child: MyAppBar(title: "MAKE HOME BEAUTIFUL",UserId: widget.id)), 
+               
               TabbarCustom(),
             ],
           ),

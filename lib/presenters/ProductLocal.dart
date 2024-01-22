@@ -12,7 +12,14 @@ class LocalStorage {
   final categoryKey = '$productsKey:$idCategory';
   prefs.setStringList(categoryKey, productsJsonList);
 }
+static const String localProductsKey = 'products';
 
+    static Future<void> addLocalProduct(LocalProduct localProduct) async {
+      final prefs = await SharedPreferences.getInstance();
+      final localProductsJsonList = prefs.getStringList(localProductsKey) ?? [];
+      localProductsJsonList.add(jsonEncode(localProduct.toJson()));
+      prefs.setStringList(localProductsKey, localProductsJsonList);
+    }
 static Future<List<Product>> getProducts(int idCategory) async {
   final prefs = await SharedPreferences.getInstance();
   final categoryKey = '$productsKey:$idCategory';
@@ -27,49 +34,57 @@ static Future<List<Product>> getProduct(int productId) async {
   final prefs = await SharedPreferences.getInstance();
   final categoryKey = '$productsKey:$productId';
   final List<String>? productsJsonList = prefs.getStringList(categoryKey);
-  if (productsJsonList != null) {
-    return productsJsonList.map((jsonString) => Product.fromJson(json.decode(jsonString))).toList();
+  
+  if (productsJsonList != null && productsJsonList.isNotEmpty) {
+    // Tìm sản phẩm theo productId trong danh sách sản phẩm
+    final List<Product> products = productsJsonList
+        .map((jsonString) => Product.fromJson(json.decode(jsonString)))
+        .toList();
+
+    // Sử dụng hàm firstWhere để lấy sản phẩm có productId tương ứng
+    final List<Product> selectedProduct = products
+        .where((product) => product.id == productId)
+        .toList();
+
+    return selectedProduct;
   } else {
     return [];
   }
 }
 } 
-class LocalProduct {
+  class LocalProduct {
 
-  final int productId;
+    final int productId;
 
-  final int categoryId;
-  final String productName;
-  final String imageBase64;
-  final int quantity;
-  final double price;
-  final String description;
-  bool isSynced; // Trạng thái đồng bộ
+    final int categoryId;
+    final String productName;
+    final String imageBase64;
+    final int quantity;
+    final double price;
+    final String description;
 
-  LocalProduct({
-    required this.productId,
+    LocalProduct({
+      required this.productId,
 
-    required this.categoryId,
-    required this.productName,
-    required this.imageBase64,
-    required this.quantity,
-    required this.price,
-    required this.description,
-    this.isSynced = false, // Mặc định là chưa đồng bộ
-  });
+      required this.categoryId,
+      required this.productName,
+      required this.imageBase64,
+      required this.quantity,
+      required this.price,
+      required this.description,
+    });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'ProductID': productId,
-
-      'CategoryID': categoryId,
-      'ProductName': productName,
-      'Image': imageBase64,
-      'Quantity': quantity,
-      'Price': price,
-      'Description': description,
-      'IsSynced': isSynced,
-    };
-  }
+    Map<String, dynamic> toJson() {
+      return {
+        'ProductID': productId,
+        'CategoryID': categoryId,
+        'ProductName': productName,
+        'Image': imageBase64,
+        'Quantity': quantity,
+        'Price': price,
+        'Description': description,
+      };
+    }
+  
 }
 

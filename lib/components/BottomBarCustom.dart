@@ -4,6 +4,7 @@ import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/ProductsManageScreen.dart';
 import 'package:bangiayhaki/views/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -69,7 +70,7 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                NotiScreen(userId: widget.userid),
+                                ProductsManageScreen(),
                           ));
                     },
                     icon: Icon(widget.active != 1

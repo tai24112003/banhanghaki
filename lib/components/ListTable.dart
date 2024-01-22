@@ -24,7 +24,7 @@ class _ListTableState extends State<ListTable> {
   void initState() {
     super.initState();
 
-    futureProducts = ProductPresenter.fetchProducts(22);
+    futureProducts = ProductPresenter.fetchProducts(2);
   }
 
   void reStart() {

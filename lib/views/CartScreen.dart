@@ -107,13 +107,10 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
           backgroundColor: Colors.transparent,
-          title: Container(
-            width: MediaQuery.of(context).size.width,
-            child: const Text(
-              "Giỏ hàng",
-              textAlign: TextAlign.center,
-            ),
+          title: const Text(
+            "Giỏ hàng",
           )),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

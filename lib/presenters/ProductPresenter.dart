@@ -9,16 +9,15 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductPresenter {
- static Future<Product> fetchProduct(int productId) async {
+ static Future<Product?> fetchProduct(int productId) async {
   try {
-    final response = await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/$productId'));
-
+    final response = await http.get(Uri.parse('${ApiConstants.baseUrl}api/product/pro/$productId'));
+    
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
       List<int> imageData = (jsonData['Image']['data'] as List<dynamic>).cast<int>();
       Uint8List uint8List = Uint8List.fromList(imageData);
-
       Product product = Product(
         id: jsonData['ID'],
         idCategory: jsonData['CategoryID'],
@@ -29,39 +28,16 @@ class ProductPresenter {
         description: jsonData['Description'],
       );
 
-      await LocalStorage.saveProducts(product.idCategory, [product]);
-
       return product;
+    } else {
+      print('Failed to fetch product from API');
+      return null;
     }
-
-    if (response.statusCode == 404) {
-      List<Product> localProducts = await LocalStorage.getProduct(productId);
-      if (localProducts.isNotEmpty) {
-        return localProducts.first;
-      } else {
-        throw Exception('Product not found');
-      }
-    }
-
-    throw Exception('Failed to fetch product');
   } catch (e) {
     print('Error: $e');
-
-    // Thử lấy từ Local SharedPreferences khi có lỗi fetch từ API
-    List<Product> localProducts = await LocalStorage.getProduct(productId);
-    if (localProducts.isNotEmpty) {
-      return localProducts.first;
-    } else {
-      throw Exception('Failed to fetch product');
-    }
+    return null;
   }
 }
-
-  static Uint8List _decodeImage(dynamic imageValue) {
-    List<dynamic> dataList = imageValue['data'];
-    List<int> imageData = dataList.map<int>((value) => value as int).toList();
-    return Uint8List.fromList(imageData);
-  }
 
  static Future<List<Product>> fetchProducts(int idCategory) async {
   try {
@@ -90,16 +66,13 @@ class ProductPresenter {
         products.add(product);
       }
 
-      // Lưu dữ liệu xuống SharedPreferences theo danh mục
       await LocalStorage.saveProducts(idCategory, products);
 
       return products;
     } else {
-      // Nếu không thành công, thử đọc từ SharedPreferences theo danh mục
       return LocalStorage.getProducts(idCategory);
     }
   } catch (e) {
-    // Nếu có lỗi khi fetch, thử đọc từ SharedPreferences theo danh mục
     return LocalStorage.getProducts(idCategory);
   }
 }
@@ -139,16 +112,16 @@ static Future<void> addProduct(
     if (response.statusCode == 200) {
       print('Sản phẩm đã được thêm thành công');
     } else {
-    //  final localProduct = LocalProduct(
-    //   productId: 0,
-    //     categoryId: _selectedItem, 
-    //     productName: _productName,
-    //     imageBase64: base64Image,
-    //     quantity: int.parse(_quantity),
-    //     price: double.parse(_price),
-    //     description: _description,
-    //   );
-    //   await addLocalProduct(localProduct);
+     final localProduct = LocalProduct(
+      productId: 0,
+        categoryId: _selectedItem, 
+        productName: _productName,
+        imageBase64: base64Image,
+        quantity: int.parse(_quantity),
+        price: double.parse(_price),
+        description: _description,
+      );
+      await LocalStorage.addLocalProduct(localProduct);
       print('Lỗi thêm sản phẩm: ${response.reasonPhrase}');
     }
   } catch (e) {
@@ -156,14 +129,7 @@ static Future<void> addProduct(
   }
 }
 
-    static const String localProductsKey = 'localProducts';
-
-    static Future<void> addLocalProduct(LocalProduct localProduct) async {
-      final prefs = await SharedPreferences.getInstance();
-      final localProductsJsonList = prefs.getStringList(localProductsKey) ?? [];
-      localProductsJsonList.add(jsonEncode(localProduct.toJson()));
-      prefs.setStringList(localProductsKey, localProductsJsonList);
-    }
+    
 
   static Future<void> updateProduct(
       File? _imageFile,

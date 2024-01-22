@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bangiayhaki/models/CartItemModel.dart';
 import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +33,25 @@ class _CartItemState extends State<CartItem> {
     // TODO: implement initState
     super.initState();
     setupQuan();
+    try {
+      if (widget.cartIt.product.image.isNotEmpty) {
+        imageBytes = imageBytes = widget.cartIt.product.image;
+        uint8List = Uint8List.fromList(imageBytes!);
+        print(uint8List);
+      } else {
+        print('Lỗi: Dữ liệu hình ảnh trống.');
+      }
+    } catch (e) {
+      print('Lỗi: $e');
+    }
+       
   }
-
+late List<int> imageBytes;
+  Uint8List? uint8List;
+  void m(){;
+        uint8List = Uint8List.fromList(imageBytes!);}
+  
+       
   void setupQuan() {
     setState(() {
       quan = widget.cartIt.quantity;
@@ -63,6 +82,18 @@ class _CartItemState extends State<CartItem> {
                     });
                   }),
               Container(
+                child: Image.memory(
+                            uint8List!,
+                            width: MediaQuery.of(context).size.width/4, 
+                            height: MediaQuery.of(context).size.width/4,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Lỗi tải hình ảnh: $error');
+                              return Container(
+                                child: Text('Lỗi tải hình ảnh'),
+                              );
+                            },
+                          ),
                 height: MediaQuery.of(context).size.height * 0.125,
                 width: MediaQuery.of(context).size.height * 0.125,
                 decoration: BoxDecoration(border: Border.all()),

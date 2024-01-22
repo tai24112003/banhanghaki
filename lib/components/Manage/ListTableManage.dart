@@ -56,7 +56,7 @@ class _ListTableManagerState extends State<ListTableManager> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return  Center(child: CircularProgressIndicator());
         }
       },
     );
