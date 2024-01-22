@@ -18,14 +18,14 @@ class _NotiScreenState extends State<NotiScreen> {
       appBar: PreferredSize(
         child: MyAppBar(title: "Thông báo", UserId: widget.userId),
         preferredSize: const Size.fromHeight(
-            100), // Tính kích thước tối ưu cho AppBar và TabBar
+            100),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [NotiItem()],
         ),
       ),
-      // bottomNavigationBar: BottomBarCustom(active: 1, userid: widget.user.ID),
+      bottomNavigationBar: BottomBarCustom(active: 1, userid: widget.userId),
     );
   }
 }

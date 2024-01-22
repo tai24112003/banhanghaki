@@ -4,6 +4,7 @@ import 'package:bangiayhaki/components/DropdownAddressItem.dart';
 import 'package:bangiayhaki/models/AddressModel.dart';
 import 'package:bangiayhaki/presenters/AddressPresenter.dart';
 import 'package:bangiayhaki/presenters/noti_service.dart';
+import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,6 @@ class AddAddressScreen extends StatefulWidget {
 class AddAddressScreenState extends State<AddAddressScreen>
     implements AddressView {
   AddressPresenter? presenter;
-  NotificationServices notificationServices = NotificationServices();
   List<City> cities = [];
   List<District> districts = [];
   List<Ward> wards = [];
@@ -28,19 +28,8 @@ class AddAddressScreenState extends State<AddAddressScreen>
   late TextEditingController numberStreet;
   @override
   void initState() {
+    GlobalServices.initService(context);
     super.initState();
-    notificationServices.requestNotificationPermission();
-    notificationServices.forgroundMessage();
-    notificationServices.firebaseInit(context);
-    notificationServices.setupInteractMessage(context);
-    notificationServices.isTokenRefresh();
-
-    notificationServices.getDeviceToken().then((value) {
-      if (kDebugMode) {
-        print('device token');
-        print(value);
-      }
-    });
     titleName = TextEditingController();
     numberStreet = TextEditingController();
     presenter = AddressPresenter(this);
@@ -211,13 +200,13 @@ class AddAddressScreenState extends State<AddAddressScreen>
   }
 
   void sendNotificationAfterAddingAddress() async {
-    final deviceToken = await notificationServices.getDeviceToken();
+    final deviceToken =
+        await GlobalServices.notificationServices.getDeviceToken();
 
-    await notificationServices.sendFCMNotification(
-      title: 'New Address Added',
-      body: 'You have added a new address!',
-      deviceToken: deviceToken,
-    );
+    await GlobalServices.notificationServices.sendFCMNotification(
+        title: 'New Address Added',
+        body: 'You have added a new address!',
+        deviceToken: deviceToken);
   }
 
   @override

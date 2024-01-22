@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/item.dart';
 import 'package:bangiayhaki/main.dart';
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/presenters/HistoryPresenter.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
+                  mainAxisExtent: 300,
                   crossAxisSpacing: 5,
                 ),
                 itemCount: snapshot.data!.length,

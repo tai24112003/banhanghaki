@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:bangiayhaki/views/AddproductScreen.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
@@ -35,21 +36,7 @@ class _ItemManageState extends State<ItemManage> {
     setState(() {});
   }
 
-  void deleteProduct(int productId) async {
-    final url = '${ApiConstants.baseUrl}/api/product/delete/$productId';
-
-    try {
-      final response = await http.put(Uri.parse(url));
-      if (response.statusCode == 200) {
-        print('Sản phẩm đã được xóa thành công');
-        widget.onReStart();
-      } else {
-        print('Lỗi xóa sản phẩm: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Lỗi kết nối: $e');
-    }
-  }
+  
 
   List<int>? imageBytes;
   Uint8List? uint8List;
@@ -109,8 +96,8 @@ class _ItemManageState extends State<ItemManage> {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.memory(
                             uint8List!,
-                            width: 60, // Set width here
-                            height: 60, // Set height here
+                            width: MediaQuery.of(context).size.width/4, 
+                            height: MediaQuery.of(context).size.width/4,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               print('Lỗi tải hình ảnh: $error');
@@ -162,13 +149,38 @@ class _ItemManageState extends State<ItemManage> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
-                  child: IconButton(
-                    onPressed: () {
-                      deleteProduct(widget.id);
-                    },
-                    icon: const Icon(Icons.delete),
-                  ),
-                )
+  child: IconButton(
+    onPressed: () {
+      // Hiển thị hộp thoại xác nhận xóa
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Xác nhận xóa'),
+            content: Text('Bạn có chắc chắn muốn xóa sản phẩm ${widget.name}?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); 
+                },
+                child: Text('Hủy'),
+              ),
+              TextButton(
+                onPressed: () {
+                  ProductPresenter.deleteProduct(widget.id);
+                  widget.onReStart();
+                  Navigator.of(context).pop();
+                },
+                child: Text('Xác nhận'),
+              ),
+            ],
+          );
+        },
+      );
+    },
+    icon: const Icon(Icons.delete),
+  ),
+)
               ],
             )
           ],

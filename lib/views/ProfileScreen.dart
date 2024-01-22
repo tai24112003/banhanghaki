@@ -19,15 +19,33 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> implements UserView {
   late UserPresenter userPresenter;
   late Future<User?> userFuture;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     userPresenter = UserPresenter(this);
     userFuture = loadUser();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  Future<void> _refresh() async {
+    userFuture = loadUser();
+    setState(() {});
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+    } else if (_scrollController.position.pixels ==
+        _scrollController.position.minScrollExtent) {
+      _refresh();
+    }
   }
 
   Future<User?> loadUser() async {
+    await OrderPresenter.loadData(widget.id);
     return userPresenter.getUserById(widget.id);
   }
 
@@ -48,35 +66,45 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
           ),
         ),
       ),
-      body: FutureBuilder<User?>(
-        future: userFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else if (!snapshot.hasData || snapshot.data == null) {
-            return Center(
-              child: Text('Failed to load user data.'),
-            );
-          } else {
-            User user = snapshot.data!;
-            return buildProfileView(user);
-          }
-        },
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: SingleChildScrollView(
+          child: FutureBuilder<User?>(
+            future: userFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return Center(
+                  child: Text('Failed to load user data.'),
+                );
+              } else {
+                User user = snapshot.data!;
+                return buildProfileView(user);
+              }
+            },
+          ),
+        ),
       ),
     );
   }
 
   String getAvatarText(User user) {
-    if (user.Fullname.contains(' ')) {
-      return user.Fullname.split(' ').map((word) => word[0]).join('');
-    } else if (user.Fullname.isNotEmpty) {
-      return user.Fullname.substring(0, 1).toString().toUpperCase();
+    if (user.Fullname.isNotEmpty) {
+      if (user.Fullname.contains(' ')) {
+        return user.Fullname.split(' ')
+            .map((word) => word[0])
+            .join('')
+            .toUpperCase();
+      } else {
+        return user.Fullname.substring(0, 1).toUpperCase();
+      }
     } else {
       return 'QD';
     }

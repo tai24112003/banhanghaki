@@ -32,7 +32,7 @@ class User {
       'Email': Email,
       'Password': Password,
       'FullName': Fullname,
-      'PhoneNumber': Phone,
+      'Phone': Phone,
       'Address': address,
       'Status': Status,
     };

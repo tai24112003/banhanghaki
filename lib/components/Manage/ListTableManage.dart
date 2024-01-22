@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:bangiayhaki/components/ItemManage.dart';
 import 'package:bangiayhaki/main.dart';
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
 
 class ListTableManager extends StatefulWidget {
@@ -56,7 +56,7 @@ class _ListTableManagerState extends State<ListTableManager> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return  Center(child: CircularProgressIndicator());
         }
       },
     );

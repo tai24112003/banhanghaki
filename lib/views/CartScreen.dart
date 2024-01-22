@@ -2,11 +2,12 @@ import 'package:bangiayhaki/components/CartItem.dart';
 import 'package:bangiayhaki/components/DetailOrderItem.dart';
 import 'package:bangiayhaki/models/CartItemModel.dart';
 import 'package:bangiayhaki/presenters/CartPresenter.dart';
+import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
-
+  const CartScreen({super.key, required this.idUser});
+  final int idUser;
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -15,11 +16,12 @@ class _CartScreenState extends State<CartScreen> {
   List _lstCartItem = [];
   List _selectedCartItem = [];
   double _total = 0;
+  int idCart = -1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadData();
+    getIdCart(widget.idUser);
   }
 
   void onUpdateQuan(int id, int quan) {
@@ -77,7 +79,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void deleteAllItem() {
-    CartPresenter.deleteItemInCart(1).then((value) {
+    CartPresenter.deleteItemInCart(idCart).then((value) {
       if (value) {
         _selectedCartItem.clear();
         loadData();
@@ -85,8 +87,15 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
+  void getIdCart(int idU) {
+    CartPresenter.getCartID(idU).then((value) {
+      idCart = int.parse(value);
+      loadData();
+    });
+  }
+
   void loadData() {
-    CartPresenter.loadData(1).then((value) => {
+    CartPresenter.loadData(idCart).then((value) => {
           setState(() {
             _lstCartItem = CartPresenter.lstProIncart;
             quan();
@@ -98,13 +107,10 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
           backgroundColor: Colors.transparent,
-          title: Container(
-            width: MediaQuery.of(context).size.width,
-            child: const Text(
-              "Giỏ hàng",
-              textAlign: TextAlign.center,
-            ),
+          title: const Text(
+            "Giỏ hàng",
           )),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,7 +188,14 @@ class _CartScreenState extends State<CartScreen> {
                     margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                     width: MediaQuery.of(context).size.width,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CheckoutScreen(id: widget.idUser),
+                            ));
+                      },
                       style: ButtonStyle(
                           padding: const MaterialStatePropertyAll(
                               EdgeInsets.fromLTRB(0, 15, 0, 15)),

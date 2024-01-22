@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:bangiayhaki/models/Item.dart';
 import 'package:bangiayhaki/models/OrderDetailsModel.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -70,8 +70,8 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
                 ? Image.memory(
                     uint8List!,
                     fit: BoxFit.cover,
-                    height: 50,
-                    width: 50,
+                    width: MediaQuery.of(context).size.width / 4,
+                    height: MediaQuery.of(context).size.height / 8.5,
                   )
                 : Placeholder(), // You can replace Placeholder with any other widget or image for the null case
           ),
@@ -90,14 +90,10 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
                       item!.name,
                       style: const TextStyle(color: Colors.grey),
                     ),
-                    const Icon(
-                      Icons.delete_outline_rounded,
-                      size: 30,
-                    )
                   ],
                 ),
-                const Text(
-                  "25\$",
+                Text(
+                  "${item!.price}\$",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,

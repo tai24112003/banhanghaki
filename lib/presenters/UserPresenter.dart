@@ -4,6 +4,7 @@ import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class UserView {
   void displayMessage(String message);
@@ -41,7 +42,11 @@ class UserPresenter {
       final Map<String, dynamic> responseData = json.decode(response.body);
       _view.displayMessage('Login successful, welcome!');
       print(responseData);
-      return User.fromJson(responseData);
+      final User user = User.fromJson(responseData);
+
+      await saveLocalId(user.ID);
+
+      return user;
     } else if (response.statusCode == 401) {
       final Map<String, dynamic> responseData = json.decode(response.body);
 
@@ -50,6 +55,14 @@ class UserPresenter {
       _view.displayMessage('Failed to login. Please try again.');
     }
     return null;
+  }
+
+  Future<void> updateToken({required UserID, required DVToken}) async {
+    final response = await http.put(
+      Uri.parse('${ApiConstants.baseUrl}/api/users/updateToken'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'UserID': UserID, 'deviceToken': DVToken}),
+    );
   }
 
   Future<void> Register({
@@ -168,5 +181,15 @@ class UserPresenter {
       _view.displayMessage('Internal Server Error');
     }
     return false;
+  }
+
+  Future<void> saveLocalId(int localId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('UserID', localId);
+  }
+
+  Future<int?> getLocalId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('UserID');
   }
 }

@@ -1,4 +1,4 @@
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 
 class CartItemModel {
   final int id;

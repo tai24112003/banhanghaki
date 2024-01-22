@@ -16,10 +16,10 @@ router.get('/:idCategory', function (req, res) {
     }
   });
 });
-router.get('/:id', function (req, res) {
+router.get('/pro/:id', function (req, res) {
   const productId = req.params.id;
   const query = `SELECT * FROM products WHERE ID = ${productId}`;
-
+  console.log(productId);
   connection.query(query, (err, rows, fields) => {
     if (err) {
       console.error('Error executing query:', err);
@@ -27,6 +27,7 @@ router.get('/:id', function (req, res) {
     } else if (rows.length === 0) {
       res.status(404).json({ error: 'Product not found' });
     } else {
+      console.log(rows[0]);
       res.json(rows[0]);
     }
   });
@@ -52,7 +53,7 @@ router.post('/add_Product', (req, res) => {
       product.ProductName,
       imageBuffer, // Use the image buffer
       product.Quantity,
-      product.UnitPrice,
+      product.Price,
       product.Description,
       product.Status,
     ],
@@ -79,7 +80,7 @@ router.put('/update/:id', (req, res) => {
   // Save image to a file (optional, you can directly update in the database)
   fs.writeFileSync('updated_image.jpg', imageBuffer);
 
-  const query = `UPDATE products SET CategoryID = ?, ProductName = ?, Image = ?, Quantity = ?, UnitPrice = ?, Description = ?, Status = 1
+  const query = `UPDATE products SET CategoryID = ?, ProductName = ?, Image = ?, Quantity = ?, Price = ?, Description = ?, Status = 1
                      WHERE ID = ?`;
 
   connection.query(
@@ -89,7 +90,7 @@ router.put('/update/:id', (req, res) => {
       updatedProduct.ProductName,
       imageBuffer, // Use the updated image buffer
       updatedProduct.Quantity,
-      updatedProduct.UnitPrice,
+      updatedProduct.Price,
       updatedProduct.Description,
       id,
     ],

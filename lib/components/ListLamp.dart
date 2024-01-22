@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:bangiayhaki/components/item.dart';
 import 'package:bangiayhaki/main.dart';
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +46,10 @@ class _ListLampState extends State<ListLamp> {
           } else {
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 5,
+               crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisExtent: 300,
+                  mainAxisSpacing: 10,
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {

@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:bangiayhaki/models/History.dart';
-import 'package:bangiayhaki/presenters/HistoryLocal.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,33 +43,50 @@ class HitstoryPresenter {
     }
   }
 
-  static Future<void> _loadSearchHistory(
-      List<String> _searchHistory, int userId) async {
-    try {
-      final history = await SearchHistoryManager.fetchSearchHistory(userId);
-      _searchHistory = history;
-    } catch (e) {
-      // Xử lý lỗi (nếu cần)
-      print('Error loading search history: $e');
-    }
-  }
+  
+  static const String searchHistoryKey = 'searchHistory';
 
-  static Future<List<HistorySearch>> fetchSearchHistory(int userId) async {
+  // Lấy lịch sử tìm kiếm từ server và lưu vào SharedPreferences
+  static Future<List<HistorySearch>> fetchAndSaveSearchHistory(int userId) async {
     final url = '${ApiConstants.baseUrl}/api/history/search-history/$userId';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       final searchHistory = data
-          .map((item) => HistorySearch(
-                id: item['ID'],
-                content: item['Content'],
-                idUser: item['UserID'],
+          .map((item) => HistorySearch.fromJson(
+                item as Map<String, dynamic>,
               ))
           .toList();
-      return searchHistory.cast<HistorySearch>();
+
+      // Lưu vào SharedPreferences
+      await saveSearchHistory(searchHistory);
+
+      return searchHistory;
     } else {
       throw Exception('Failed to fetch search history');
+    }
+  }
+
+  // Lưu lịch sử tìm kiếm vào SharedPreferences
+  static Future<void> saveSearchHistory(List<HistorySearch> searchHistory) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> searchHistoryJsonList =
+        searchHistory.map((search) => json.encode(search.toJson())).toList();
+    prefs.setStringList(searchHistoryKey, searchHistoryJsonList);
+  }
+
+  // Lấy lịch sử tìm kiếm từ SharedPreferences
+  static Future<List<HistorySearch>> getSearchHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? searchHistoryJsonList = prefs.getStringList(searchHistoryKey);
+
+    if (searchHistoryJsonList != null) {
+      return searchHistoryJsonList
+          .map((jsonString) => HistorySearch.fromJson(json.decode(jsonString)))
+          .toList();
+    } else {
+      return [];
     }
   }
 

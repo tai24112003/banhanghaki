@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:bangiayhaki/components/ItemManage.dart';
 import 'package:bangiayhaki/main.dart';
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
 
 class ListLampManager extends StatefulWidget {
@@ -21,11 +21,11 @@ class _ListLampManagerState extends State<ListLampManager> {
   void initState() {
     super.initState();
 
-     futureProducts =ProductPresenter.fetchProducts(3);
+     futureProducts =ProductPresenter.fetchProducts(5);
   }
 
   void reStart() {
-   futureProducts =ProductPresenter.fetchProducts(3);
+   futureProducts =ProductPresenter.fetchProducts(5);
     setState(() {});
   }
 
