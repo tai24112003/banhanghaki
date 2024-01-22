@@ -25,9 +25,9 @@ class _ChatItemState extends State<ChatItem> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 0),
         child: Container(
-          margin: EdgeInsets.only(bottom: 8),
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 222, 219, 219),
+          margin: const EdgeInsets.only(bottom: 8),
+          decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 222, 219, 219),
               borderRadius: BorderRadius.all(Radius.circular(10))),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 10,
@@ -39,13 +39,14 @@ class _ChatItemState extends State<ChatItem> {
               children: [
                 Text(
                   widget.ten,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   widget.email.length < 20
                       ? widget.email
-                      : widget.email.substring(0, 20),
-                  style: TextStyle(fontSize: 20),
+                      : "${widget.email.substring(0, 17)}...",
+                  style: const TextStyle(fontSize: 20),
                 )
               ],
             ),

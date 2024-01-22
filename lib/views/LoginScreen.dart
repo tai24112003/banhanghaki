@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return ChatScreen(
-                                    idUser: randomInt,
+                                    idUser: 4,
                                     toUser: 1,
                                   );
                                 }));

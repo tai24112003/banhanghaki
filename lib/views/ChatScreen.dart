@@ -61,7 +61,6 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _scrollController = ScrollController();
     loadDt();
-    print("hello");
     socket = io.io(ApiConstants.baseUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
@@ -78,11 +77,9 @@ class _ChatScreenState extends State<ChatScreen> {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeOut,
         );
-        print(data);
       }
     });
     if (widget.idUser < 2) {
-      print("admin");
       socket.emit('admin', {"from": widget.idUser, "to": widget.toUser});
     } else {
       socket.emit('client', {"from": widget.idUser, "to": 1});
@@ -93,15 +90,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.transparent,
-        title: Container(
-          width: MediaQuery.of(context).size.width,
-          child: const Text(
-            "HAKI STORE",
-            textAlign: TextAlign.center,
-          ),
+        title: const Text(
+          "HAKI STORE",
+          textAlign: TextAlign.center,
         ),
-        actions: const [Icon(Icons.video_call_rounded)],
       ),
       body: GestureDetector(
         onVerticalDragStart: (e) {
