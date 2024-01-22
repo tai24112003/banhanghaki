@@ -20,10 +20,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-        title: "Thông tin cá nhân",
-      ),
-      bottomNavigationBar: BottomBarCustom(userid: widget.user, active: 2),
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+          backgroundColor: Colors.transparent,
+          title: Container(
+            width: MediaQuery.of(context).size.width,
+            child: const Text(
+              "Đặt hàng",
+              textAlign: TextAlign.center,
+            ),
+          )),
+      // bottomNavigationBar: BottomBarCustom(
+      //   active: 2,
+      //   user: widget.user,
+      // ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
@@ -86,7 +99,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   detail: "Bạn có 1 hình thức thanh toán",
                 ),
                 ProfileItem(
-                  mywidget: SettingScreen(user: widget.user),
+                  mywidget: SettingScreen(
+                    user: widget.user,
+                    id: widget.user.ID,
+                  ),
                   title: "Cài đặt",
                   detail: "Thông báo, đổi mật khẩu, liên hệ",
                 )

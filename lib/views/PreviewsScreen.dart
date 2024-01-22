@@ -3,8 +3,8 @@ import 'package:bangiayhaki/components/Previews.dart';
 import 'package:flutter/material.dart';
 
 class PreviewsScreen extends StatefulWidget {
-  const PreviewsScreen({super.key});
-
+  const PreviewsScreen({super.key, required this.id});
+  final int id;
   @override
   State<PreviewsScreen> createState() => _PreviewsScreenState();
 }
@@ -13,8 +13,8 @@ class _PreviewsScreenState extends State<PreviewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        child: MyAppBar(title: "Đánh giá",),
+      appBar: PreferredSize(
+        child: MyAppBar(title: "Đánh giá", UserId: widget.id),
         preferredSize: Size.fromHeight(100),
       ),
       body: const Preview(),

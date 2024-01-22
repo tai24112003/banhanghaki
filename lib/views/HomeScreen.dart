@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   MyAppBar(
                     title: "MAKE HOME BEUATYFUL",
+                    UserId: widget.id,
                   ),
                   const TabbarCustom()
                 ],

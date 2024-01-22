@@ -18,9 +18,11 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
       id: json['ID'] as int,
-      id_account: json['ID_ACCOUNT'] as int,
+      id_account: json['UserID'] as int,
       quantity: json['Quantity'] as int,
-      date: DateTime.parse(json['OrderDate'] as String),
+      date: json['OrderDate'] != null
+          ? DateTime.parse(json['OrderDate'])
+          : DateTime.now(),
       totalAmount: json['TotalAmount'] as int,
       status: json['Status'] as String,
     );

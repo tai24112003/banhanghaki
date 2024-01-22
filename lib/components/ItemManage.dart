@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:bangiayhaki/main.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/views/AddproductScreen.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 
 class ItemManage extends StatefulWidget {
@@ -36,7 +36,7 @@ class _ItemManageState extends State<ItemManage> {
   }
 
   void deleteProduct(int productId) async {
-    final url = '${GlobalVariable().myVariable}/api/product/delete/$productId';
+    final url = '${ApiConstants.baseUrl}/api/product/delete/$productId';
 
     try {
       final response = await http.put(Uri.parse(url));

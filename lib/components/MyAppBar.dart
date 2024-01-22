@@ -1,6 +1,10 @@
 import 'dart:convert';
 
 import 'package:bangiayhaki/main.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/HistoryPresenter.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/SearchScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -8,8 +12,9 @@ import 'package:http/http.dart' as http;
 import '../models/History.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const MyAppBar({super.key, required this.title});
+  const MyAppBar({super.key, required this.title, required this.UserId});
   final String title;
+  final int UserId;
   @override
   _MyAppBarState createState() => _MyAppBarState();
 
@@ -17,16 +22,24 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class _MyAppBarState extends State<MyAppBar> {
+class _MyAppBarState extends State<MyAppBar> implements UserView {
   bool _isSearching = false;
   late TextEditingController _searchController;
-
+  late User? user;
+  late UserPresenter presenter;
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    presenter = UserPresenter(this);
+    loadUser();
   }
 
+  void loadUser() async {
+    user = await presenter.getUserById(widget.UserId);
+  }
+
+  List<String> _searchHistory = [];
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -53,7 +66,7 @@ class _MyAppBarState extends State<MyAppBar> {
                       border: InputBorder.none,
                     ),
                     style: TextStyle(
-                      color: const Color.fromARGB(255, 0, 0, 0),
+                      color: Color.fromARGB(255, 135, 135, 135),
                     ),
                   ),
                 ),
@@ -62,11 +75,13 @@ class _MyAppBarState extends State<MyAppBar> {
                   onPressed: () {
                     if (_searchController.text != null &&
                         _searchController.text.isNotEmpty) {
-                      addSearchHistory(_searchController.text, 2);
+                      HitstoryPresenter.addSearchHistory(
+                          _searchController.text, widget.UserId);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => SearchScreen(
+                            id: widget.UserId,
                             search: _searchController.text,
                           ),
                         ),
@@ -88,8 +103,8 @@ class _MyAppBarState extends State<MyAppBar> {
               preferredSize: Size.fromHeight(18),
               child: Container(
                   height: 60,
-                  child: FutureBuilder<List<History>>(
-                    future: fetchSearchHistory(2),
+                  child: FutureBuilder<List<HistorySearch>>(
+                    future: HitstoryPresenter.fetchSearchHistory(widget.UserId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
@@ -109,6 +124,7 @@ class _MyAppBarState extends State<MyAppBar> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SearchScreen(
+                                            id: widget.UserId,
                                             search: history.content,
                                           )),
                                 );
@@ -128,7 +144,9 @@ class _MyAppBarState extends State<MyAppBar> {
                                       IconButton(
                                           onPressed: () {
                                             setState(() {
-                                              deleteSearchHistory(history.id);
+                                              HitstoryPresenter
+                                                  .deleteSearchHistory(
+                                                      history.id);
                                             });
                                           },
                                           icon: Icon(
@@ -148,57 +166,8 @@ class _MyAppBarState extends State<MyAppBar> {
     );
   }
 
-  Future<void> addSearchHistory(String content, int userId) async {
-    final url = '${GlobalVariable().myVariable}/api/product/add-history';
-
-    final Map<String, dynamic> requestData = {
-      'Content': content,
-      'UserId': userId.toString(),
-    };
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(requestData),
-    );
-
-    if (response.statusCode == 200) {
-      print('Thêm thành công history');
-    } else {
-      print('Error adding search history: ${response.statusCode}');
-    }
-  }
-
-  Future<List<History>> fetchSearchHistory(int userId) async {
-    final url =
-        '${GlobalVariable().myVariable}/api/product/search-history/$userId';
-
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      final searchHistory = data
-          .map((item) => History(
-                id: item['ID'],
-                content: item['Content'],
-                idUser: item['UserID'],
-              ))
-          .toList();
-      return searchHistory.cast<History>();
-    } else {
-      throw Exception('Failed to fetch search history');
-    }
-  }
-
-  Future<void> deleteSearchHistory(int id) async {
-    final url = '${GlobalVariable().myVariable}/api/product/delete-history/$id';
-
-    final response = await http.delete(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      // Xóa thành công, thực hiện các thao tác khác nếu cần
-    } else {
-      // Xử lý lỗi và trả về phản hồi thích hợp
-      print('Error deleting search history: ${response.statusCode}');
-    }
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }
