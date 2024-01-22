@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
 import 'package:http/http.dart' as http;
 import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,9 +44,7 @@ class UserPresenter {
       _view.displayMessage('Login successful, welcome!');
       print(responseData);
       final User user = User.fromJson(responseData);
-
-      await saveLocalId(user.ID);
-
+      Stored.saveText('UserID', user.ID);
       return user;
     } else if (response.statusCode == 401) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -105,7 +104,7 @@ class UserPresenter {
   }) async {
     try {
       final response = await http.put(
-        Uri.parse('${ApiConstants.baseUrl}/users/update/AddressID'),
+        Uri.parse('${ApiConstants.baseUrl}/api/users/updateUser'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'id': userId, 'address': address}),
       );
@@ -124,13 +123,62 @@ class UserPresenter {
     }
   }
 
-  Future<void> saveLocalId(int localId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('UserID', localId);
+  Future<void> updateUser({
+    required String userId,
+    required String Fullname,
+    required String email,
+    required String phone,
+  }) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${ApiConstants.baseUrl}/api/users/updateUser'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'id': userId,
+          'Fullname': Fullname,
+          'email': email,
+          'phoneNumber': phone
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        _view.displayMessage('Cập nhật thông tin thành công');
+      } else if (response.statusCode == 404) {
+        _view.displayMessage('User not found');
+      } else {
+        _view.displayMessage('Failed!.Please try again.');
+      }
+    } catch (error) {
+      print('Error in update address request: $error');
+      _view.displayMessage('Internal Server Error');
+    }
   }
 
-  Future<int?> getLocalId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('UserID');
+  Future<bool> updatePassword({
+    required String userId,
+    required String password,
+  }) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${ApiConstants.baseUrl}/api/users/updatePassWord'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'id': userId, 'pass': password}),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        _view.displayMessage('Đổi mật khẩu thành công');
+        return true;
+      } else if (response.statusCode == 404) {
+        _view.displayMessage('User not found');
+      } else {
+        _view.displayMessage('Failed!. Please try again.');
+      }
+    } catch (error) {
+      print('Error in update address request: $error');
+      _view.displayMessage('Internal Server Error');
+    }
+    return false;
   }
 }

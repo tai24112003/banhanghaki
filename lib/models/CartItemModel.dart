@@ -18,6 +18,27 @@ class CartItemModel {
     if (gt >= 0) quantity = gt;
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'ItemId': id,
+      'CartID': idCart,
+      'Product': product.toJson(),
+      'CartQuan': quantity,
+      'CartStatus': status,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'CartItemModel { '
+        'id: $id, '
+        'idCart: $idCart, '
+        'product: $product, '
+        'quantity: $quantity, '
+        'status: $status'
+        ' }';
+  }
+
   factory CartItemModel.fromJson(Map<String, dynamic> json) {
     return CartItemModel(
         id: json['ItemId'] ?? "0" as int,

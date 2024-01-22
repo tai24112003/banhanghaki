@@ -8,8 +8,8 @@ import 'package:bangiayhaki/views/AddProductScreen.dart';
 import 'package:flutter/material.dart';
 
 class ProductsManageScreen extends StatefulWidget {
-  const ProductsManageScreen({super.key});
-
+  const ProductsManageScreen({super.key,required this.idUser});
+final int idUser;
   @override
   State<ProductsManageScreen> createState() => _ProductsManageScreenState();
 }
@@ -47,11 +47,11 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
             Expanded(
               child: TabBarView(
                 children: [
-                  ListChairManager(),
-                  ListTableManager(),
-                  ListArmchairManager(),
-                  ListBedManager(),
-                  ListLampManager(),
+                  ListChairManager(idUser: widget.idUser,),
+                  ListTableManager(idUser: widget.idUser),
+                  ListArmchairManager(idUser: widget.idUser),
+                  ListBedManager(idUser: widget.idUser),
+                  ListLampManager(idUser: widget.idUser),
                 ],
               ),
             ),
@@ -65,6 +65,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
                     MaterialPageRoute(
                       builder: (context) => AddProduct(
                         id: 0,
+                        idUser:widget.idUser,
                         image: [],
                         idCategory: 0,
                         quantity: 0,

@@ -50,11 +50,8 @@ Future<void> _showDialog(BuildContext context, TextEditingController txt,
             children: [
               TextButton(
                 onPressed: () {
-                  if (a
-                          .where((element) => element == txt.text)
-                          .toList()
-                          .isEmpty &&
-                      txt.text != "") {
+                  if (txt.text != "") {
+                    a.remove(txt.text);
                     a.insert(0, txt.text);
                     a = a.take(15).toList();
                     Stored.saveText(keyStore, a.join("->"));

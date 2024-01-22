@@ -1,8 +1,11 @@
+import 'package:bangiayhaki/views/DetailOrderScreen.dart';
+import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
 class CongratScreen extends StatelessWidget {
-  const CongratScreen({super.key});
-
+  const CongratScreen({super.key, required this.id, required this.idorder});
+  final id;
+  final idorder;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +55,15 @@ class CongratScreen extends StatelessWidget {
                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DetailOrderScreen(stt: "Đang xử lí", id: idorder),
+                        ));
+                  },
                   style: ButtonStyle(
                       padding: const MaterialStatePropertyAll(
                           EdgeInsets.fromLTRB(0, 15, 0, 15)),
@@ -72,7 +83,14 @@ class CongratScreen extends StatelessWidget {
                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(id: id),
+                        ));
+                  },
                   style: ButtonStyle(
                       padding: const MaterialStatePropertyAll(
                           EdgeInsets.fromLTRB(0, 15, 0, 15)),

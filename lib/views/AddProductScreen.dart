@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:bangiayhaki/components/Detail.dart';
+import 'package:bangiayhaki/presenters/NotiPresenter.dart';
+import 'package:bangiayhaki/presenters/noti_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
@@ -8,9 +11,10 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddProduct extends StatefulWidget {
-  const AddProduct({
+   AddProduct({
     Key? key,
     required this.id,
+    required this.idUser,
     required this.image,
     required this.idCategory,
     required this.name,
@@ -19,7 +23,7 @@ class AddProduct extends StatefulWidget {
     required this.description,
     required this.price,
   }) : super(key: key);
-
+final int idUser;
   final List<int> image;
   final String name, description;
   final double price;
@@ -320,14 +324,10 @@ class _AddProductState extends State<AddProduct> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductsManageScreen(),
+                                builder: (context) => ProductsManageScreen(idUser: widget.idUser,),
                               ),
                             );
-                          } else {
-                            setState(() {
-                              Test();
-                            });
-                          }
+                          } 
                         },
                         child: const Text("Cập nhật"),
                         style: ElevatedButton.styleFrom(
@@ -354,16 +354,16 @@ class _AddProductState extends State<AddProduct> {
                               _price.text,
                               _description.text,
                             );
+                            NotiPresenter().insertNotification(Name: "Sản phẩm "+_productName.text+" vừa được thêm vào", content: "Mời bạn đen xem",NotificationType: "Public",UserID: widget.idUser);
+                            NotificationServices().sendFCMNotificationToAll(title: "Thông báo",body:"HaKi Store vừa thêm sản phẩm mới vào xem ngay!" );
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductsManageScreen(),
+                                builder: (context) => ProductsManageScreen(idUser: widget.idUser,),
                               ),
                             );
                           } else {
-                            setState(() {
-                              Test();
-                            });
+                           
                           }
                         },
                         child: const Text("Thêm"),

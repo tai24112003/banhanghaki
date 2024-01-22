@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/presenters/noti_service.dart';
 import 'package:bangiayhaki/views/AddAddressScreen.dart';
@@ -30,17 +33,18 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   UserPresenter? presenter;
-  NotificationServices notificationServices = NotificationServices();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String token = '';
   void _submitForm() async {
+    token = await NotificationServices().getDeviceToken();
+    print("Token" + token);
     if (_formKey.currentState!.validate()) {
       User? user = await presenter?.Login(
           email: emailController.text, password: passwordController.text);
       if (user != null) {
         await presenter?.updateToken(UserID: user.ID, DVToken: token);
         Navigator.popUntil(context, (route) => route.isFirst);
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => HomeScreen(id: user.ID),
@@ -51,31 +55,19 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
 
   void initState() {
     presenter = UserPresenter(this);
-    notificationServices = GlobalServices.notificationServices;
-    notificationServices.requestNotificationPermission();
-    notificationServices.forgroundMessage();
-    notificationServices.firebaseInit(context);
-    notificationServices.setupInteractMessage(context);
-    notificationServices.isTokenRefresh();
-
-    notificationServices.getDeviceToken().then((value) {
-      if (kDebugMode) {
-        print('device token');
-        print(value);
-        token = value;
-      }
-    });
+    GlobalServices.initService(context);
     initLocal();
   }
 
   void initLocal() async {
-    int? id = await presenter?.getLocalId();
-    if (id != null) {
+    int? id = await Stored.loadStoredText("UserID");
+    print("ID" + id.toString());
+    if (id != 0) {
       Navigator.popUntil(context, (route) => route.isFirst);
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(id: id),
+            builder: (context) => HomeScreen(id: id!),
           ));
     }
   }
@@ -136,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildTextField("Email", emailController),
+                        buildTextField("Email/Phone", emailController),
                         const SizedBox(height: 30),
                         buildTextField("Password", passwordController,
                             isPassword: true),

@@ -31,7 +31,6 @@ class _OrderScreenState extends State<OrderScreen>
 
   Future<void> loadData() async {
     try {
-      await OrderPresenter.loadData(widget.id);
       setState(() {
         lstorder_dagiao = OrderPresenter.statusFilter("Đã giao");
         lstorder_dahuy = OrderPresenter.statusFilter("Đã hủy");

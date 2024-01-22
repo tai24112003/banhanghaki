@@ -82,7 +82,6 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                           _searchController.text, widget.UserId);
                     });
                       if (hasNetwork) {
-                        HitstoryPresenter.syncSearchHistoryWithServer(widget.UserId);
                           Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -121,7 +120,8 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
               child: Container(
                   height: 60,
                   child: FutureBuilder<List<HistorySearch>>(
-                    future: HitstoryPresenter.fetchAndSaveSearchHistory(widget.UserId),
+                    future: HitstoryPresenter.fetchAndSaveSearchHistory(
+                        widget.UserId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
@@ -139,7 +139,6 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                               onTap:() async {
                                   bool hasNetwork = await HitstoryPresenter.hasNetworkConnection();
                                   if (hasNetwork) {
-                                    HitstoryPresenter.syncSearchHistoryWithServer(widget.UserId);
                                       Navigator.push(
                                     context,
                                     MaterialPageRoute(

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,7 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class NotificationServices {
+class NotificationServices implements UserView {
   //initialising firebase message plugin
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -36,6 +38,7 @@ class NotificationServices {
   }
 
   void firebaseInit(BuildContext context) {
+    FirebaseMessaging.instance.subscribeToTopic('allDevices');
     FirebaseMessaging.onMessage.listen((message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification!.android;
@@ -159,11 +162,12 @@ class NotificationServices {
     });
   }
 
-  void handleMessage(BuildContext context, RemoteMessage message) {
+  void handleMessage(BuildContext context, RemoteMessage message) async {
+    int userid = await Stored.loadStoredText("UserID");
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginScreen(),
+          builder: (context) => NotiScreen(userId: userid),
         ));
   }
 
@@ -209,5 +213,45 @@ class NotificationServices {
       print(
           'Failed to send FCM Notification. Status code: ${response.statusCode}');
     }
+  }
+
+  Future<void> sendFCMNotificationToAll({
+    required String title,
+    required String body,
+  }) async {
+    final url = Uri.parse('https://fcm.googleapis.com/fcm/send');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          'key=AAAAS8J01ew:APA91bF8T2hVyl9R3hiCb6yVgxZOvpC9rc5L4aAeRo2fvSh-LQ-hgDe1Mqy9MyNlNvIkBvBHZfN-kjfPf-GcJuNO1Y0KC9yni5c3xNu5o67TkqE5nXpYyHDyqf5N0R25taQwJwG3Z5Be', // Replace with your server key
+    };
+
+    final payload = {
+      'notification': {
+        'title': title,
+        'body': body,
+      },
+      'to':
+          '/topics/allDevices', // Send to the topic that represents all devices
+    };
+
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(payload),
+    );
+
+    if (response.statusCode == 200) {
+      print('FCM Notification sent to all devices successfully');
+    } else {
+      print(
+          'Failed to send FCM Notification. Status code: ${response.statusCode}');
+    }
+  }
+
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }

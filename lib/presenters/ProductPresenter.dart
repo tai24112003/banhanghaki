@@ -9,35 +9,37 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductPresenter {
- static Future<Product?> fetchProduct(int productId) async {
-  try {
-    final response = await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/pro/$productId'));
-    
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body) as Map<String, dynamic>;
+  static Future<Product?> fetchProduct(int productId) async {
+    try {
+      final response = await http
+          .get(Uri.parse('${ApiConstants.baseUrl}/api/product/pro/$productId'));
 
-      List<int> imageData = (jsonData['Image']['data'] as List<dynamic>).cast<int>();
-      Uint8List uint8List = Uint8List.fromList(imageData);
-      Product product = Product(
-        id: jsonData['ID'],
-        idCategory: jsonData['CategoryID'],
-        image: uint8List,
-        quantity: jsonData['Quantity'],
-        name: jsonData['ProductName'],
-        price: (jsonData['Price'] as num?)?.toDouble() ?? 0.0,
-        description: jsonData['Description'],
-      );
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
-      return product;
-    } else {
-      print('Failed to fetch product from API');
+        List<int> imageData =
+            (jsonData['Image']['data'] as List<dynamic>).cast<int>();
+        Uint8List uint8List = Uint8List.fromList(imageData);
+        Product product = Product(
+          id: jsonData['ID'],
+          idCategory: jsonData['CategoryID'],
+          image: uint8List,
+          quantity: jsonData['Quantity'],
+          name: jsonData['ProductName'],
+          price: (jsonData['Price'] as num?)?.toDouble() ?? 0.0,
+          description: jsonData['Description'],
+        );
+
+        return product;
+      } else {
+        print('Failed to fetch product from API');
+        return null;
+      }
+    } catch (e) {
+      print('Error: $e');
       return null;
     }
-  } catch (e) {
-    print('Error: $e');
-    return null;
   }
-}
 
  static Future<List<Product>> fetchProducts(int idCategory) async {
   try {
@@ -47,67 +49,66 @@ class ProductPresenter {
       final data = json.decode(response.body) as List<dynamic>;
       List<Product> products = [];
 
-      for (var item in data) {
-        Product product = Product.fromJson(item);
-        products.add(product);
+        for (var item in data) {
+          Product product = Product.fromJson(item);
+          products.add(product);
+        }
+
+        // Lưu dữ liệu vào local storage
+        await LocalStorage.saveProducts(idCategory, products);
+
+        return products;
+      } else {
+        // Trả về dữ liệu từ local storage nếu có lỗi
+        return LocalStorage.getProducts(idCategory);
       }
-
-      // Lưu dữ liệu vào local storage
-      await LocalStorage.saveProducts(idCategory, products);
-
-      return products;
-    } else {
-      // Trả về dữ liệu từ local storage nếu có lỗi
-      return LocalStorage.getProducts(idCategory);
-    }
+  
   } catch (e) {
     // Trả về dữ liệu từ local storage nếu có lỗi
     return LocalStorage.getProducts(idCategory);
   }
-}
-static Future<void> addProduct(
-  File? _imageFile,
-  int _selectedItem,
-  String _productName,
-  String _quantity,
-  String _price,
-  String _description) async {
-    
-  try {
-    if (_imageFile == null) {
-      throw Exception('Lỗi: Hình ảnh không tồn tại');
+ }
+  static Future<void> addProduct(
+      File? _imageFile,
+      int _selectedItem,
+      String _productName,
+      String _quantity,
+      String _price,
+      String _description) async {
+    try {
+      if (_imageFile == null) {
+        throw Exception('Lỗi: Hình ảnh không tồn tại');
+      }
+
+      final url = Uri.parse('${ApiConstants.baseUrl}/api/product/add_Product');
+
+      final bytes = await _imageFile.readAsBytes();
+      final base64Image = base64Encode(bytes);
+
+      final product = {
+        'CategoryID': _selectedItem,
+        'ProductName': _productName,
+        'Image': base64Image,
+        'Quantity': int.parse(_quantity),
+        'Price': double.parse(_price),
+        'Description': _description,
+      };
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(product),
+      );
+
+      if (response.statusCode == 200) {
+        print('Sản phẩm đã được thêm thành công');
+      } else {
+      }
+    } catch (e) {
+      print('Lỗi: $e');
     }
-
-    final url = Uri.parse('${ApiConstants.baseUrl}/api/product/add_Product');
-
-    final bytes = await _imageFile.readAsBytes();
-    final base64Image = base64Encode(bytes);
-
-    final product = {
-      'CategoryID': _selectedItem,
-      'ProductName': _productName,
-      'Image': base64Image,
-      'Quantity': int.parse(_quantity),
-      'Price': double.parse(_price),
-      'Description': _description,
-    };
-
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(product),
-    );
-
-    if (response.statusCode == 200) {
-      print('Sản phẩm đã được thêm thành công');
-    } else {
-    }
-  } catch (e) {
-    print('Lỗi: $e');
   }
-}
 
-    
   static Future<void> updateProduct(
       File? _imageFile,
       int _selectedItem,
@@ -146,6 +147,7 @@ static Future<void> addProduct(
       print('Lỗi cập nhật sản phẩm: ${response.reasonPhrase}');
     }
   }
+
   static void deleteProduct(int? productId) async {
     final url = '${ApiConstants.baseUrl}/api/product/delete/$productId';
 

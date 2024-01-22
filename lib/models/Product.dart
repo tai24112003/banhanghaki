@@ -18,6 +18,18 @@ class Product {
     required this.price,
     required this.description,
   });
+  @override
+  String toString() {
+    return 'Product {'
+        ' ID: $id,'
+        ' Quantity: $quantity,'
+        ' CategoryID: $idCategory,'
+        // ' Image: ${image.toString()},'
+        ' ProductName: $name,'
+        ' Price: $price,'
+        ' Description: $description'
+        ' }';
+  }
 
   factory Product.fromJson(Map<String, dynamic> json) {
     dynamic imageValue = json['Image'];
@@ -38,7 +50,7 @@ class Product {
     return {
       'ID': id,
       'CategoryID': idCategory,
-      'Image': image,
+      // 'Image': image,
       'Quantity': quantity,
       'ProductName': name,
       'Price': price,
@@ -55,5 +67,3 @@ class Product {
     }
   }
 }
-
-

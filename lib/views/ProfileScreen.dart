@@ -1,10 +1,13 @@
 import 'package:bangiayhaki/components/ProfileItem.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
+import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:bangiayhaki/views/SettingScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +22,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> implements UserView {
   late UserPresenter userPresenter;
   late Future<User?> userFuture;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -73,17 +77,20 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
   }
 
   String getAvatarText(User user) {
-  if (user.Fullname.isNotEmpty) {
-    if (user.Fullname.contains(' ')) {
-      return user.Fullname.split(' ').map((word) => word[0]).join('').toUpperCase();
+    print(user.Fullname);
+    if (user.Fullname.isNotEmpty) {
+      if (user.Fullname.contains(' ')) {
+        return user.Fullname.split(' ')
+            .map((word) => word.isNotEmpty ? word[0] : '')
+            .join('')
+            .toUpperCase();
+      } else {
+        return user.Fullname.substring(0, 1).toUpperCase();
+      }
     } else {
-      return user.Fullname.substring(0, 1).toUpperCase();
+      return 'QD';
     }
-  } else {
-    return 'QD';
   }
-}
-
 
   Widget buildProfileView(User user) {
     return SizedBox(
@@ -97,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
-children: [
+                  children: [
                     Container(
                       alignment: Alignment.center,
                       height: MediaQuery.of(context).size.height * 0.2,
@@ -148,7 +155,7 @@ children: [
               detail: "Bạn có 3 địa chỉ",
             ),
             ProfileItem(
-              mywidget: CheckoutScreen(id: 1),
+              mywidget: PayMethodScreen(),
               title: "Thanh toán",
               detail: "Bạn có 1 hình thức thanh toán",
             ),
@@ -160,6 +167,30 @@ children: [
               title: "Cài đặt",
               detail: "Thông báo, đổi mật khẩu, liên hệ",
             ),
+            Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                width: MediaQuery.of(context).size.width,
+                child: OutlinedButton(
+                  onPressed: () async {
+                    Stored.saveText("UserID", 0);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ));
+                  },
+                  style: ButtonStyle(
+                      padding: MaterialStatePropertyAll(
+                          EdgeInsets.fromLTRB(0, 15, 0, 15)),
+                      backgroundColor:
+                          const MaterialStatePropertyAll(Colors.black),
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)))),
+                  child: Text(
+                    "Đăng xuất",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ))
           ],
         ),
       ),

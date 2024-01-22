@@ -12,6 +12,8 @@ class ItemManage extends StatefulWidget {
   const ItemManage({
     Key? key,
     required this.id,
+    required this.idUser,
+
     required this.image,
     required this.name,
     required this.idCategory,
@@ -24,7 +26,9 @@ class ItemManage extends StatefulWidget {
   final List<int> image;
   final String name, description;
   final double price;
-  final int? id;final int quantity, idCategory;
+  final int? id;
+  final int idUser;
+  final int quantity, idCategory;
   final Function onReStart;
 
   @override
@@ -77,6 +81,7 @@ class _ItemManageState extends State<ItemManage> {
                       MaterialPageRoute(
                         builder: (context) => AddProduct(
                           id:widget.id!.toInt(),
+                          idUser:widget.idUser,
                           image: widget.image,
                           idCategory: widget.idCategory,
                           quantity: widget.quantity,

@@ -63,6 +63,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomeScreen(id: 1,));
+        home: LoginScreen());
   }
 }

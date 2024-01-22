@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
 class ListChairManager extends StatefulWidget {
-  const ListChairManager({super.key});
-
+  const ListChairManager({super.key,required this.idUser});
+final int idUser;
   @override
   State<ListChairManager> createState() => _ListChairManagerState();
 }
@@ -43,7 +43,7 @@ class _ListChairManagerState extends State<ListChairManager> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return ItemManage(
-                id: snapshot.data![index].id,
+                id: snapshot.data![index].id,idUser: widget.idUser,
                 image: snapshot.data![index].image,
                 idCategory: snapshot.data![index].idCategory,
                 quantity: snapshot.data![index].quantity,
@@ -57,7 +57,7 @@ class _ListChairManagerState extends State<ListChairManager> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

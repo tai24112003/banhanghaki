@@ -10,8 +10,8 @@ import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
 
 class ListLampManager extends StatefulWidget {
-  const ListLampManager({super.key});
-
+  const ListLampManager({super.key,required this.idUser});
+final int idUser;
   @override
   State<ListLampManager> createState() => _ListLampManagerState();
 }
@@ -42,7 +42,7 @@ class _ListLampManagerState extends State<ListLampManager> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return ItemManage(
-                id: snapshot.data![index].id,
+                id: snapshot.data![index].id,idUser: widget.idUser,
                 image: snapshot.data![index].image,
                 idCategory: snapshot.data![index].idCategory,
                 quantity: snapshot.data![index].quantity,
@@ -56,7 +56,7 @@ class _ListLampManagerState extends State<ListLampManager> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

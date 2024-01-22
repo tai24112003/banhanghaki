@@ -1,6 +1,7 @@
 import 'package:bangiayhaki/components/DetailOrderItem.dart';
 import 'package:bangiayhaki/models/OrderDetailsModel.dart';
 import 'package:bangiayhaki/presenters/OrderDetailsPresenter.dart';
+import 'package:bangiayhaki/presenters/OrderPresenter.dart';
 import 'package:flutter/material.dart';
 
 class DetailOrderScreen extends StatefulWidget {
@@ -67,34 +68,45 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(const EdgeInsets.all(5)),
-                    shape: MaterialStateProperty.all(BeveledRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    )),
-                  ),
-                  onPressed: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          offset: const Offset(3, 3),
+                widget.stt.toString() == "Đã giao"
+                    ? const Text("")
+                    : TextButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.all(5)),
+                          shape:
+                              MaterialStateProperty.all(BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          )),
                         ),
-                      ],
-                      color: Colors.black,
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    ),
-                    child: Text(
-                      widget.stt.toString() == "Đang giao"
-                          ? "Đã nhận hàng"
-                          : "Đã nhận",
-                      style: const TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                  ),
-                ),
+                        onPressed: () {
+                          OrderPresenter.updateSttnew(3, "Đã hủy");
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                offset: const Offset(3, 3),
+                              ),
+                            ],
+                            color: Colors.black,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                          ),
+                          child: Text(
+                            widget.stt.toString() == "Đang xử lí"
+                                ? "Hủy đơn"
+                                : widget.stt.toString() == "Đang giao"
+                                    ? "Đã nhận được hàng"
+                                    : "",
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                          ),
+                        ),
+                      ),
               ],
             ),
             isLoading

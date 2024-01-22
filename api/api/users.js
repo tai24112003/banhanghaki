@@ -33,7 +33,7 @@ router.put('/updateToken', async (req, res) => {
     try {
         const { UserID, deviceToken } = req.body;
         const query = 'update users set DVToken = ? Where ID=? ';
-        const resultts = await executeQuery(query, [UserID, deviceToken]);
+        const resultts = await executeQuery(query, [deviceToken, UserID]);
         if (resultts) {
             res.status(200).send("Update DeviceToken");
         }
@@ -116,7 +116,7 @@ router.post('/register', async (req, res) => {
                 // return res.status(200).json({ results: "success" });
             });
             res.json({
-                Fullname: fullName,
+                FullName: fullName,
                 Email: email,
                 Phone: phoneNumber,
                 Password: password,
@@ -171,8 +171,8 @@ router.put('/updateUser', async (req, res) => {
 });
 router.put('/updatePassWord', async (req, res) => {
     try {
-        const { pass,id } = req.body;
-
+        const { pass, id } = req.body;
+        const hashedPassword = await bcrypt.hash(pass, 10);
         const checkUserQuery = 'SELECT * FROM Users WHERE ID = ?';
         const userExists = await executeQuery(checkUserQuery, [id]);
 
@@ -183,7 +183,7 @@ router.put('/updatePassWord', async (req, res) => {
                 WHERE ID=?
             `;
 
-            await executeQuery(updateUserQuery, [pass, id]);
+            await executeQuery(updateUserQuery, [hashedPassword, id]);
 
             res.json({
                 success: true,

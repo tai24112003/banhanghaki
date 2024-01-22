@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ListArmchairManager extends StatefulWidget {
-  const ListArmchairManager({super.key});
+  const ListArmchairManager({super.key,required this.idUser});
+  final int idUser;
 
   @override
   State<ListArmchairManager> createState() => _ListArmchairManagerState();
@@ -43,6 +44,7 @@ class _ListArmchairManagerState extends State<ListArmchairManager> {
             itemBuilder: (context, index) {
               return ItemManage(
                 id: snapshot.data![index].id,
+                idUser: widget.idUser,
                 image: snapshot.data![index].image,
                 idCategory: snapshot.data![index].idCategory,
                 quantity: snapshot.data![index].quantity,
@@ -56,7 +58,7 @@ class _ListArmchairManagerState extends State<ListArmchairManager> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

@@ -38,7 +38,7 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                       if (widget.active != 0) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ProfileScreen(
+                          return HomeScreen(
                             id: widget.userid,
                           );
                         }));
@@ -49,11 +49,13 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 1)
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return NotiScreen(userId: widget.userid,
-                          );
-                        }));
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ProductsManageScreen(idUser: widget.userid,),
+                          ));
                     },
                     icon: Icon(widget.active != 1
                         ? Icons.notifications_active_outlined

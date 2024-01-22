@@ -10,8 +10,8 @@ import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
 
 class ListTableManager extends StatefulWidget {
-  const ListTableManager({super.key});
-
+  const ListTableManager({super.key,required this.idUser});
+final int idUser;
   @override
   State<ListTableManager> createState() => _ListTableManagerState();
 }
@@ -42,6 +42,7 @@ class _ListTableManagerState extends State<ListTableManager> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return ItemManage(
+                idUser: widget.idUser,
                 id: snapshot.data![index].id,
                 image: snapshot.data![index].image,
                 idCategory: snapshot.data![index].idCategory,
