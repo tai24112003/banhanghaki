@@ -38,6 +38,7 @@ class NotificationServices implements UserView {
   }
 
   void firebaseInit(BuildContext context) {
+    FirebaseMessaging.instance.subscribeToTopic('allDevices');
     FirebaseMessaging.onMessage.listen((message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification!.android;
@@ -208,6 +209,41 @@ class NotificationServices implements UserView {
 
     if (response.statusCode == 200) {
       print('FCM Notification sent successfully');
+    } else {
+      print(
+          'Failed to send FCM Notification. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> sendFCMNotificationToAll({
+    required String title,
+    required String body,
+  }) async {
+    final url = Uri.parse('https://fcm.googleapis.com/fcm/send');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          'key=AAAAS8J01ew:APA91bF8T2hVyl9R3hiCb6yVgxZOvpC9rc5L4aAeRo2fvSh-LQ-hgDe1Mqy9MyNlNvIkBvBHZfN-kjfPf-GcJuNO1Y0KC9yni5c3xNu5o67TkqE5nXpYyHDyqf5N0R25taQwJwG3Z5Be', // Replace with your server key
+    };
+
+    final payload = {
+      'notification': {
+        'title': title,
+        'body': body,
+      },
+      'to':
+          '/topics/allDevices', // Send to the topic that represents all devices
+    };
+
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(payload),
+    );
+
+    if (response.statusCode == 200) {
+      print('FCM Notification sent to all devices successfully');
     } else {
       print(
           'Failed to send FCM Notification. Status code: ${response.statusCode}');
