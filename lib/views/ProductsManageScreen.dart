@@ -70,7 +70,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
                         quantity: 0,
                         name: "",
                         price: 0,
-                        descreption: "",
+                        description: "",
                         onRestart: test,
                       ),
                     ),

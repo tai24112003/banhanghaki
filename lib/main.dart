@@ -28,7 +28,7 @@ import 'package:bangiayhaki/views/ProfileScreen.dart';
 import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:bangiayhaki/components/ListArmchair.dart';
 import 'package:bangiayhaki/components/ListBed.dart';
-import 'package:bangiayhaki/components/ListChari.dart';
+import 'package:bangiayhaki/components/ListChair.dart';
 import 'package:bangiayhaki/components/ListLamp.dart';
 import 'package:bangiayhaki/views/AdminProfileScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
@@ -63,6 +63,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LoginScreen());
+        home: HomeScreen(id: 1,));
   }
 }

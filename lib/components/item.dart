@@ -13,11 +13,12 @@ class Item extends StatefulWidget {
       required this.name,
       required this.quantity,
       required this.description,
-      required this.price});
+      required this.idUser,
+      required this.price,});
   final List<int> image;
   final String name, description;
   final double price;
-  final int id, quantity;
+  final int? id;final int quantity,idUser;
   @override
   State<Item> createState() => _ItemState();
 }
@@ -34,7 +35,7 @@ class _ItemState extends State<Item> {
   @override
   void initState() {
     super.initState();
-    getIdCart(1);
+    getIdCart(widget.idUser);
     try {
       if (widget.image.isNotEmpty) {
         imageBytes = widget.image;
@@ -62,6 +63,7 @@ class _ItemState extends State<Item> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailScreen(
+                    idUser: widget.idUser,
                     id: widget.id,
                   ),
                 ),
@@ -89,7 +91,7 @@ class _ItemState extends State<Item> {
                   onTap: () {CartPresenter.addItemToCart(widget.id, idCart, 1);Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CartScreen(idUser: 1,
+                  builder: (context) => CartScreen(idUser: widget.idUser,
                   ),
                 ),
               );},

@@ -31,7 +31,3 @@ class HistorySearch {
     );
   }
 }
-
-class SearchHistoryManager {
-  
-}

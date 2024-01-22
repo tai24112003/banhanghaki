@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class ListChair extends StatefulWidget {
-  const ListChair({super.key});
-
+  const ListChair({super.key,required this.idUser});
+final idUser;
   @override
   State<ListChair> createState() => _ListChairState();
 }
@@ -49,12 +49,12 @@ class _ListChairState extends State<ListChair> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
-                  mainAxisExtent: 300,
+                  mainAxisExtent: 320,
                   mainAxisSpacing: 10,
                 ),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  return Item(
+                  return Item(idUser: widget.idUser,
                     id: snapshot.data![index].id,
                     image: snapshot.data![index].image,
                     quantity: snapshot.data![index].quantity,

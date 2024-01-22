@@ -11,8 +11,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ListBed extends StatefulWidget {
-  const ListBed({super.key});
-
+  const ListBed({super.key,required this.idUser});
+final idUser;
   @override
   State<ListBed> createState() => _ListBedState();
 }
@@ -51,12 +51,14 @@ class _ListBedState extends State<ListBed> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                crossAxisCount: 2,
                   crossAxisSpacing: 10,
-                  mainAxisExtent: 300,
+                  mainAxisExtent: 320,
                   mainAxisSpacing: 10,
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return Item(
+                  idUser: widget.idUser,
+
                   id: snapshot.data![index].id,
                   image: snapshot.data![index].image,
                   quantity: snapshot.data![index].quantity,

@@ -11,8 +11,8 @@ import 'package:bangiayhaki/components/item.dart';
 import 'package:bangiayhaki/models/Product.dart';
 
 class ListTable extends StatefulWidget {
-  const ListTable({super.key});
-
+  const ListTable({super.key,required this.idUser});
+final idUser;
   @override
   State<ListTable> createState() => _ListTableState();
 }
@@ -45,12 +45,12 @@ class _ListTableState extends State<ListTable> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                crossAxisCount: 2,
                   crossAxisSpacing: 10,
-                  mainAxisExtent: 300,
+                  mainAxisExtent: 320,
                   mainAxisSpacing: 10,
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return Item(
+                return Item(idUser: widget.idUser,
                   id: snapshot.data![index].id,
                   image: snapshot.data![index].image,
                   quantity: snapshot.data![index].quantity,
@@ -63,7 +63,7 @@ class _ListTableState extends State<ListTable> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

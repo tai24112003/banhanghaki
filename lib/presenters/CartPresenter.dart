@@ -11,14 +11,14 @@ import 'package:http/io_client.dart';
 class CartPresenter {
 
   static List<CartItemModel> lstProIncart = List.empty();
-static Future<bool> addItemToCart(int productId, int cartId, int quantity) async {
+static Future<bool> addItemToCart(int? productId, int cartId, int quantity) async {
     try {
       final response = await http.post(
         Uri.parse('${ApiConstants.baseUrl}/cart'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          'idc': cartId,
           'idpro': productId,
+          'idc': cartId,
           'quan': quantity,
           
         }),

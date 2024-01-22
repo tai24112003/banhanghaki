@@ -24,7 +24,7 @@ class ItemManage extends StatefulWidget {
   final List<int> image;
   final String name, description;
   final double price;
-  final int id, quantity, idCategory;
+  final int? id;final int quantity, idCategory;
   final Function onReStart;
 
   @override
@@ -76,11 +76,11 @@ class _ItemManageState extends State<ItemManage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddProduct(
-                          id: widget.id,
+                          id:widget.id!.toInt(),
                           image: widget.image,
                           idCategory: widget.idCategory,
                           quantity: widget.quantity,
-                          descreption: widget.description,
+                          description: widget.description,
                           name: widget.name,
                           price: widget.price,
                           onRestart: test,
