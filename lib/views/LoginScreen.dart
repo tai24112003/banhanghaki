@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CheckoutScreen(id: user.ID),
+              builder: (context) => HomeScreen(id: user.ID),
             ));
       }
     }
@@ -51,6 +51,19 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
         print(value);
       }
     });
+    initLocal();
+  }
+
+  void initLocal() async {
+    int? id = await presenter?.getLocalId();
+    if (id != null) {
+      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(id: id),
+          ));
+    }
   }
 
   @override

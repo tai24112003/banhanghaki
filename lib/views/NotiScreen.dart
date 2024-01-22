@@ -25,7 +25,7 @@ class _NotiScreenState extends State<NotiScreen> {
           children: [NotiItem()],
         ),
       ),
-      // bottomNavigationBar: BottomBarCustom(active: 1, userid: widget.user.ID),
+      bottomNavigationBar: BottomBarCustom(active: 1, userid: widget.userId),
     );
   }
 }

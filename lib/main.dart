@@ -1,5 +1,6 @@
 import 'package:bangiayhaki/firebase_options.dart';
 import 'package:bangiayhaki/presenters/noti_service.dart';
+import 'package:bangiayhaki/views/AddProductScreen.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -62,6 +63,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LoginScreen());
+        home: CartScreen(
+          id: 1,
+        ));
   }
 }
