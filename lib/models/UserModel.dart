@@ -21,8 +21,13 @@ class User {
         ID: json['ID'] ?? 0,
         Fullname: json['Fullname'],
         Email: json['Email'],
+<<<<<<< HEAD
         Phone: json['PhoneNumber'],
         address: json['AddressID'],
+=======
+        Phone: json['Phone'],
+        address: json['Address'],
+>>>>>>> origin/vinh
         Password: json['Password'],
         Status: json['Status']);
   }
@@ -32,7 +37,7 @@ class User {
       'Email': Email,
       'Password': Password,
       'FullName': Fullname,
-      'PhoneNumber': Phone,
+      'Phone': Phone,
       'Address': address,
       'Status': Status,
     };
