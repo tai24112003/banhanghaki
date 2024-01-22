@@ -28,6 +28,23 @@ router.get('/', (req, res) => {
     });
 });
 
+router.put('/updateToken', async (req, res) => {
+    try {
+        const { UserID, deviceToken } = req.body;
+        const query = 'update users set DVToken = ? Where ID=? ';
+        const resultts = await executeQuery(query, [UserID, deviceToken]);
+        if (resultts) {
+            res.status(200).send("Update DeviceToken");
+        }
+        else {
+            res.status(401).send("fail update");
+        }
+    } catch (error) {
+        console.error('Error in /login route:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
 
 router.post('/login', async (req, res) => {
     try {

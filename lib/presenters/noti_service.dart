@@ -160,13 +160,11 @@ class NotificationServices {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
-    if (message.data['type'] == 'msj') {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginScreen(),
-          ));
-    }
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ));
   }
 
   Future forgroundMessage() async {

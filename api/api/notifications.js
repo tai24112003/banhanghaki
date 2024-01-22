@@ -3,8 +3,8 @@ const router = express.Router();
 const connection = require('./db');
 
 router.post('/', (req, res) => {
-    const {}
-    connection.query('SELECT * FROM Users WHERE 1', (error, results) => {
+    const { Name, Content, NotificationType, UserID } = req.body;
+    connection.query('INSERT INTO `notifications`( `Name`, `Content`, `NotificationType`, `UserID`) VALUES (?,?,?,?)', [Name, Content, NotificationType, UserID], (error, results) => {
         if (error) {
             //return res.send(error.message);
             return res.status(500).json({ error: 'Internal server error' });
@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
     });
 });
 router.get('/:id', (req, res) => {
-    connection.query("UPDATE `Users` SET `Status` = CASE WHEN `Status` = 0 THEN 1 WHEN `Status` = 1 THEN 0 END WHERE (`ID` = ?);", [req.params.id], (error, results) => {
+    connection.query("Select * from notifications where userid=? || notificationType=?", [req.params.id, "Public"], (error, results) => {
         if (error) {
             return res.send(error.message);
             //return res.status(500).json({ error: 'Internal server error' });

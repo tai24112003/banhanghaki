@@ -8,6 +8,17 @@ import 'package:bangiayhaki/views/RegisterScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+class GlobalServices {
+  static NotificationServices notificationServices = NotificationServices();
+  static initService(context) {
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+    notificationServices.isTokenRefresh();
+  }
+}
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -21,17 +32,18 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
   UserPresenter? presenter;
   NotificationServices notificationServices = NotificationServices();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  String token = '';
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       User? user = await presenter?.Login(
           email: emailController.text, password: passwordController.text);
       if (user != null) {
+        await presenter?.updateToken(UserID: user.ID, DVToken: token);
         Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(id: user.ID),
+              builder: (context) => CheckoutScreen(id: user.ID),
             ));
       }
     }
@@ -39,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
 
   void initState() {
     presenter = UserPresenter(this);
+    notificationServices = GlobalServices.notificationServices;
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
     notificationServices.firebaseInit(context);
@@ -49,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
       if (kDebugMode) {
         print('device token');
         print(value);
+        token = value;
       }
     });
     initLocal();

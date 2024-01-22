@@ -57,6 +57,14 @@ class UserPresenter {
     return null;
   }
 
+  Future<void> updateToken({required UserID, required DVToken}) async {
+    final response = await http.put(
+      Uri.parse('${ApiConstants.baseUrl}/api/users/updateToken'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'UserID': UserID, 'deviceToken': DVToken}),
+    );
+  }
+
   Future<void> Register({
     required String email,
     required String password,
