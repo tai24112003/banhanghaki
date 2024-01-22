@@ -64,13 +64,15 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                 IconButton(
                     onPressed: () {
                       if (widget.active != 1)
-                        Navigator.popUntil(context, (route) => route.isFirst);
-                      Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
                                 NotiScreen(userId: widget.userid),
-                          ));
+                            fullscreenDialog:
+                                true, // Đặt fullscreenDialog thành true
+                          ),
+                        );
                     },
                     icon: Icon(widget.active != 1
                         ? Icons.notifications_active_outlined

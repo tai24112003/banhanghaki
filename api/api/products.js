@@ -52,7 +52,7 @@ router.post('/add_Product', (req, res) => {
       product.ProductName,
       imageBuffer, // Use the image buffer
       product.Quantity,
-      product.UnitPrice,
+      product.Price,
       product.Description,
       product.Status,
     ],
@@ -79,7 +79,7 @@ router.put('/update/:id', (req, res) => {
   // Save image to a file (optional, you can directly update in the database)
   fs.writeFileSync('updated_image.jpg', imageBuffer);
 
-  const query = `UPDATE products SET CategoryID = ?, ProductName = ?, Image = ?, Quantity = ?, UnitPrice = ?, Description = ?, Status = 1
+  const query = `UPDATE products SET CategoryID = ?, ProductName = ?, Image = ?, Quantity = ?, Price = ?, Description = ?, Status = 1
                      WHERE ID = ?`;
 
   connection.query(
@@ -89,7 +89,7 @@ router.put('/update/:id', (req, res) => {
       updatedProduct.ProductName,
       imageBuffer, // Use the updated image buffer
       updatedProduct.Quantity,
-      updatedProduct.UnitPrice,
+      updatedProduct.Price,
       updatedProduct.Description,
       id,
     ],

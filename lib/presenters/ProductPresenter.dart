@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/ProductLocal.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductPresenter {
-  static Future<List<Product>> fetchProducts(int idCategory) async {
-    final response = await http
-        .get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
-
+ static Future<List<Product>> fetchProducts(int idCategory) async {
+  try {
+    final response = await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as List<dynamic>;
       List<Product> products = [];
@@ -35,27 +36,35 @@ class ProductPresenter {
         products.add(product);
       }
 
+      // Lưu dữ liệu xuống SharedPreferences theo danh mục
+      await LocalStorage.saveProducts(idCategory, products);
+
       return products;
     } else {
-      throw Exception('Failed to fetch products');
+      // Nếu không thành công, thử đọc từ SharedPreferences theo danh mục
+      return LocalStorage.getProducts(idCategory);
     }
+  } catch (e) {
+    // Nếu có lỗi khi fetch, thử đọc từ SharedPreferences theo danh mục
+    return LocalStorage.getProducts(idCategory);
   }
-
-  static Future<void> addProduct(
-      File? _imageFile,
-      int _selectedItem,
-      String _productName,
-      String _quantity,
-      String _price,
-      String _description) async {
+}
+static Future<void> addProduct(
+  File? _imageFile,
+  int _selectedItem,
+  String _productName,
+  String _quantity,
+  String _price,
+  String _description) async {
+    
+  try {
     if (_imageFile == null) {
-      print('Lỗi: Hình ảnh không tồn tại');
-      return;
+      throw Exception('Lỗi: Hình ảnh không tồn tại');
     }
 
     final url = Uri.parse('${ApiConstants.baseUrl}/api/product/add_Product');
 
-    final bytes = await _imageFile!.readAsBytes();
+    final bytes = await _imageFile.readAsBytes();
     final base64Image = base64Encode(bytes);
 
     final product = {
@@ -63,8 +72,7 @@ class ProductPresenter {
       'ProductName': _productName,
       'Image': base64Image,
       'Quantity': int.parse(_quantity),
-      'UnitPrice': double.parse(_price),
-      'Color': "White",
+      'Price': double.parse(_price),
       'Description': _description,
     };
 
@@ -77,9 +85,30 @@ class ProductPresenter {
     if (response.statusCode == 200) {
       print('Sản phẩm đã được thêm thành công');
     } else {
+     final localProduct = LocalProduct(
+        categoryId: _selectedItem, 
+        productName: _productName,
+        imageBase64: base64Image,
+        quantity: int.parse(_quantity),
+        price: double.parse(_price),
+        description: _description,
+      );
+      await addLocalProduct(localProduct);
       print('Lỗi thêm sản phẩm: ${response.reasonPhrase}');
     }
+  } catch (e) {
+    print('Lỗi: $e');
   }
+}
+
+    static const String localProductsKey = 'localProducts';
+
+    static Future<void> addLocalProduct(LocalProduct localProduct) async {
+      final prefs = await SharedPreferences.getInstance();
+      final localProductsJsonList = prefs.getStringList(localProductsKey) ?? [];
+      localProductsJsonList.add(jsonEncode(localProduct.toJson()));
+      prefs.setStringList(localProductsKey, localProductsJsonList);
+    }
 
   static Future<void> updateProduct(
       File? _imageFile,
@@ -106,7 +135,7 @@ class ProductPresenter {
       'ProductName': _productName,
       'Image': base64Image,
       'Quantity': int.parse(_quantity),
-      'UnitPrice': double.parse(_price),
+      'Price': double.parse(_price),
       'Color': "White",
       'Description': _description,
     });
@@ -117,6 +146,21 @@ class ProductPresenter {
       print('Sản phẩm đã được cập nhật thành công');
     } else {
       print('Lỗi cập nhật sản phẩm: ${response.reasonPhrase}');
+    }
+  }
+  static void deleteProduct(int productId) async {
+    final url = '${ApiConstants.baseUrl}/api/product/delete/$productId';
+
+    try {
+      final response = await http.put(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print('Sản phẩm đã được xóa thành công');
+        // widget.onReStart();
+      } else {
+        print('Lỗi xóa sản phẩm: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Lỗi kết nối: $e');
     }
   }
 }

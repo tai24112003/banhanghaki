@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bangiayhaki/components/CartItem.dart';
 import 'package:bangiayhaki/models/CartItemModel.dart';
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/models/OrderDetailsModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:http/http.dart' as http;

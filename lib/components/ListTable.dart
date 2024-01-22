@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:bangiayhaki/components/item.dart';
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 
 class ListTable extends StatefulWidget {
   const ListTable({super.key});

@@ -1,5 +1,5 @@
 import 'package:bangiayhaki/models/CartItemModel.dart';
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
 
 class CartItem extends StatefulWidget {

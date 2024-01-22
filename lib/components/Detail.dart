@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:http/http.dart' as http;
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:flutter/material.dart';
 
 late Future<Product> futureProduct;

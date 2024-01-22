@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/ProductLocal.dart';
 import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
 import 'package:flutter/services.dart';
@@ -54,7 +55,6 @@ class _AddProductState extends State<AddProduct> {
     setState(() {
       if (widget.id != 0) {
         _productName.text = widget.name;
-        // _urlImage.text = widget.image;
         _description.text = widget.descreption;
         _price.text = widget.price.toString();
         _quantity.text = widget.quantity.toString();
@@ -445,4 +445,6 @@ class _AddProductState extends State<AddProduct> {
 
     return true;
   }
+  
+
 }

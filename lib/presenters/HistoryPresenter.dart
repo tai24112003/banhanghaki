@@ -4,7 +4,7 @@ import 'package:bangiayhaki/models/History.dart';
 import 'package:bangiayhaki/presenters/HistoryLocal.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:bangiayhaki/models/Item.dart';
+import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

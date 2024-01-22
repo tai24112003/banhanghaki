@@ -17,8 +17,7 @@ class ProductsManageScreen extends StatefulWidget {
 class _ProductsManageScreenState extends State<ProductsManageScreen> {
   void test() {
     setState(() {
-      print("Thêm ++++++++");
-    });
+          });
   }
 
   @override
