@@ -18,7 +18,7 @@ router.get('/search-history/:id_user', function (req, res) {
 });
 router.get('/search', (req, res) => {
   const searchTerm = req.query.searchTerm;
-  const query = 'SELECT * FROM products WHERE ProductName LIKE ?';
+  const query = 'SELECT * FROM products WHERE ProductName LIKE ? and status=1';
   const searchValue = `%${searchTerm}%`;
 
   connection.query(query, [searchValue], (err, rows, fields) => {

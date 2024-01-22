@@ -5,6 +5,7 @@ import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
 import 'package:bangiayhaki/presenters/HistoryPresenter.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/views/CartScreen.dart';
 import 'package:bangiayhaki/views/SearchScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -62,7 +63,7 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: 'Search...',
+                      hintText: 'Tìm kiếm sản phẩm...',
                       border: InputBorder.none,
                     ),
                     style: TextStyle(
@@ -72,12 +73,17 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                 ),
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_searchController.text != null &&
                         _searchController.text.isNotEmpty) {
+                      bool hasNetwork = await HitstoryPresenter.hasNetworkConnection();
+                    setState(() {
                       HitstoryPresenter.addSearchHistory(
                           _searchController.text, widget.UserId);
-                      Navigator.push(
+                    });
+                      if (hasNetwork) {
+                        HitstoryPresenter.syncSearchHistoryWithServer(widget.UserId);
+                          Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => SearchScreen(
@@ -86,17 +92,28 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                           ),
                         ),
                       );
+                      } else {
+                        _searchController.text="Không có internet";
+                      }
                     }
                   },
                 ),
               ],
             )
-          : Container(
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                "${widget.title}",
-                textAlign: TextAlign.start,
-              ),
+          : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:[ Container(
+                child: Text(
+                  "${widget.title}",
+                  textAlign: TextAlign.start,
+                ),
+              ),IconButton(onPressed: (){ Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CartScreen(
+            idUser: widget.UserId,
+          ),
+        ),
+      );}, icon: Icon(Icons.shopping_cart))]
             ),
       bottom: _isSearching
           ? PreferredSize(
@@ -119,16 +136,25 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                           itemBuilder: (context, index) {
                             final history = snapshot.data![index];
                             return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
+                              onTap:() async {
+                                  bool hasNetwork = await HitstoryPresenter.hasNetworkConnection();
+                                  if (hasNetwork) {
+                                    HitstoryPresenter.syncSearchHistoryWithServer(widget.UserId);
+                                      Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
                                       builder: (context) => SearchScreen(
-                                            id: widget.UserId,
-                                            search: history.content,
-                                          )),
-                                );
-                              },
+                                        id: widget.UserId,
+                                        search: history.content,
+                                      ),
+                                    ),
+                                  );
+                                  } else {
+                                    _searchController.text="Không có internet";
+                                  }
+                                  
+                                },
+
                               child: Card(
                                   color:
                                       const Color.fromARGB(255, 255, 255, 255),
@@ -165,9 +191,11 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
           : null,
     );
   }
-
+  
   @override
   void displayMessage(String message) {
     // TODO: implement displayMessage
   }
+
+  
 }

@@ -20,11 +20,14 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
+    dynamic imageValue = json['Image'];
+    List<int> imageData = _getImageBytes(imageValue);
+
     return Product(
       id: json['ID'] as int?,
       quantity: json['Quantity'] ?? 0,
       idCategory: json['CategoryID'] ?? 0,
-      image: _getImageBytes(json['Image']),
+      image: imageData,
       name: json['ProductName'] ?? "",
       price: (json['Price'] as num?)?.toDouble() ?? 0.0,
       description: json['Description'] ?? "",
@@ -43,14 +46,12 @@ class Product {
     };
   }
 
-  // Phương thức hỗ trợ chuyển đổi 'Image' thành Uint8List
-  static Uint8List _getImageBytes(dynamic imageData) {
+  static List<int> _getImageBytes(dynamic imageData) {
     if (imageData != null && imageData['data'] is List<dynamic>) {
       List<dynamic> dataList = imageData['data'];
-      List<int> bytes = dataList.map<int>((value) => value as int).toList();
-      return Uint8List.fromList(bytes);
+      return dataList.map<int>((value) => value as int).toList();
     } else {
-      return Uint8List(0);
+      return [];
     }
   }
 }

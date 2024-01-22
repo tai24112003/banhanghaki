@@ -40,43 +40,31 @@ class ProductPresenter {
 }
 
  static Future<List<Product>> fetchProducts(int idCategory) async {
-    try {
-      final response = await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
+  try {
+    final response = await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body) as List<dynamic>;
-        List<Product> products = [];
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body) as List<dynamic>;
+      List<Product> products = [];
 
-        for (var item in data) {
-          dynamic imageValue = item['Image'];
-          List<dynamic> dataList = imageValue['data'];
-
-          List<int> imageData = dataList.map<int>((value) => value as int).toList();
-          Uint8List uint8List = Uint8List.fromList(imageData);
-
-          Product product = Product(
-            id: item['ID'],
-            idCategory: item['CategoryID'],
-            image: uint8List,
-            quantity: item['Quantity'],
-            name: item['ProductName'],
-            price: (item['Price'] as num).toDouble(),
-            description: item['Description'],
-          );
-
-          products.add(product);
-        }
-
-        await LocalStorage.saveProducts(idCategory, products);
-
-        return products;
-      } else {
-        return LocalStorage.getProducts(idCategory);
+      for (var item in data) {
+        Product product = Product.fromJson(item);
+        products.add(product);
       }
-    } catch (e) {
+
+      // Lưu dữ liệu vào local storage
+      await LocalStorage.saveProducts(idCategory, products);
+
+      return products;
+    } else {
+      // Trả về dữ liệu từ local storage nếu có lỗi
       return LocalStorage.getProducts(idCategory);
     }
+  } catch (e) {
+    // Trả về dữ liệu từ local storage nếu có lỗi
+    return LocalStorage.getProducts(idCategory);
   }
+}
 static Future<void> addProduct(
   File? _imageFile,
   int _selectedItem,
@@ -113,18 +101,6 @@ static Future<void> addProduct(
     if (response.statusCode == 200) {
       print('Sản phẩm đã được thêm thành công');
     } else {
-      List<int> imageBytes = await _imageFile!.readAsBytes();
-     final localProduct = Product(
-      id: null,
-        idCategory: _selectedItem, 
-        name: _productName,
-        image: imageBytes,
-        quantity: int.parse(_quantity),
-        price: double.parse(_price),
-        description: _description,
-      );
-      await LocalStorage.addLocalProduct(localProduct);
-      print('Lỗi thêm sản phẩm: ${response.reasonPhrase}');
     }
   } catch (e) {
     print('Lỗi: $e');
@@ -132,7 +108,6 @@ static Future<void> addProduct(
 }
 
     
-
   static Future<void> updateProduct(
       File? _imageFile,
       int _selectedItem,

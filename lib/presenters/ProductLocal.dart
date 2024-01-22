@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
@@ -25,7 +26,7 @@ class LocalStorage {
       return [];
     }
   }
-static const String localProductsKey = 'products';
+static const String localProductsKey = 'productss';
 
     static Future<void> addLocalProduct(Product localProduct) async {
       final prefs = await SharedPreferences.getInstance();
@@ -72,37 +73,79 @@ static Future<List<Product>> getProduct(int productId) async {
 } 
   class LocalProduct {
 
-    final int productId;
+    final int? id;
+  final int quantity;
+  final int idCategory;
 
-    final int categoryId;
-    final String productName;
-    final String imageBase64;
-    final int quantity;
-    final double price;
-    final String description;
+  // Thay đổi kiểu dữ liệu của image thành Uint8List
+  final Uint8List image;
 
-    LocalProduct({
-      required this.productId,
+  final String name;
+  final double price;
+  final String description;
 
-      required this.categoryId,
-      required this.productName,
-      required this.imageBase64,
-      required this.quantity,
-      required this.price,
-      required this.description,
-    });
+  LocalProduct({
+    required this.id,
+    required this.image,
+    required this.idCategory,
+    required this.name,
+    required this.quantity,
+    required this.price,
+    required this.description,
+  });
+static const String productsKey = 'products';
 
-    Map<String, dynamic> toJson() {
-      return {
-        'ProductID': productId,
-        'CategoryID': categoryId,
-        'ProductName': productName,
-        'Image': imageBase64,
-        'Quantity': quantity,
-        'Price': price,
-        'Description': description,
-      };
+  static Future<void> saveProducts(int idCategory, List<LocalProduct> products) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> productsJsonList = products.map((p) => json.encode(p.toJson())).toList();
+    final categoryKey = '$productsKey:$idCategory';
+    prefs.setStringList(categoryKey, productsJsonList);
+  }
+
+  static Future<List<LocalProduct>> getProducts(int idCategory) async {
+    final prefs = await SharedPreferences.getInstance();
+    final categoryKey = '$productsKey:$idCategory';
+    final List<String>? productsJsonList = prefs.getStringList(categoryKey);
+
+    if (productsJsonList != null && productsJsonList.isNotEmpty) {
+      return productsJsonList.map((jsonString) => LocalProduct.fromJson(json.decode(jsonString))).toList();
+    } else {
+      return [];
     }
-  
+  }
+  factory LocalProduct.fromJson(Map<String, dynamic> json) {
+    return LocalProduct(
+      id: json['ID'] as int?,
+      quantity: json['Quantity'] ?? 0,
+      idCategory: json['CategoryID'] ?? 0,
+      image: _getImageBytes(json['Image']),
+      name: json['ProductName'] ?? "",
+      price: (json['Price'] as num?)?.toDouble() ?? 0.0,
+      description: json['Description'] ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'ID': id,
+      'CategoryID': idCategory,
+      'Image': image,
+      'Quantity': quantity,
+      'ProductName': name,
+      'Price': price,
+      'Description': description,
+    };
+  }
+
+  // Phương thức hỗ trợ chuyển đổi 'Image' thành Uint8List
+  static Uint8List _getImageBytes(dynamic imageData) {
+    if (imageData != null && imageData['data'] is List<dynamic>) {
+      List<dynamic> dataList = imageData['data'];
+      List<int> bytes = dataList.map<int>((value) => value as int).toList();
+      return Uint8List.fromList(bytes);
+    } else {
+      return Uint8List(0);
+    }
+  }
 }
 

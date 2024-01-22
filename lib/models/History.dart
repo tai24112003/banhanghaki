@@ -22,12 +22,28 @@ class HistorySearch {
     };
   }
 
-  // Factory method to create HistorySearch object from JSON
   factory HistorySearch.fromJson(Map<String, dynamic> json) {
     return HistorySearch(
       id: json['ID'],
       content: json['Content'],
       idUser: json['UserID'],
     );
+  }
+}
+class LocalStorage {
+  static const String searchHistoryKey = 'searchHistory';
+
+  // Lưu lịch sử tìm kiếm vào SharedPreferences
+  static Future<void> saveSearchHistory(String searchTerm) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> searchHistory = prefs.getStringList(searchHistoryKey) ?? [];
+    searchHistory.insert(0, searchTerm);
+    prefs.setStringList(searchHistoryKey, searchHistory);
+  }
+
+  // Lấy danh sách lịch sử tìm kiếm từ SharedPreferences
+  static Future<List<String>> getSearchHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(searchHistoryKey) ?? [];
   }
 }
