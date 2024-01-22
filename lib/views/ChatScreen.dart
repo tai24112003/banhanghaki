@@ -1,4 +1,6 @@
+import 'package:bangiayhaki/models/MessageModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/Message.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/material.dart';
 
@@ -18,13 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController _controller = TextEditingController();
   late final ScrollController _scrollController;
   double heightChatBox = 0.0;
-  List<Map<String, String>> a = [
-    {
-      "au": "s",
-      "cont":
-          "Hi you, Can I help you?Hi you, Can I help you?Hi you, Can I help you?"
-    }
-  ];
+  List<MessageConvert> a = [];
 
   @override
   void dispose() {
@@ -36,8 +32,27 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void upUi(dynamic data) {
-    a.add({"au": data["content"]["from"], "cont": data["content"]["content"]});
+    a.add(MessageConvert.fromJson({
+      "FromID": data["content"]["from"],
+      "MessageText": data["content"]["content"]
+    }));
     setState(() {});
+  }
+
+  void loadDt() {
+    if (widget.idUser != 1) {
+      MessagePresenter.loadData(widget.idUser).then((value) {
+        setState(() {
+          a = MessagePresenter.lstProIncart;
+        });
+      });
+    } else {
+      MessagePresenter.loadDataAdmin(widget.toUser).then((value) {
+        setState(() {
+          a = MessagePresenter.lstProIncart;
+        });
+      });
+    }
   }
 
   @override
@@ -45,6 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // TODO: implement initState
     super.initState();
     _scrollController = ScrollController();
+    loadDt();
     print("hello");
     socket = io.io(ApiConstants.baseUrl, <String, dynamic>{
       'transports': ['websocket'],
@@ -56,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
               widget.idUser.toString() != "1") ||
           (data["content"]["to"] == "1" &&
               data["content"]["from"] == widget.toUser.toString())) {
-        upUi(data);
+        loadDt();
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent + 10000000,
           duration: const Duration(milliseconds: 200),
@@ -123,10 +139,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             return Container(
                                 width: MediaQuery.of(context).size.width,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      a[idx]["au"] != widget.idUser.toString()
-                                          ? MainAxisAlignment.start
-                                          : MainAxisAlignment.end,
+                                  mainAxisAlignment: a[idx].au.toString() !=
+                                          widget.idUser.toString()
+                                      ? MainAxisAlignment.start
+                                      : MainAxisAlignment.end,
                                   children: [
                                     Container(
                                         constraints: BoxConstraints(
@@ -139,7 +155,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                             0, 5, 0, 5),
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                            color: a[idx]["au"] !=
+                                            color: a[idx].au.toString() !=
                                                     widget.idUser.toString()
                                                 ? Colors.blue
                                                 : Colors.purple,
@@ -147,7 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 const BorderRadius.all(
                                                     Radius.circular(10))),
                                         child: Text(
-                                          a[idx]["cont"]!,
+                                          a[idx].cont,
                                           style: const TextStyle(
                                               color: Colors.white),
                                           softWrap: true,
@@ -162,7 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                            height: MediaQuery.of(context).size.height / 12,
+                            height: MediaQuery.of(context).size.height / 11,
                             width: MediaQuery.of(context).size.width * 0.78,
                             child: TextField(
                               maxLines: null,
@@ -177,13 +193,13 @@ class _ChatScreenState extends State<ChatScreen> {
                               },
                               onEditingComplete: () {
                                 if (_controller.text.trim() != '') {
-                                  Map<String, String> newMes = {
+                                  dynamic newMes = {
                                     "au": widget.idUser.toString(),
                                     "cont": _controller.text
                                   };
                                   setState(() {
                                     _controller.text = "";
-                                    a.add(newMes);
+                                    a.add(MessageConvert.fromJson(newMes));
                                   });
                                   _scrollController.animateTo(
                                     _scrollController.position.maxScrollExtent +
@@ -224,15 +240,19 @@ class _ChatScreenState extends State<ChatScreen> {
                                 'to': widget.toUser.toString(),
                                 'content': _controller.text,
                               });
-
+                              _focusNode.unfocus();
                               setState(() {
-                                a.add({
-                                  "au": widget.idUser.toString(),
-                                  "cont": _controller.text
-                                });
-                                heightChatBox =
-                                    MediaQuery.of(context).size.height * 0.25;
+                                a.add(MessageConvert.fromJson({
+                                  "FromID": widget.idUser,
+                                  "MessageText": _controller.text
+                                }));
                                 _controller.text = "";
+                                _scrollController.animateTo(
+                                  _scrollController.position.maxScrollExtent +
+                                      10000000,
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeOut,
+                                );
                                 // a.add(newMes);
                               });
                             } else {

@@ -3,11 +3,13 @@ const cors = require('cors');
 const http = require('http');
 const socketIo = require('socket.io');
 // const ngrok = require('ngrok');
+const db = require('./api/db');
 const usersRoute = require('./api/users');
 const oderRoute = require('./api/orders');
 const orderDetailsRoute=require('./api/ordersdetail');
 const cartsRoute = require('./api/carts');
 const accountRoute = require('./api/account');
+const message = require('./api/message');
 
 
 
@@ -18,19 +20,39 @@ const io = socketIo(server);
 var adMin = null;
 var clientUsers = [];
 
+app.use((req, res, next) => {
+  req.db = db;
+  next();
+});
+
 io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
     
     // Xử lý khi nhận tin nhắn từ client
-    socket.on('message', (data) => {
+     socket.on('message',async (data)  => {
+      try {
+      // Sử dụng đối tượng kết nối từ middleware (đã thêm vào từ app.use((req, res, next) => ...))
+      db.query('INSERT INTO `Messages` (`FromID`, `MessageText`, `ToID`) VALUES (?, ?, ?);',[data["from"],data["content"],data["to"]], (error, results) => {
+                if (error) {
+                    //return res.send(error.message);
+                    console.error('Lỗi khi lưu tin nhắn vào cơ sở dữ liệu:', error.message);
+                }
+                else {
+                  console.log('Tin nhắn đã được lưu vào cơ sở dữ liệu:', results);
+                  let toUser = clientUsers.filter((user)=>{
+                    return user["from"]==data["to"];
+                   })
+                   console.log(toUser.length);
+                   if(toUser.length!=0){
+                     toUser[0]["instance"].emit('message',{ content: data });
+                   }
+                }
+            });
+    } catch (error) {
+      console.error('Lỗi khi lưu tin nhắn vào cơ sở dữ liệu:', error.message);
+    }
       console.log('Message from client:', data);
-      let toUser = clientUsers.filter((user)=>{
-       return user["from"]==data["to"];
-      })
-      console.log(toUser.length);
-      if(toUser.length!=0){
-        toUser[0]["instance"].emit('message',{ content: data });
-      }
+      
       
     //   console.log(toUser);
       // Gửi lại tin nhắn cho tất cả các client (bao gồm cả người gửi)
@@ -85,3 +107,4 @@ app.use(oderRoute);
 app.use(orderDetailsRoute);
 app.use('/cart',cartsRoute);
 app.use('/account',accountRoute);
+app.use('/message',message);

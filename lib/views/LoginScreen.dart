@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
                               Random random = Random();
 
                               // Sinh số nguyên ngẫu nhiên trong khoảng từ 0 đến 9
-                              int randomInt = random.nextInt(10) + 1;
+                              int randomInt = random.nextInt(3) + 1;
                               if (emailController.text.isNotEmpty) {
                                 randomInt = 1;
                               }
