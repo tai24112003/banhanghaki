@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ListArmchair extends StatefulWidget {
-  const ListArmchair({super.key});
-
+  const ListArmchair({super.key,required this.idUser});
+final idUser;
   @override
   State<ListArmchair> createState() => _ListArmchairState();
 }
@@ -51,12 +51,13 @@ class _ListArmchairState extends State<ListArmchair> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                   crossAxisSpacing: 10,
-                  mainAxisExtent: 300,
+                  mainAxisExtent: 320,
                   mainAxisSpacing: 10,
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return Item(
+                  idUser: widget.idUser,
                   id: snapshot.data![index].id,
                   image: snapshot.data![index].image,
                   quantity: snapshot.data![index].quantity,

@@ -66,7 +66,7 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       quan();
     });
-    print(_selectedCartItem.length);
+    print(_selectedCartItem);
   }
 
   void deleteItem(int id) {
@@ -107,7 +107,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+          centerTitle: true,
           backgroundColor: Colors.transparent,
           title: const Text(
             "Giỏ hàng",
@@ -189,12 +189,15 @@ class _CartScreenState extends State<CartScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CheckoutScreen(id: widget.idUser),
-                            ));
+                        if (_selectedCartItem.length != 0)
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CheckoutScreen(
+                                    id: widget.idUser,
+                                    detailOrder: _selectedCartItem,
+                                    totalAmount: _total),
+                              ));
                       },
                       style: ButtonStyle(
                           padding: const MaterialStatePropertyAll(

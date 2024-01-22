@@ -30,7 +30,6 @@ class _CartItemState extends State<CartItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setupQuan();
     try {
@@ -48,7 +47,7 @@ class _CartItemState extends State<CartItem> {
   }
 late List<int> imageBytes;
   Uint8List? uint8List;
-  void m(){;
+  void loadImage(){
         uint8List = Uint8List.fromList(imageBytes!);}
   
        

@@ -2,15 +2,23 @@ import 'package:bangiayhaki/components/AddressItem.dart';
 import 'package:bangiayhaki/models/AddressModel.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/AddressPresenter.dart';
+import 'package:bangiayhaki/presenters/OrderPresenter.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/views/CongratScreen.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key, required this.id});
+  const CheckoutScreen(
+      {super.key,
+      required this.id,
+      required this.detailOrder,
+      required this.totalAmount});
   final id;
+  final detailOrder;
+  final totalAmount;
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
@@ -140,13 +148,13 @@ class _CheckoutScreenState extends State<CheckoutScreen>
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               decoration: BoxDecoration(color: Colors.grey.withOpacity(0.1)),
-              child: const Column(
+              child: Column(
                 children: [
                   ListTile(
                     title:
                         Text("Đơn hàng", style: TextStyle(color: Colors.grey)),
                     trailing: Text(
-                      "95\$",
+                      "${widget.totalAmount}\$",
                       style: TextStyle(fontSize: 17),
                     ),
                   ),
@@ -154,7 +162,7 @@ class _CheckoutScreenState extends State<CheckoutScreen>
                     title: Text("Phí vận chuyển",
                         style: TextStyle(color: Colors.grey)),
                     trailing: Text(
-                      "95\$",
+                      "5\$",
                       style: TextStyle(fontSize: 17),
                     ),
                   ),
@@ -162,7 +170,7 @@ class _CheckoutScreenState extends State<CheckoutScreen>
                     title:
                         Text("Giảm giá", style: TextStyle(color: Colors.grey)),
                     trailing: Text(
-                      "95\$",
+                      "0\$",
                       style: TextStyle(fontSize: 17),
                     ),
                   ),
@@ -170,7 +178,7 @@ class _CheckoutScreenState extends State<CheckoutScreen>
                     title: Text("Tổng đơn hàng",
                         style: TextStyle(color: Colors.grey)),
                     trailing: Text(
-                      "95\$",
+                      "${widget.totalAmount + 5}\$",
                       style: TextStyle(fontSize: 17),
                     ),
                   ),
@@ -181,7 +189,29 @@ class _CheckoutScreenState extends State<CheckoutScreen>
                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (curAdd.ID != 0) {
+                      int idorder = await OrderPresenter().Checkout(
+                          quantity: widget.detailOrder.length,
+                          totalAmount: widget.totalAmount + 5,
+                          addressID: curAdd.ID,
+                          userID: widget.id,
+                          detailOrders: widget.detailOrder);
+                      if (idorder != 0) {
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CongratScreen(
+                                id: widget.id,
+                                idorder: idorder,
+                              ),
+                            ));
+                      }
+                    } else {
+                      displayMessage("Chưa chọn địa chỉ");
+                    }
+                  },
                   style: ButtonStyle(
                       padding: MaterialStatePropertyAll(
                           EdgeInsets.fromLTRB(0, 15, 0, 15)),
@@ -202,6 +232,11 @@ class _CheckoutScreenState extends State<CheckoutScreen>
 
   @override
   void displayMessage(String message) {
-    // TODO: implement displayMessage
+    // Hiển thị thông báo cho người dùng (ví dụ: sử dụng SnackBar)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 }

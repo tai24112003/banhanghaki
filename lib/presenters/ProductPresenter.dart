@@ -45,37 +45,26 @@ class ProductPresenter {
     try {
       final response = await http
           .get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List<dynamic>;
         List<Product> products = [];
 
         for (var item in data) {
-          dynamic imageValue = item['Image'];
-          List<dynamic> dataList = imageValue['data'];
-
-          List<int> imageData =
-              dataList.map<int>((value) => value as int).toList();
-          Uint8List uint8List = Uint8List.fromList(imageData);
-
-          Product product = Product(
-            id: item['ID'],
-            idCategory: item['CategoryID'],
-            image: uint8List,
-            quantity: item['Quantity'],
-            name: item['ProductName'],
-            price: (item['Price'] as num).toDouble(),
-            description: item['Description'],
-          );
+          Product product = Product.fromJson(item);
           products.add(product);
         }
 
+        // Lưu dữ liệu vào local storage
         await LocalStorage.saveProducts(idCategory, products);
 
         return products;
       } else {
+        // Trả về dữ liệu từ local storage nếu có lỗi
         return LocalStorage.getProducts(idCategory);
       }
     } catch (e) {
+      // Trả về dữ liệu từ local storage nếu có lỗi
       return LocalStorage.getProducts(idCategory);
     }
   }
@@ -115,17 +104,18 @@ class ProductPresenter {
       if (response.statusCode == 200) {
         print('Sản phẩm đã được thêm thành công');
       } else {
-        final localProduct = LocalProduct(
-          productId: 0,
-          categoryId: _selectedItem,
-          productName: _productName,
-          imageBase64: base64Image,
-          quantity: int.parse(_quantity),
-          price: double.parse(_price),
-          description: _description,
-        );
-        await LocalStorage.addLocalProduct(localProduct);
-        print('Lỗi thêm sản phẩm: ${response.reasonPhrase}');
+        //   List<int> imageBytes = await _imageFile!.readAsBytes();
+        //  final localProduct = Product(
+        //   id: null,
+        //     idCategory: _selectedItem,
+        //     name: _productName,
+        //     image: imageBytes,
+        //     quantity: int.parse(_quantity),
+        //     price: double.parse(_price),
+        //     description: _description,
+        //   );
+        //   await LocalStorage.addLocalProduct(localProduct);
+        //   print('Lỗi thêm sản phẩm: ${response.reasonPhrase}');
       }
     } catch (e) {
       print('Lỗi: $e');
@@ -139,7 +129,7 @@ class ProductPresenter {
       String _quantity,
       String _price,
       String _description,
-      int id) async {
+      int? id) async {
     if (_imageFile == null) {
       print('Lỗi: Hình ảnh không tồn tại');
       return;
@@ -171,46 +161,13 @@ class ProductPresenter {
     }
   }
 
-  // static Future<Product> fetchProduct(int productId) async {
-  //   final response = await http
-  //       .get(Uri.parse('${ApiConstants.baseUrl}/api/product/$productId'));
-
-  //   if (response.statusCode == 200) {
-  //     final jsonData = json.decode(response.body) as Map<String, dynamic>;
-
-  //     dynamic imageValue = jsonData['Image'];
-  //     List<dynamic> dataList = imageValue['data'];
-  //     List<int> imageData = dataList.map<int>((value) => value as int).toList();
-  //     Uint8List uint8List = Uint8List.fromList(imageData);
-
-  //     Product product = Product(
-  //       id: jsonData['ID'],
-  //       name: jsonData['ProductName'],
-  //       idCategory: jsonData['CategoryID'],
-  //       image: uint8List,
-  //       quantity: jsonData['Quantity'],
-  //       price: jsonData['UnitPrice'].toDouble(),
-  //       description: jsonData['Description'],
-  //     );
-
-  //     return product;
-  //   }
-
-  //   if (response.statusCode == 404) {
-  //     throw Exception('Product not found');
-  //   }
-
-  //   throw Exception('Failed to fetch product');
-  // }
-
-  static void deleteProduct(int productId) async {
+  static void deleteProduct(int? productId) async {
     final url = '${ApiConstants.baseUrl}/api/product/delete/$productId';
 
     try {
       final response = await http.put(Uri.parse(url));
       if (response.statusCode == 200) {
         print('Sản phẩm đã được xóa thành công');
-        // widget.onReStart();
       } else {
         print('Lỗi xóa sản phẩm: ${response.statusCode}');
       }

@@ -22,7 +22,7 @@ router.post('/api/orderdetail/get', async (req, res) => {
     }
 });
 
-router.post('/api/orderdetails/', async (req, res) => {
+router.post('/api/orderdetail/', async (req, res) => {
     const { detailOrders, orderID } = req.body;
 
     try {

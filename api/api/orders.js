@@ -5,7 +5,7 @@ const connection = require('./db');
 router.post('/api/order/get', async (req, res) => {
     try {
         const { id } = req.body;
-        
+
         const query = 'SELECT * FROM Orders WHERE UserID = ?';
         connection.query(query, [id], async (err, results) => {
             if (err) {
@@ -13,7 +13,7 @@ router.post('/api/order/get', async (req, res) => {
                 res.status(500).send('Internal Server Error');
             } else {
                 console.log(results);
-                res.json(results); 
+                res.json(results);
             }
         });
     } catch (error) {
@@ -46,7 +46,7 @@ router.put('/api/order/:id', async (req, res) => {
     const { status } = req.body;
     try {
         const query = 'UPDATE `hakistore`.`Orders` SET `Status` = ? WHERE (`ID` = ?);';
-        connection.query(query, [status,idOrder], async (err, results) => {
+        connection.query(query, [status, idOrder], async (err, results) => {
             if (err) {
                 console.error('Error executing MySQL query:', err);
                 res.status(500).send('Internal Server Error');
@@ -83,7 +83,7 @@ router.post('/api/order/', async (req, res) => {
         getMaxidOrders().then((rs) => {
             var idOrder = rs + 1;
             const query = 'INSERT INTO `orders`(`ID` ,`Quantity`, `OrderDate`, `TotalAmount`, `Status`, `AddressID`, `UserID`) VALUES (?,?,?,?,?,?,?)';
-            connection.query(query, [idOrder, quantity, Date.now(), totalAmount, 1, addressID, userID], async (err, results) => {
+            connection.query(query, [idOrder, quantity, Date.now(), totalAmount, "Đang xử lí", addressID, userID], async (err, results) => {
                 if (err) {
                     console.error('Error executing MySQL query:', err);
                     res.status(500).send('Internal Server Error');
@@ -102,7 +102,7 @@ router.post('/api/order/', async (req, res) => {
 // router.put('/api/order/updatestt', async (req, res) => {
 //     try {
 //         const { id, status } = req.body;
-        
+
 //         if (1) {
 //             const checkUserQuery = 'SELECT * FROM orders WHERE ID = ?';
 //             const orderExists = await executeQuery(checkUserQuery, [id]);

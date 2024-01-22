@@ -6,30 +6,48 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
   static const String productsKey = 'products';
- static Future<void> saveProducts(int idCategory, List<Product> products) async {
-  final prefs = await SharedPreferences.getInstance();
-  final List<String> productsJsonList = products.map((p) => json.encode(p.toJson())).toList();
-  final categoryKey = '$productsKey:$idCategory';
-  prefs.setStringList(categoryKey, productsJsonList);
-}
+
+  static Future<void> saveProducts(int idCategory, List<Product> products) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> productsJsonList = products.map((p) => json.encode(p.toJson())).toList();
+    final categoryKey = '$productsKey:$idCategory';
+    prefs.setStringList(categoryKey, productsJsonList);
+  }
+
+  static Future<List<Product>> getProducts(int idCategory) async {
+    final prefs = await SharedPreferences.getInstance();
+    final categoryKey = '$productsKey:$idCategory';
+    final List<String>? productsJsonList = prefs.getStringList(categoryKey);
+
+    if (productsJsonList != null && productsJsonList.isNotEmpty) {
+      return productsJsonList.map((jsonString) => Product.fromJson(json.decode(jsonString))).toList();
+    } else {
+      return [];
+    }
+  }
 static const String localProductsKey = 'products';
 
-    static Future<void> addLocalProduct(LocalProduct localProduct) async {
+    static Future<void> addLocalProduct(Product localProduct) async {
       final prefs = await SharedPreferences.getInstance();
-      final localProductsJsonList = prefs.getStringList(localProductsKey) ?? [];
-      localProductsJsonList.add(jsonEncode(localProduct.toJson()));
-      prefs.setStringList(localProductsKey, localProductsJsonList);
-    }
-static Future<List<Product>> getProducts(int idCategory) async {
-  final prefs = await SharedPreferences.getInstance();
-  final categoryKey = '$productsKey:$idCategory';
-  final List<String>? productsJsonList = prefs.getStringList(categoryKey);
-  if (productsJsonList != null) {
-    return productsJsonList.map((jsonString) => Product.fromJson(json.decode(jsonString))).toList();
+  
+  // Lấy danh sách dữ liệu hiện tại từ SharedPreferences
+  final localProductsJsonList = prefs.getStringList(localProductsKey) ?? [];
+
+  // Thêm dữ liệu mới vào danh sách
+  localProductsJsonList.add(jsonEncode(localProduct.toJson()));
+
+  // Lưu lại danh sách mới vào SharedPreferences
+  prefs.setStringList(localProductsKey, localProductsJsonList);
+
+  // Kiểm tra xem liệu dữ liệu mới đã được thêm vào thành công hay không
+  final updatedList = prefs.getStringList(localProductsKey);
+  if (updatedList != null) {
+    print("Dữ liệu đã được thêm vào thành công: $updatedList");
   } else {
-    return [];
+    print("Có lỗi khi thêm dữ liệu vào SharedPreferences");
   }
-}
+    }
+
 static Future<List<Product>> getProduct(int productId) async {
   final prefs = await SharedPreferences.getInstance();
   final categoryKey = '$productsKey:$productId';

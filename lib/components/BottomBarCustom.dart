@@ -38,7 +38,7 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                       if (widget.active != 0) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ProfileScreen(
+                          return HomeScreen(
                             id: widget.userid,
                           );
                         }));

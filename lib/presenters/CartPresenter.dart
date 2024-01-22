@@ -9,18 +9,17 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
 class CartPresenter {
-
   static List<CartItemModel> lstProIncart = List.empty();
-static Future<bool> addItemToCart(int productId, int cartId, int quantity) async {
+  static Future<bool> addItemToCart(
+      int? productId, int cartId, int quantity) async {
     try {
       final response = await http.post(
         Uri.parse('${ApiConstants.baseUrl}/cart'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          'idc': cartId,
           'idpro': productId,
+          'idc': cartId,
           'quan': quantity,
-          
         }),
       );
 
@@ -28,7 +27,8 @@ static Future<bool> addItemToCart(int productId, int cartId, int quantity) async
         return true;
       } else {
         // In thong bao loi khi co loi
-        print('Failed to add item to cart. Status code: ${response.statusCode}');
+        print(
+            'Failed to add item to cart. Status code: ${response.statusCode}');
         return false;
       }
     } catch (e) {
@@ -36,8 +36,8 @@ static Future<bool> addItemToCart(int productId, int cartId, int quantity) async
       print('Error: $e');
       return false;
     }
-  
-}
+  }
+
   static Future<void> loadData(int id) async {
     HttpClient client = new HttpClient();
     client.badCertificateCallback =

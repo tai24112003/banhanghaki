@@ -37,14 +37,15 @@ class NotiPresenter {
       required String content,
       required NotificationType,
       required int UserID}) async {
-    final res = http.post(Uri.parse('${ApiConstants.baseUrl}/notifications/'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'Name': Name,
-          'Content': content,
-          'NotificationType': NotificationType,
-          'UserID': UserID
-        }));
+    final res =
+        http.post(Uri.parse('${ApiConstants.baseUrl}/api/notifications/'),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode({
+              'Name': Name,
+              'Content': content,
+              'NotificationType': NotificationType,
+              'UserID': UserID
+            }));
   }
 
   Future<List<Notifications>> getNotificationbyId(int ID) async {

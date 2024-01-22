@@ -3,7 +3,7 @@ import 'package:bangiayhaki/components/TabBarCustom.dart';
 import 'package:bangiayhaki/components/BottomBarCustom.dart';
 import 'package:bangiayhaki/components/ListArmchair.dart';
 import 'package:bangiayhaki/components/ListBed.dart';
-import 'package:bangiayhaki/components/ListChari.dart';
+import 'package:bangiayhaki/components/ListChair.dart';
 import 'package:bangiayhaki/components/ListLamp.dart';
 import 'package:bangiayhaki/components/ListTable.dart';
 import 'package:bangiayhaki/views/ChatScreen.dart';
@@ -49,11 +49,13 @@ class _HomeScreenState extends State<HomeScreen>
             body: Column(children: [
               Expanded(
                   child: TabBarView(children: [
-                ListChair(),
-                const ListTable(),
-                const ListArmchair(),
-                const ListBed(),
-                const ListLamp(),
+                ListChair(
+                  idUser: widget.id,
+                ),
+                ListTable(idUser: widget.id),
+                ListArmchair(idUser: widget.id),
+                ListBed(idUser: widget.id),
+                ListLamp(idUser: widget.id),
               ]))
             ]),
             floatingActionButton: FloatingActionButton(

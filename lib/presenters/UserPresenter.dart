@@ -188,8 +188,8 @@ class UserPresenter {
     prefs.setInt('UserID', localId);
   }
 
-  Future<int?> getLocalId() async {
+  Future<int> getLocalId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('UserID');
+    return prefs.getInt('UserID') ?? 0;
   }
 }

@@ -5,6 +5,7 @@ import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:bangiayhaki/views/SettingScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,26 +27,9 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
     super.initState();
     userPresenter = UserPresenter(this);
     userFuture = loadUser();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-  }
-
-  Future<void> _refresh() async {
-    userFuture = loadUser();
-    setState(() {});
-  }
-
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-    } else if (_scrollController.position.pixels ==
-        _scrollController.position.minScrollExtent) {
-      _refresh();
-    }
   }
 
   Future<User?> loadUser() async {
-    await OrderPresenter.loadData(widget.id);
     return userPresenter.getUserById(widget.id);
   }
 
@@ -66,31 +50,26 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
           ),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: SingleChildScrollView(
-          child: FutureBuilder<User?>(
-            future: userFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error}'),
-                );
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return Center(
-                  child: Text('Failed to load user data.'),
-                );
-              } else {
-                User user = snapshot.data!;
-                return buildProfileView(user);
-              }
-            },
-          ),
-        ),
+      body: FutureBuilder<User?>(
+        future: userFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Center(
+              child: Text('Failed to load user data.'),
+            );
+          } else {
+            User user = snapshot.data!;
+            return buildProfileView(user);
+          }
+        },
       ),
     );
   }
@@ -173,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
               detail: "Bạn có 3 địa chỉ",
             ),
             ProfileItem(
-              mywidget: CheckoutScreen(id: 1),
+              mywidget: PayMethodScreen(),
               title: "Thanh toán",
               detail: "Bạn có 1 hình thức thanh toán",
             ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bangiayhaki/components/DropdownAddressItem.dart';
 import 'package:bangiayhaki/models/AddressModel.dart';
 import 'package:bangiayhaki/presenters/AddressPresenter.dart';
+import 'package:bangiayhaki/presenters/NotiPresenter.dart';
 import 'package:bangiayhaki/presenters/noti_service.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:flutter/foundation.dart';
@@ -167,8 +168,8 @@ class AddAddressScreenState extends State<AddAddressScreen>
                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
-                  onPressed: () {
-                    presenter?.addAddress(
+                  onPressed: () async {
+                    bool? check = await presenter?.addAddress(
                         fullName: (numberStreet.text +
                             " " +
                             selectedWard.fullName +
@@ -178,7 +179,15 @@ class AddAddressScreenState extends State<AddAddressScreen>
                             selectedCity.fullName),
                         titleName: titleName.text,
                         id: widget.id);
-                    sendNotificationAfterAddingAddress();
+                    print(check);
+                    if (check == true) {
+                      sendNotificationAfterAddingAddress();
+                      NotiPresenter().insertNotification(
+                          Name: "Bạn vừa thêm địa chỉ mới",
+                          content: "Địa chỉ mới được thêm thành công",
+                          NotificationType: "Private",
+                          UserID: widget.id);
+                    }
                   },
                   style: ButtonStyle(
                       padding: MaterialStatePropertyAll(

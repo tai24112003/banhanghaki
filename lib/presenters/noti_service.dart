@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class NotificationServices {
+class NotificationServices implements UserView {
   //initialising firebase message plugin
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -159,11 +160,12 @@ class NotificationServices {
     });
   }
 
-  void handleMessage(BuildContext context, RemoteMessage message) {
+  void handleMessage(BuildContext context, RemoteMessage message) async {
+    int userid = await UserPresenter(this).getLocalId();
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginScreen(),
+          builder: (context) => NotiScreen(userId: userid),
         ));
   }
 
@@ -209,5 +211,10 @@ class NotificationServices {
       print(
           'Failed to send FCM Notification. Status code: ${response.statusCode}');
     }
+  }
+
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }

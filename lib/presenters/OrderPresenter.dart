@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bangiayhaki/models/OrderModel.dart';
@@ -92,10 +93,10 @@ class OrderPresenter {
     }
   }
 
-  Future<bool> Checkout(
-      {required String quantity,
-      required String totalAmount,
-      required String addressID,
+  Future<int> Checkout(
+      {required int quantity,
+      required double totalAmount,
+      required int addressID,
       required int userID,
       required List detailOrders}) async {
     final response = await http.post(
@@ -121,9 +122,11 @@ class OrderPresenter {
           'orderID': orderID,
         }),
       );
-      return true;
+
+      
+      return responseData['OrderID'];
     }
-    return false;
+    return 0;
   }
 
   static Future<void> updateSttDanhan(String id, String status) async {

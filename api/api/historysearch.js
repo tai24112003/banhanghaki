@@ -32,7 +32,7 @@ router.get('/search', (req, res) => {
 });
 router.post('/add-history', function (req, res) {
   const { ID, Content, UserId } = req.body;
-
+console.log("chạy vào hàm lstk")
   if (Content === null || UserId === null) {
     console.error('Error: content or userId is null');
     res.status(400).json({ error: 'Bad Request' });
