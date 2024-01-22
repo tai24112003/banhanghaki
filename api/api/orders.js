@@ -12,7 +12,8 @@ router.post('/api/order/get', async (req, res) => {
                 console.error('Error executing MySQL query:', err);
                 res.status(500).send('Internal Server Error');
             } else {
-                res.json(results);
+                console.log(results);
+                res.json(results); 
             }
         });
     } catch (error) {

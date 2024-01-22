@@ -23,6 +23,7 @@ router.get('/', (req, res) => {
             return res.status(500).json({ error: 'Internal server error' });
         }
         else {
+            console.log(results);
             return res.json(results);
         }
     });
@@ -45,6 +46,15 @@ router.put('/updateToken', async (req, res) => {
     }
 })
 
+// router.get('/', async (req, res) => {
+//     try {
+//         const results = await executeQuery('SELECT * FROM users WHERE status=1', []);
+//         res.json(results);
+//     } catch (error) {
+//         console.error('Error in / route:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
 router.post('/login', async (req, res) => {
     try {
@@ -131,44 +141,60 @@ router.put('/updateAddressId', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-router.put('/update/AddressID', async (req, res) => {
+router.put('/updateUser', async (req, res) => {
     try {
-        const { id, address } = req.body;
+        const { id, Fullname, email, phoneNumber } = req.body;
 
         const checkUserQuery = 'SELECT * FROM Users WHERE ID = ?';
-        const userExists = await new Promise((resolve, reject) => {
-            connection.query(checkUserQuery, [id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results.length > 0);
-                }
-            });
-        });
+        const userExists = await executeQuery(checkUserQuery, [id]);
 
-        if (userExists) {
+        if (userExists.length > 0) {
             const updateUserQuery = `
                 UPDATE Users
-                SET AddressID=?
+                SET FullName=?, Email=?, PhoneNumber=?
                 WHERE ID=?
             `;
 
-            connection.query(updateUserQuery, [address, id], (err) => {
-                if (err) {
-                    console.error('Error executing MySQL query:', err);
-                    res.status(500).send('Internal Server Error');
-                } else {
-                    res.json({
-                        AddressID: address
-                    });
-                }
+            await executeQuery(updateUserQuery, [Fullname, email, phoneNumber, id]);
+
+            res.json({
+                success: true,
+                message: 'User updated successfully',
             });
         } else {
             res.status(404).json({ success: false, message: 'User not found' });
         }
     } catch (error) {
-        console.error('Error in update route:', error);
-        res.status(500).send('Internal Server Error');
+        console.error('Error in /updateUser route:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+router.put('/updatePassWord', async (req, res) => {
+    try {
+        const { pass,id } = req.body;
+
+        const checkUserQuery = 'SELECT * FROM Users WHERE ID = ?';
+        const userExists = await executeQuery(checkUserQuery, [id]);
+
+        if (userExists.length > 0) {
+            const updateUserQuery = `
+                UPDATE Users
+                SET Password=?
+                WHERE ID=?
+            `;
+
+            await executeQuery(updateUserQuery, [pass, id]);
+
+            res.json({
+                success: true,
+                message: 'User updated successfully',
+            });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error in /updateUser route:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

@@ -20,11 +20,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-        UserId: widget.user.ID,
-        title: "Thông tin cá nhân",
-      ),
-      bottomNavigationBar: BottomBarCustom(userid: widget.user, active: 2),
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+          backgroundColor: Colors.transparent,
+          title: Container(
+            width: MediaQuery.of(context).size.width,
+            child: const Text(
+              "Đặt hàng",
+              textAlign: TextAlign.center,
+            ),
+          )),
+      // bottomNavigationBar: BottomBarCustom(
+      //   active: 2,
+      //   user: widget.user,
+      // ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
