@@ -143,7 +143,7 @@ router.put('/updateUser', async (req, res) => {
 router.put('/updatePassWord', async (req, res) => {
     try {
         const { pass,id } = req.body;
-
+        const hashedPassword = await bcrypt.hash(pass, 10);
         const checkUserQuery = 'SELECT * FROM Users WHERE ID = ?';
         const userExists = await executeQuery(checkUserQuery, [id]);
 
@@ -154,7 +154,7 @@ router.put('/updatePassWord', async (req, res) => {
                 WHERE ID=?
             `;
 
-            await executeQuery(updateUserQuery, [pass, id]);
+            await executeQuery(updateUserQuery, [hashedPassword, id]);
 
             res.json({
                 success: true,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:bangiayhaki/main.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/ProductPresenter.dart';
 import 'package:http/http.dart' as http;
 import 'package:bangiayhaki/models/Item.dart';
 import 'package:flutter/material.dart';
@@ -17,43 +18,11 @@ class Detail extends StatefulWidget {
   State<Detail> createState() => _DetailState();
 }
 
-Future<Product> fetchProduct(int productId) async {
-  final response = await http
-      .get(Uri.parse('${ApiConstants.baseUrl}/api/product/$productId'));
-
-  if (response.statusCode == 200) {
-    final jsonData = json.decode(response.body) as Map<String, dynamic>;
-
-    dynamic imageValue = jsonData['Image'];
-    List<dynamic> dataList = imageValue['data'];
-    List<int> imageData = dataList.map<int>((value) => value as int).toList();
-    Uint8List uint8List = Uint8List.fromList(imageData);
-
-    Product product = Product(
-      id: jsonData['ID'],
-      name: jsonData['ProductName'],
-      idCategory: jsonData['CategoryID'],
-      image: uint8List,
-      quantity: jsonData['Quantity'],
-      price: jsonData['UnitPrice'].toDouble(),
-      description: jsonData['Description'],
-    );
-
-    return product;
-  }
-
-  if (response.statusCode == 404) {
-    throw Exception('Product not found');
-  }
-
-  throw Exception('Failed to fetch product');
-}
-
 class _DetailState extends State<Detail> {
   @override
   void initState() {
     super.initState();
-    futureProduct = fetchProduct(widget.id).then((product) {
+    futureProduct = ProductPresenter.fetchProduct(widget.id).then((product) {
       setState(() {
         productName = product.name;
       });

@@ -23,17 +23,16 @@ class _DetailScreenState extends State<DetailScreen> {
           Container(
             width: MediaQuery.of(context).size.width * 0.7,
             child: FloatingActionButton.extended(
-              onPressed: () {
-              },
+              onPressed: () {},
               label: const Text('Add to cart'),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0), 
+                borderRadius: BorderRadius.circular(8.0),
               ),
               backgroundColor: Colors.black,
-              foregroundColor: Colors.white, 
+              foregroundColor: Colors.white,
               icon: const Icon(Icons.add_shopping_cart),
             ),
-          ) 
+          )
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

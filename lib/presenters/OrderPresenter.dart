@@ -25,7 +25,6 @@ class OrderPresenter {
     } else {
       print('Failed to load data. Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
-      //throw Exception('Failed to load data');
     }
   }
 
@@ -43,7 +42,6 @@ class OrderPresenter {
     } else {
       print('Failed to load data. Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
-      //throw Exception('Failed to load data');
       return false;
     }
   }
@@ -71,7 +69,6 @@ class OrderPresenter {
     } else {
       print('Failed to load data. Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
-      //throw Exception('Failed to load data');
       return List<Order>.empty();
     }
   }
