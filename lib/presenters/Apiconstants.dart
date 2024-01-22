@@ -1,4 +1,4 @@
 // ignore: file_names
 class ApiConstants {
-  static const String baseUrl = 'https://f968-117-2-114-128.ngrok-free.app';
+  static const String baseUrl = 'https://e70b-117-2-113-168.ngrok-free.app';
 }

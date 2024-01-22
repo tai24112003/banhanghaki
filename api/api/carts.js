@@ -16,20 +16,27 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/userOf/:id', (req, res) => {
-    var id = req.params.id;
+    try{
+        var id = req.params.id;
     connection.query('SELECT CartID FROM Carts WHERE UserID = ?;',[id], (error, results) => {
         if (error) {
             //return res.send(error.message);
             return res.status(500).json({ error: 'Internal server error' });
         }
-        else {
+        else if(results.length){
             return res.status(200).json(results[0].CartID);
         }
+        return res.status(404).json({ error:"Not found" });
     });
+    }catch(E){
+        res.status(500).send("Error");
+        console.log("Error")
+    }
 });
 
 router.put('/:number', (req, res) => {
-    var num = req.params.number;
+    try{
+        var num = req.params.number;
     var {id} = req.body;
     connection.query('UPDATE `CartDetails` SET `Quantity` = ? WHERE (`ID` = ?);',[num,id], (error, results) => {
         if (error) {
@@ -40,6 +47,10 @@ router.put('/:number', (req, res) => {
             return res.status(200).json({status:"success",num:num,id:id});
         }
     });
+    }catch(E){
+        res.status(500).send("Error");
+        console.log("Error");
+    }
 });
 
 //create new Cart

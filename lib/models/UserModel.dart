@@ -21,7 +21,7 @@ class User {
         id: json['ID'],
         Fullname: json['FullName'],
         Email: json['Email'],
-        Phone: json['PhoneNumber'],
+        Phone: json['Phone'],
         address: json['Address'],
         Password: json['Password'],
         Status: json['Status']);
@@ -31,7 +31,7 @@ class User {
       'Email': Email,
       'Password': Password,
       'FullName': Fullname,
-      'PhoneNumber': Phone,
+      'Phone': Phone,
       'Address': address,
       'Status': Status,
     };
