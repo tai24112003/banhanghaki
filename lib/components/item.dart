@@ -1,9 +1,11 @@
 import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
 import 'package:bangiayhaki/presenters/CartPresenter.dart';
 import 'package:bangiayhaki/views/CartScreen.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Item extends StatefulWidget {
   const Item(
@@ -27,11 +29,15 @@ class _ItemState extends State<Item> {
   int idCart = -1;
   List<int>? imageBytes;
   Uint8List? uint8List;
+  Uint8List? Urluint8List;
   void getIdCart(int idU) {
     CartPresenter.getCartID(idU).then((value) {
       idCart = int.parse(value);
     });
-  }
+  }void loadImage() async {
+  String imageUrl = 'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png';  // Thay đổi đường dẫn URL thực tế
+  Urluint8List = await loadImageFromUrl(imageUrl);
+}
   @override
   void initState() {
     super.initState();
@@ -39,7 +45,8 @@ class _ItemState extends State<Item> {
     try {
       if (widget.image.isNotEmpty) {
         imageBytes = widget.image;
-        uint8List = Uint8List.fromList(imageBytes!);
+        uint8List = Uint8List.fromList(imageBytes ?? <int>[]);
+       
         print(uint8List);
       } else {
         print('Lỗi: Dữ liệu hình ảnh trống.');
@@ -73,12 +80,12 @@ class _ItemState extends State<Item> {
               padding: EdgeInsets.all(5),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.memory(
-                  uint8List!,
-                  width: MediaQuery.of(context).size.width / 2.5,
-                  height: MediaQuery.of(context).size.height / 3.5,
-                  fit: BoxFit.cover,
-                ),
+                child:(uint8List!=null)? Image.memory(
+  uint8List!,
+  width: MediaQuery.of(context).size.width / 2.5,
+  height: MediaQuery.of(context).size.height / 3.5,
+  fit: BoxFit.cover,
+):Image.asset("assets/st.JPG")
               ),
             ),
           ),
@@ -135,4 +142,22 @@ class _ItemState extends State<Item> {
       
     
   }
+  Future<Uint8List?> loadImageFromUrl(String imageUrl) async {
+  try {
+    final response = await http.get(Uri.parse(imageUrl));
+
+    if (response.statusCode == 200) {
+      // Chuyển đổi dữ liệu hình ảnh từ response.body thành Uint8List
+      return Uint8List.fromList(response.bodyBytes);
+    } else {
+      // Xử lý lỗi nếu có
+      print('Error loading image: ${response.statusCode}');
+      return null;
+    }
+  } catch (e) {
+    // Xử lý lỗi nếu có
+    print('Error loading image: $e');
+    return null;
+  }
+}
 }

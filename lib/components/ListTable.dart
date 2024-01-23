@@ -61,7 +61,7 @@ class _ListTableState extends State<ListTable> {
               },
             );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text('');
         } else {
           return Center(child: CircularProgressIndicator());
         }

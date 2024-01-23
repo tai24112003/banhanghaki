@@ -66,7 +66,7 @@ class _ListChairState extends State<ListChair> {
               );
             }
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
+            return Text('');
           } else {
             return const Center(
               child: CircularProgressIndicator(),
