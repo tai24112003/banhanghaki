@@ -23,7 +23,7 @@ class Order {
       date: json['OrderDate'] != null
           ? DateTime.parse(json['OrderDate'])
           : DateTime.now(),
-      totalAmount: json['TotalAmount'] as int,
+      totalAmount: json['TotalAmount'] ?? 0 as int,
       status: json['Status'] as String,
     );
   }

@@ -113,8 +113,6 @@ app.use(oderRoute);
 app.use(orderDetailsRoute);
 
 app.use('/api/product', productsRoute);
-app.use(oderRoute);
-app.use(orderDetailsRoute);
 app.use('/cart', cartsRoute);
 app.use('/account', accountRoute);
 app.use('/api/notifications', notificationsRoute);

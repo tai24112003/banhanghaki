@@ -1,7 +1,10 @@
 import 'package:bangiayhaki/components/DetailOrderItem.dart';
 import 'package:bangiayhaki/models/OrderDetailsModel.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/OrderDetailsPresenter.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/presenters/noti_service.dart';
 import 'package:flutter/material.dart';
 
 class DetailOrderScreen extends StatefulWidget {
@@ -15,10 +18,12 @@ class DetailOrderScreen extends StatefulWidget {
   State<DetailOrderScreen> createState() => _DetailOrderScreenState();
 }
 
-class _DetailOrderScreenState extends State<DetailOrderScreen> {
+class _DetailOrderScreenState extends State<DetailOrderScreen>
+    implements UserView {
   List<OrderDetails> lstdetailorder = [];
   bool isLoading = true;
-
+  UserPresenter? user;
+  User? admin;
   @override
   void initState() {
     super.initState();
@@ -27,6 +32,7 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
 
   Future<void> loadData() async {
     try {
+      admin = await user?.getUserById(1);
       await OrderDetailPresenter.loadData(widget.id);
       setState(() {
         lstdetailorder = OrderDetailPresenter.lstOrderDetails;
@@ -68,7 +74,8 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                widget.stt.toString() == "Đã giao"
+                widget.stt.toString() == "Đã giao" ||
+                        widget.stt.toString() == "Đã hủy"
                     ? const Text("")
                     : TextButton(
                         style: ButtonStyle(
@@ -80,7 +87,15 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
                           )),
                         ),
                         onPressed: () {
-                          OrderPresenter.updateSttnew(3, "Đã hủy");
+                          OrderPresenter.updateSttnew(
+                              widget.id,
+                              widget.stt == "Đang xử lí"
+                                  ? "Đã Hủy"
+                                  : "Đã giao");
+                          NotificationServices().sendFCMNotification(
+                              title: "Cập nhật đơn hàng",
+                              body: "Đơn hàng đã giao tới",
+                              deviceToken: "");
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -147,5 +162,10 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }

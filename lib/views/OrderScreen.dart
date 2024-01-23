@@ -30,11 +30,13 @@ class _OrderScreenState extends State<OrderScreen>
   }
 
   Future<void> loadData() async {
+    print("qua await");
     try {
       setState(() {
         lstorder_dagiao = OrderPresenter.statusFilter("Đã giao");
         lstorder_dahuy = OrderPresenter.statusFilter("Đã hủy");
         lstorder_dangxuli = OrderPresenter.statusFilter("Đang xử lí");
+        lstorder_dangxuli.addAll(OrderPresenter.statusFilter("Đang giao"));
         isLoading = false;
       });
     } catch (error) {
@@ -85,6 +87,7 @@ class _OrderScreenState extends State<OrderScreen>
   }
 
   Widget _buildOrderList(List<Order> orders) {
+    print(isLoading);
     if (isLoading) {
       return Center(child: CircularProgressIndicator());
     } else if (orders.isEmpty) {

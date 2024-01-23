@@ -1,4 +1,5 @@
 import 'package:bangiayhaki/components/ProfileItem.dart';
+import 'package:bangiayhaki/models/OrderModel.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
 import 'package:bangiayhaki/presenters/StoreLocal.dart';
@@ -9,6 +10,7 @@ import 'package:bangiayhaki/views/LoginScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
 import 'package:bangiayhaki/views/PayMethodScreen.dart';
 import 'package:bangiayhaki/views/SettingScreen.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -22,17 +24,42 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> implements UserView {
   late UserPresenter userPresenter;
   late Future<User?> userFuture;
-  late ScrollController _scrollController;
-
+  late String Fullname;
+  late String Email;
+  late String Phone;
   @override
-  void initState() {
+  initState() {
     super.initState();
     userPresenter = UserPresenter(this);
+
+    loadUser().then((value) {
+      savedata("FullName", value!.Fullname);
+      savedata("Email", value.Email);
+      savedata("Phone", value.Phone);
+    });
+    loadingdata();
     userFuture = loadUser();
+    setState(() {});
+  }
+
+  Future<bool> isWifiConnected() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult == ConnectivityResult.wifi;
+  }
+
+  loadingdata() async {
+    Fullname = await Stored.loadStoredText("FullName");
+    Email = await Stored.loadStoredText("Email");
+    Phone = await Stored.loadStoredText("Phone");
   }
 
   Future<User?> loadUser() async {
-    return userPresenter.getUserById(widget.id);
+    await OrderPresenter.loadData(widget.id);
+    return await userPresenter.getUserById(widget.id);
+  }
+
+  Future<void> savedata(String a, String b) async {
+    await Stored.saveText(a, b);
   }
 
   @override
@@ -76,16 +103,16 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
     );
   }
 
-  String getAvatarText(User user) {
-    print(user.Fullname);
-    if (user.Fullname.isNotEmpty) {
-      if (user.Fullname.contains(' ')) {
-        return user.Fullname.split(' ')
+  String getAvatarText(String name) {
+    print(Fullname);
+    if (Fullname.isNotEmpty) {
+      if (Fullname.contains(' ')) {
+        return Fullname.split(' ')
             .map((word) => word.isNotEmpty ? word[0] : '')
             .join('')
             .toUpperCase();
       } else {
-        return user.Fullname.substring(0, 1).toUpperCase();
+        return Fullname.substring(0, 1).toUpperCase();
       }
     } else {
       return 'QD';
@@ -114,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
                         shape: BoxShape.circle,
                       ),
                       child: Text(
-                        getAvatarText(user),
+                        getAvatarText(Fullname),
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -126,14 +153,14 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user.Fullname,
+                        Fullname,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        user.Email,
+                        Email,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color.fromRGBO(128, 128, 128, 1),
@@ -145,19 +172,19 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
               ],
             ),
             ProfileItem(
-              mywidget: OrderScreen(id: 1),
+              mywidget: OrderScreen(id: widget.id),
               title: "Đơn hàng của tôi",
               detail: "Bạn có ${OrderPresenter.lstOrder.length} đơn hàng",
             ),
             ProfileItem(
               mywidget: EditAddressScreen(id: user.ID),
               title: "Địa chỉ giao hàng",
-              detail: "Bạn có 3 địa chỉ",
+              detail: "",
             ),
             ProfileItem(
               mywidget: PayMethodScreen(),
               title: "Thanh toán",
-              detail: "Bạn có 1 hình thức thanh toán",
+              detail: "",
             ),
             ProfileItem(
               mywidget: SettingScreen(
