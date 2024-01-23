@@ -46,13 +46,9 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                       if (widget.active != 0) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return widget.userid == 1
-                              ? AdminProfileScreen(
-                                  id: widget.userid,
-                                )
-                              : ProfileScreen(
-                                  id: widget.userid,
-                                );
+                          return HomeScreen(
+                            id: widget.userid,
+                          );
                         }));
                       }
                     },
@@ -65,8 +61,9 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ProductsManageScreen(idUser: widget.userid,),
+                            builder: (context) => NotiScreen(
+                              userId: widget.userid,
+                            ),
                           ));
                     },
                     icon: Icon(widget.active != 1

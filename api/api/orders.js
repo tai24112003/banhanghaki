@@ -82,8 +82,8 @@ router.post('/api/order/', async (req, res) => {
     try {
         getMaxidOrders().then((rs) => {
             var idOrder = rs + 1;
-            const query = 'INSERT INTO `orders`(`ID` ,`Quantity`, `OrderDate`, `TotalAmount`, `Status`, `AddressID`, `UserID`) VALUES (?,?,?,?,?,?,?)';
-            connection.query(query, [idOrder, quantity, Date.now(), totalAmount, "Đang xác nhận", addressID, userID], async (err, results) => {
+            const query = 'INSERT INTO `orders`(`ID` ,`Quantity`, `OrderDate`, `TotalAmount`, `Status`, `AddressID`, `UserID`) VALUES (?,?,now(),?,?,?,?)';
+            connection.query(query, [idOrder, quantity, totalAmount, "Đang xác nhận", addressID, userID], async (err, results) => {
                 if (err) {
                     console.error('Error executing MySQL query:', err);
                     res.status(500).send('Internal Server Error');

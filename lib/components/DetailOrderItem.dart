@@ -20,6 +20,8 @@ class DetailOrderItem extends StatefulWidget {
 class _DetailOrderItemState extends State<DetailOrderItem> {
   Product? item;
   Uint8List? uint8List;
+  UserPresenter? user;
+  User? admin;
   @override
   void initState() {
     super.initState();
@@ -31,6 +33,8 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
 
   Future<void> loadItem() async {
     try {
+      admin = await user?.getUserById(1);
+
       item = await ProductPresenter.fetchProduct(widget.myitem.productID);
       if (kDebugMode) {
         print(item!.image);
@@ -75,7 +79,9 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
                     width: MediaQuery.of(context).size.width / 4,
                     height: MediaQuery.of(context).size.height / 8.5,
                   )
-                : Placeholder(), // You can replace Placeholder with any other widget or image for the null case
+                : Center(
+                    child: Text("Đang tải ...."),
+                  ), // You can replace Placeholder with any other widget or image for the null case
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.7 - 100,
@@ -89,13 +95,13 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      item!.name,
+                      item != null ? item!.name : "...",
                       style: const TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
                 Text(
-                  "${item!.price}\$",
+                  "${item != null ? item!.price : "..."}\$",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -116,10 +122,5 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
         ],
       ),
     );
-  }
-
-  @override
-  void displayMessage(String message) {
-    // TODO: implement displayMessage
   }
 }

@@ -16,7 +16,7 @@ class OrderPresenter {
     client.badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
     final req = new IOClient(client);
-    final response = await http.post(
+    final response = await req.post(
       Uri.parse('${ApiConstants.baseUrl}/api/order/get'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'id': id}),
@@ -128,7 +128,6 @@ class OrderPresenter {
         }),
       );
 
-      
       return responseData['OrderID'];
     }
     return 0;

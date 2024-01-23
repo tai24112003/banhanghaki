@@ -115,6 +115,7 @@ class _OrderItemState extends State<OrderItem> implements UserView {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
                             return DetailOrderScreen(
+                                total: widget.myorder.totalAmount,
                                 id: widget.myorder.id,
                                 stt: widget.myorder.status);
                           },

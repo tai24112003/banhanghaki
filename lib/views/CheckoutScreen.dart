@@ -35,20 +35,23 @@ class _CheckoutScreenState extends State<CheckoutScreen>
     super.initState();
     presenter = AddressPresenter(this);
     userPresenter = UserPresenter(this);
+    print("Init");
     loadAddresses();
   }
 
   Future<void> loadAddresses() async {
-    if (!mounted) return;
     final user = await userPresenter.getUserById(widget.id);
     final addresses = await presenter.getAddressByUserId(widget.id);
-    print(user);
-    setState(() {
-      lstAddress = addresses;
-      curAdd = lstAddress
-              .firstWhereOrNull((element) => element.ID == user?.address) ??
-          curAdd;
-    });
+    print("Load");
+    print(addresses);
+    if (mounted)
+      setState(() {
+        lstAddress = addresses;
+        curAdd = lstAddress
+                .firstWhereOrNull((element) => element.ID == user?.address) ??
+            curAdd;
+        print(curAdd.FullAddress);
+      });
   }
 
   @override

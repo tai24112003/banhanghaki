@@ -36,18 +36,19 @@ class ProductPresenter {
         return null;
       }
     } catch (e) {
-      print('Error: $e');
+      print('Error:aaaaaa $e');
       return null;
     }
   }
 
- static Future<List<Product>> fetchProducts(int idCategory) async {
-  try {
-    final response = await http.get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
+  static Future<List<Product>> fetchProducts(int idCategory) async {
+    try {
+      final response = await http
+          .get(Uri.parse('${ApiConstants.baseUrl}/api/product/$idCategory'));
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body) as List<dynamic>;
-      List<Product> products = [];
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as List<dynamic>;
+        List<Product> products = [];
 
         for (var item in data) {
           Product product = Product.fromJson(item);
@@ -62,12 +63,12 @@ class ProductPresenter {
         // Trả về dữ liệu từ local storage nếu có lỗi
         return LocalStorage.getProducts(idCategory);
       }
-  
-  } catch (e) {
-    // Trả về dữ liệu từ local storage nếu có lỗi
-    return LocalStorage.getProducts(idCategory);
+    } catch (e) {
+      // Trả về dữ liệu từ local storage nếu có lỗi
+      return LocalStorage.getProducts(idCategory);
+    }
   }
- }
+
   static Future<void> addProduct(
       File? _imageFile,
       int _selectedItem,
@@ -102,8 +103,7 @@ class ProductPresenter {
 
       if (response.statusCode == 200) {
         print('Sản phẩm đã được thêm thành công');
-      } else {
-      }
+      } else {}
     } catch (e) {
       print('Lỗi: $e');
     }

@@ -12,6 +12,7 @@ router.post('/api/orderdetail/get', async (req, res) => {
                 res.status(500).send('Internal Server Error');
             } else {
                 if (results.length > 0) {
+                    console.log(results);
                     res.json(results);
                 }
             }

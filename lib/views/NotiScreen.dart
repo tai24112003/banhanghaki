@@ -28,6 +28,7 @@ class _NotiScreenState extends State<NotiScreen> {
     final Notificationses = await presenter.getNotificationbyId(widget.userId);
     setState(() {
       lstNotifications = Notificationses;
+      lstNotifications.reversed;
     });
     print(lstNotifications);
   }

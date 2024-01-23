@@ -60,14 +60,14 @@ class _LoginScreenState extends State<LoginScreen> implements UserView {
   }
 
   void initLocal() async {
-    int? id = await Stored.loadStoredText("UserID");
+    String? id = await Stored.loadStoredText("UserID");
     print("ID" + id.toString());
-    if (id != 0) {
+    if (id != '0' && id != '') {
       Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(id: id!),
+            builder: (context) => HomeScreen(id: int.parse(id!)),
           ));
     }
   }

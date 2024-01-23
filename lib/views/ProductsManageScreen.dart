@@ -8,8 +8,8 @@ import 'package:bangiayhaki/views/AddProductScreen.dart';
 import 'package:flutter/material.dart';
 
 class ProductsManageScreen extends StatefulWidget {
-  const ProductsManageScreen({super.key,required this.idUser});
-final int idUser;
+  const ProductsManageScreen({super.key, required this.idUser});
+  final int idUser;
   @override
   State<ProductsManageScreen> createState() => _ProductsManageScreenState();
 }
@@ -18,8 +18,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
   late TabController _tabController;
 
   void test() {
-    setState(() {
-          });
+    setState(() {});
   }
 
   @override
@@ -32,7 +31,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
           child: Column(
             children: [
               AppBar(
-                backgroundColor: Colors.white,
+                backgroundColor: Color.fromARGB(255, 219, 219, 219),
                 title: const Text(
                   'Quản lý sản phẩm',
                   style: TextStyle(color: Colors.black),
@@ -47,7 +46,9 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
             Expanded(
               child: TabBarView(
                 children: [
-                  ListChairManager(idUser: widget.idUser,),
+                  ListChairManager(
+                    idUser: widget.idUser,
+                  ),
                   ListTableManager(idUser: widget.idUser),
                   ListArmchairManager(idUser: widget.idUser),
                   ListBedManager(idUser: widget.idUser),
@@ -65,7 +66,7 @@ class _ProductsManageScreenState extends State<ProductsManageScreen> {
                     MaterialPageRoute(
                       builder: (context) => AddProduct(
                         id: 0,
-                        idUser:widget.idUser,
+                        idUser: widget.idUser,
                         image: [],
                         idCategory: 0,
                         quantity: 0,

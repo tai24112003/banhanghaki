@@ -1,5 +1,7 @@
+import 'package:bangiayhaki/models/OrderModel.dart';
 import 'package:bangiayhaki/views/DetailOrderScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
+import 'package:bangiayhaki/views/OrderScreen.dart';
 import 'package:flutter/material.dart';
 
 class CongratScreen extends StatelessWidget {
@@ -61,7 +63,7 @@ class CongratScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              DetailOrderScreen(stt: "Đang xử lí", id: idorder),
+                              OrderScreen(id: idorder),
                         ));
                   },
                   style: ButtonStyle(

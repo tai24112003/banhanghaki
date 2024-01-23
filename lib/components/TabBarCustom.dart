@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TabbarCustom extends StatefulWidget {
-
   const TabbarCustom({Key? key});
 
   @override
@@ -11,7 +10,8 @@ class TabbarCustom extends StatefulWidget {
 class _TabbarCustomState extends State<TabbarCustom> {
   @override
   Widget build(BuildContext context) {
-    return  TabBar(
+    return TabBar(
+      labelColor: Colors.black,
       tabs: [
         Tab(
           icon: ClipRRect(
@@ -22,8 +22,8 @@ class _TabbarCustomState extends State<TabbarCustom> {
               width: 40,
               height: 40,
             ),
-          ), 
-          text: 'Ghế', 
+          ),
+          text: 'Ghế',
         ),
         Tab(
           icon: ClipRRect(
@@ -36,8 +36,8 @@ class _TabbarCustomState extends State<TabbarCustom> {
               height: 40,
               fit: BoxFit.cover,
             ),
-          ), 
-          text: 'Bàn', 
+          ),
+          text: 'Bàn',
         ),
         Tab(
           icon: ClipRRect(
@@ -60,7 +60,7 @@ class _TabbarCustomState extends State<TabbarCustom> {
               width: 40,
               height: 40,
             ),
-          ), 
+          ),
           text: 'Giường', // Tiêu đề cho tab 4
         ),
         Tab(

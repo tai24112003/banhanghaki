@@ -24,7 +24,7 @@ class _CartItemState extends State<CartItem> {
   bool isSelect = false;
   void _setQuan(int increa) {
     quan += increa;
-    quan = quan < 0 ? 0 : quan;
+    quan = quan < 1 ? 1 : quan;
     widget.onUpdateQuan(widget.cartIt.id, quan);
   }
 
@@ -43,14 +43,14 @@ class _CartItemState extends State<CartItem> {
     } catch (e) {
       print('Lỗi: $e');
     }
-       
   }
-late List<int> imageBytes;
+
+  late List<int> imageBytes;
   Uint8List? uint8List;
-  void loadImage(){
-        uint8List = Uint8List.fromList(imageBytes!);}
-  
-       
+  void loadImage() {
+    uint8List = Uint8List.fromList(imageBytes!);
+  }
+
   void setupQuan() {
     setState(() {
       quan = widget.cartIt.quantity;
@@ -82,17 +82,17 @@ late List<int> imageBytes;
                   }),
               Container(
                 child: Image.memory(
-                            uint8List!,
-                            width: MediaQuery.of(context).size.width/4, 
-                            height: MediaQuery.of(context).size.width/4,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              print('Lỗi tải hình ảnh: $error');
-                              return Container(
-                                child: Text('Lỗi tải hình ảnh'),
-                              );
-                            },
-                          ),
+                  uint8List!,
+                  width: MediaQuery.of(context).size.width / 4,
+                  height: MediaQuery.of(context).size.width / 4,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Lỗi tải hình ảnh: $error');
+                    return Container(
+                      child: Text('Lỗi tải hình ảnh'),
+                    );
+                  },
+                ),
                 height: MediaQuery.of(context).size.height * 0.125,
                 width: MediaQuery.of(context).size.height * 0.125,
                 decoration: BoxDecoration(border: Border.all()),

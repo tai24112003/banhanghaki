@@ -182,7 +182,7 @@ class _AccoutManageScreenState extends State<AccoutManageScreen> {
                     children: lstFiltered.isNotEmpty
                         ? lstFiltered.map((e) {
                             return AccountItem(
-                              id: e.id,
+                              id: e.ID,
                               name: e.Fullname,
                               email: e.Email,
                               status: e.Status,

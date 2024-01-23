@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddProduct extends StatefulWidget {
-   AddProduct({
+  AddProduct({
     Key? key,
     required this.id,
     required this.idUser,
@@ -23,11 +23,12 @@ class AddProduct extends StatefulWidget {
     required this.description,
     required this.price,
   }) : super(key: key);
-final int idUser;
+  final int idUser;
   final List<int> image;
   final String name, description;
   final double price;
-  final int? id;final quantity, idCategory;
+  final int? id;
+  final quantity, idCategory;
   final Function onRestart;
 
   @override
@@ -63,8 +64,6 @@ class _AddProductState extends State<AddProduct> {
       }
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -324,10 +323,14 @@ class _AddProductState extends State<AddProduct> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductsManageScreen(idUser: widget.idUser,),
+                                builder: (context) => ProductsManageScreen(
+                                  idUser: widget.idUser,
+                                ),
                               ),
                             );
-                          } 
+                          } else {
+                            Test();
+                          }
                         },
                         child: const Text("Cập nhật"),
                         style: ElevatedButton.styleFrom(
@@ -354,16 +357,27 @@ class _AddProductState extends State<AddProduct> {
                               _price.text,
                               _description.text,
                             );
-                            NotiPresenter().insertNotification(Name: "Sản phẩm "+_productName.text+" vừa được thêm vào", content: "Mời bạn đen xem",NotificationType: "Public",UserID: widget.idUser);
-                            NotificationServices().sendFCMNotificationToAll(title: "Thông báo",body:"HaKi Store vừa thêm sản phẩm mới vào xem ngay!" );
+                            NotiPresenter().insertNotification(
+                                Name: "Sản phẩm " +
+                                    _productName.text +
+                                    " vừa được thêm vào",
+                                content: "Mời bạn đen xem",
+                                NotificationType: "Public",
+                                UserID: widget.idUser);
+                            NotificationServices().sendFCMNotificationToAll(
+                                title: "Thông báo",
+                                body:
+                                    "HaKi Store vừa thêm sản phẩm mới vào xem ngay!");
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductsManageScreen(idUser: widget.idUser,),
+                                builder: (context) => ProductsManageScreen(
+                                  idUser: widget.idUser,
+                                ),
                               ),
                             );
                           } else {
-                           
+                            Test();
                           }
                         },
                         child: const Text("Thêm"),

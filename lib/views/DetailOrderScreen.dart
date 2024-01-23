@@ -8,9 +8,10 @@ import 'package:bangiayhaki/presenters/noti_service.dart';
 import 'package:flutter/material.dart';
 
 class DetailOrderScreen extends StatefulWidget {
-  const DetailOrderScreen({required this.stt, required this.id, Key? key})
+  const DetailOrderScreen(
+      {required this.total, required this.stt, required this.id, Key? key})
       : super(key: key);
-
+  final int total;
   final int id;
   final String stt;
 
@@ -95,7 +96,7 @@ class _DetailOrderScreenState extends State<DetailOrderScreen>
                           NotificationServices().sendFCMNotification(
                               title: "Cập nhật đơn hàng",
                               body: "Đơn hàng đã giao tới",
-                              deviceToken: "");
+                              deviceToken: admin!.DVToken);
                           Navigator.pop(context);
                         },
                         child: Container(

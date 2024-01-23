@@ -66,17 +66,15 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.search),
           onPressed: () {},
         ),
         backgroundColor: Colors.transparent,
-        title: Container(
-          width: MediaQuery.of(context).size.width,
-          child: const Text(
-            "Đặt hàng",
-            textAlign: TextAlign.center,
-          ),
+        title: const Text(
+          "Thông tin tài khoản",
+          textAlign: TextAlign.center,
         ),
       ),
       body: FutureBuilder<User?>(

@@ -33,6 +33,7 @@ class AddAddressScreenState extends State<AddAddressScreen>
     titleName = TextEditingController();
     numberStreet = TextEditingController();
     presenter = AddressPresenter(this);
+    print("object");
     presenter?.fetchCities().then((cityList) {
       setState(() {
         cities = cityList;
@@ -216,8 +217,8 @@ class AddAddressScreenState extends State<AddAddressScreen>
         await GlobalServices.notificationServices.getDeviceToken();
 
     await GlobalServices.notificationServices.sendFCMNotification(
-        title: 'New Address Added',
-        body: 'You have added a new address!',
+        title: 'Bạn vừa thêm địa chỉ mới',
+        body: 'Địa chỉ mới được thêm thành công',
         deviceToken: deviceToken);
   }
 

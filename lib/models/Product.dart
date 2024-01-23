@@ -24,7 +24,7 @@ class Product {
         ' ID: $id,'
         ' Quantity: $quantity,'
         ' CategoryID: $idCategory,'
-        // ' Image: ${image.toString()},'
+        ' Image: ${image.toString()},'
         ' ProductName: $name,'
         ' Price: $price,'
         ' Description: $description'

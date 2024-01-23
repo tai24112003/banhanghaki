@@ -55,7 +55,7 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
           });
         },
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color.fromARGB(0, 255, 255, 255),
       title: _isSearching
           ? Row(
               children: [
@@ -76,44 +76,50 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                   onPressed: () async {
                     if (_searchController.text != null &&
                         _searchController.text.isNotEmpty) {
-                      bool hasNetwork = await HitstoryPresenter.hasNetworkConnection();
-                    setState(() {
-                      HitstoryPresenter.addSearchHistory(
-                          _searchController.text, widget.UserId);
-                    });
+                      bool hasNetwork =
+                          await HitstoryPresenter.hasNetworkConnection();
+                      setState(() {
+                        HitstoryPresenter.addSearchHistory(
+                            _searchController.text, widget.UserId);
+                      });
                       if (hasNetwork) {
-                          Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchScreen(
-                            id: widget.UserId,
-                            search: _searchController.text,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchScreen(
+                              id: widget.UserId,
+                              search: _searchController.text,
+                            ),
                           ),
-                        ),
-                      );
+                        );
                       } else {
-                        _searchController.text="Không có internet";
+                        _searchController.text = "Không có internet";
                       }
                     }
                   },
                 ),
               ],
             )
-          : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:[ Container(
+          : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Container(
                 child: Text(
                   "${widget.title}",
                   textAlign: TextAlign.start,
                 ),
-              ),IconButton(onPressed: (){ Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CartScreen(
-            idUser: widget.UserId,
-          ),
-        ),
-      );}, icon: Icon(Icons.shopping_cart))]
-            ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(
+                          idUser: widget.UserId,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.shopping_cart))
+            ]),
       bottom: _isSearching
           ? PreferredSize(
               preferredSize: Size.fromHeight(18),
@@ -136,10 +142,11 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                           itemBuilder: (context, index) {
                             final history = snapshot.data![index];
                             return GestureDetector(
-                              onTap:() async {
-                                  bool hasNetwork = await HitstoryPresenter.hasNetworkConnection();
-                                  if (hasNetwork) {
-                                      Navigator.push(
+                              onTap: () async {
+                                bool hasNetwork = await HitstoryPresenter
+                                    .hasNetworkConnection();
+                                if (hasNetwork) {
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => SearchScreen(
@@ -148,12 +155,10 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
                                       ),
                                     ),
                                   );
-                                  } else {
-                                    _searchController.text="Không có internet";
-                                  }
-                                  
-                                },
-
+                                } else {
+                                  _searchController.text = "Không có internet";
+                                }
+                              },
                               child: Card(
                                   color:
                                       const Color.fromARGB(255, 255, 255, 255),
@@ -190,11 +195,9 @@ class _MyAppBarState extends State<MyAppBar> implements UserView {
           : null,
     );
   }
-  
+
   @override
   void displayMessage(String message) {
     // TODO: implement displayMessage
   }
-
-  
 }

@@ -163,11 +163,11 @@ class NotificationServices implements UserView {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) async {
-    int userid = await Stored.loadStoredText("UserID");
+    String userid = await Stored.loadStoredText("UserID");
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NotiScreen(userId: userid),
+          builder: (context) => NotiScreen(userId: int.parse(userid)),
         ));
   }
 
