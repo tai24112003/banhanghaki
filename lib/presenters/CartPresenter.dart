@@ -5,6 +5,7 @@ import 'package:bangiayhaki/models/CartItemModel.dart';
 import 'package:bangiayhaki/models/Product.dart';
 import 'package:bangiayhaki/models/OrderDetailsModel.dart';
 import 'package:bangiayhaki/presenters/Apiconstants.dart';
+import 'package:bangiayhaki/presenters/HistoryPresenter.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
@@ -95,16 +96,19 @@ class CartPresenter {
     client.badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
     final req = new IOClient(client);
-    final response = await req.get(
+    bool hasNetwork = await HitstoryPresenter.hasNetworkConnection();
+    if(hasNetwork){final response = await req.get(
       Uri.parse('${ApiConstants.baseUrl}/cart/userOf/$idU'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
       return response.body.toString();
     } else {
-      //throw Exception('Failed to load data');
+      
       return "-1";
     }
+    } return "1";
+    
   }
 
   static Future<bool> updateItemInCart(int id, int quan) async {
