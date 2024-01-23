@@ -11,7 +11,7 @@ class Stored {
 
   static Future<bool> saveText(String key, dynamic text) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt(key, text);
+    prefs.setString(key, text.toString());
     return true;
   }
 }

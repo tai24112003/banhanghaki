@@ -25,7 +25,7 @@ router.post('/api/order/get', async (req, res) => {
 //Lấy danh sách đơn hàng chờ xác nhận (thay đổi Status là trạng thái quy định)
 router.get('/api/order/stt-xn', async (req, res) => {
     try {
-        const query = 'SELECT * FROM Orders WHERE Status = 1';
+        const query = 'SELECT * FROM Orders WHERE Status = "Đang xác nhận"';
         connection.query(query, async (err, results) => {
             if (err) {
                 console.error('Error executing MySQL query:', err);
@@ -43,7 +43,7 @@ router.get('/api/order/stt-xn', async (req, res) => {
 //Cập nhật đơn hàng chờ xác nhận -> đang xử lý
 router.put('/api/order/:id', async (req, res) => {
     var idOrder = req.params.id;
-    const { status } = req.body;
+    const status = "Đang xử lí";
     try {
         const query = 'UPDATE `hakistore`.`Orders` SET `Status` = ? WHERE (`ID` = ?);';
         connection.query(query, [status, idOrder], async (err, results) => {
@@ -83,7 +83,7 @@ router.post('/api/order/', async (req, res) => {
         getMaxidOrders().then((rs) => {
             var idOrder = rs + 1;
             const query = 'INSERT INTO `orders`(`ID` ,`Quantity`, `OrderDate`, `TotalAmount`, `Status`, `AddressID`, `UserID`) VALUES (?,?,?,?,?,?,?)';
-            connection.query(query, [idOrder, quantity, Date.now(), totalAmount, "Đang xử lí", addressID, userID], async (err, results) => {
+            connection.query(query, [idOrder, quantity, Date.now(), totalAmount, "Đang xác nhận", addressID, userID], async (err, results) => {
                 if (err) {
                     console.error('Error executing MySQL query:', err);
                     res.status(500).send('Internal Server Error');

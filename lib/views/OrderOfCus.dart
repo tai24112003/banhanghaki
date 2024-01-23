@@ -26,13 +26,13 @@ class _OrderOfCusState extends State<OrderOfCus> {
     await OrderPresenter.loadData(widget.id).then((value) {
       _lstOr = OrderPresenter.lstOrder;
       _lstDG = _lstOr.where((element) {
-        return element.status == "2";
+        return element.status == "Đã giao";
       }).toList();
       _lstDXL = _lstOr.where((element) {
-        return element.status == "1";
+        return element.status == "Đang xử lí";
       }).toList();
       _lstDH = _lstOr.where((element) {
-        return element.status == "3";
+        return element.status == "Đã hủy";
       }).toList();
       setState(() {});
     });
