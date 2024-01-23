@@ -22,7 +22,7 @@ class User {
         Fullname: json['FullName'],
         Email: json['Email'],
         Phone: json['PhoneNumber'],
-        address: json['AddressID'],
+        address: json['AddressID'] ?? 0,
         Password: json['Password'],
         Status: json['Status']);
   }

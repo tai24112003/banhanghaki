@@ -1,74 +1,216 @@
-import 'package:bangiayhaki/components/MyAppBar.dart';
 import 'package:bangiayhaki/components/ProfileItem.dart';
+import 'package:bangiayhaki/models/OrderModel.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/OrderPresenter.dart';
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/views/CheckoutScreen.dart';
+import 'package:bangiayhaki/views/CofirmOrderScreen.dart';
+import 'package:bangiayhaki/views/EditAddressScreen.dart';
+import 'package:bangiayhaki/views/OrderScreen.dart';
+import 'package:bangiayhaki/views/ProductsManageScreen.dart';
+import 'package:bangiayhaki/views/SettingScreen.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class AdminProfileScreen extends StatefulWidget {
-  const AdminProfileScreen({super.key});
+  const AdminProfileScreen({required this.id, super.key});
+  final int id;
 
   @override
   State<AdminProfileScreen> createState() => _AdminProfileScreenState();
 }
 
-class _AdminProfileScreenState extends State<AdminProfileScreen> {
+class _AdminProfileScreenState extends State<AdminProfileScreen>
+    implements UserView {
+  late UserPresenter userPresenter;
+  late Future<User?> userFuture;
+  late String Fullname;
+  late String Email;
+  @override
+  initState() {
+    super.initState();
+    userPresenter = UserPresenter(this);
+    userFuture = loadUser();
+    loadUser().then((value) {
+      savedata("FullName", value!.Fullname);
+      savedata("Email", value.Email);
+    });
+
+    setState(() {
+      loadingdata();
+    });
+  }
+
+  Future<bool> isWifiConnected() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult == ConnectivityResult.wifi;
+  }
+
+  loadingdata() async {
+    Fullname = await Stored.loadStoredText("FullName");
+    Email = await Stored.loadStoredText("Email");
+  }
+
+  Future<User?> loadUser() async {
+    OrderPresenter.loadData(widget.id);
+    if (await isWifiConnected()) {
+      return userPresenter.getUserById(widget.id);
+    }
+    return User(
+        ID: widget.id,
+        Fullname: Fullname,
+        Email: Email,
+        Phone: '',
+        address: '',
+        Password: '',
+        Status: '');
+  }
+
+  void savedata(String a, String b) {
+    Stored.saveText(a, b);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          child: MyAppBar(
-            title: "Thông tin cá nhân",
-            UserId: 1,
-          ),
-          preferredSize: const Size.fromHeight(95),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {},
         ),
-        body: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+        backgroundColor: Colors.transparent,
+        title: Container(
+          width: MediaQuery.of(context).size.width,
+          child: const Text(
+            "Đặt hàng",
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+      body: FutureBuilder<User?>(
+        future: userFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Center(
+              child: Text('Failed to load user data.'),
+            );
+          } else {
+            User user = snapshot.data!;
+            return buildProfileView(user);
+          }
+        },
+      ),
+    );
+  }
+
+  String getAvatarText(User user) {
+    print(Fullname);
+    if (Fullname.isNotEmpty) {
+      if (Fullname.contains(' ')) {
+        return Fullname.split(' ')
+            .map((word) => word.isNotEmpty ? word[0] : '')
+            .join('')
+            .toUpperCase();
+      } else {
+        return Fullname.substring(0, 1).toUpperCase();
+      }
+    } else {
+      return 'QD';
+    }
+  }
+
+  Widget buildProfileView(User user) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        getAvatarText(user),
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            height: MediaQuery.of(context).size.height * 0.2,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            decoration: BoxDecoration(
-                                border: Border.all(), shape: BoxShape.circle),
-                            child: const Text(
-                              "QD",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        Fullname,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        Email,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color.fromRGBO(128, 128, 128, 1),
+                        ),
                       ),
                     ],
                   ),
-                  // ProfileItem(
-                  //   title: "Đơn hàng chờ xác nhận",
-                  //   detail: "Bạn có 10 món hàng",
-                  // ),
-                  // ProfileItem(
-                  //   title: "Khách hàng hôm nay",
-                  //   detail: "Bạn có 22 thông báo",
-                  // ),
-                  // ProfileItem(
-                  //   title: "Sản phẩm của tôi",
-                  //   detail: "Bạn có 22 thông báo",
-                  // ),
-                  // ProfileItem(
-                  //   title: "Phương thức thanh toán",
-                  //   detail: "Bạn có 1 hình thức thanh toán",
-                  // ),
-                  // ProfileItem(
-                  //   title: "Cài đặt",
-                  //   detail: "Thông báo, đổi mật khẩu, liên hệ",
-                  // )
-                ]),
-          ),
-        ));
+                )
+              ],
+            ),
+            ProfileItem(
+              mywidget: ConfirmOrderScreen(),
+              title: "Đơn hàng cần xác nhận",
+              detail: "",
+            ),
+            ProfileItem(
+              mywidget: EditAddressScreen(id: user.ID),
+              title: "Khách hàng",
+              detail: "",
+            ),
+            ProfileItem(
+              mywidget: ProductsManageScreen(),
+              title: "Sản phẩm",
+              detail: "",
+            ),
+            ProfileItem(
+              mywidget: SettingScreen(
+                user: user,
+                id: user.ID,
+              ),
+              title: "Cài đặt",
+              detail: "Thông báo, đổi mật khẩu, liên hệ",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }

@@ -1,11 +1,14 @@
 import 'package:bangiayhaki/models/UserModel.dart';
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/views/AdminProfileScreen.dart';
 import 'package:bangiayhaki/views/DetailScreen.dart';
 import 'package:bangiayhaki/views/HomeScreen.dart';
 import 'package:bangiayhaki/views/NotiScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
 import 'package:bangiayhaki/views/ProductsManageScreen.dart';
 import 'package:bangiayhaki/views/ProfileScreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BottomBarCustom extends StatefulWidget {
@@ -21,7 +24,12 @@ class BottomBarCustom extends StatefulWidget {
 
 class _BottomBarCustomState extends State<BottomBarCustom> {
   @override
-  @override
+  void initState() {
+    super.initState();
+    Stored.saveText("userid", widget.userid.toString());
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -38,9 +46,13 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                       if (widget.active != 0) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ProfileScreen(
-                            id: widget.userid,
-                          );
+                          return widget.userid == 1
+                              ? AdminProfileScreen(
+                                  id: widget.userid,
+                                )
+                              : ProfileScreen(
+                                  id: widget.userid,
+                                );
                         }));
                       }
                     },
@@ -55,14 +67,24 @@ class _BottomBarCustomState extends State<BottomBarCustom> {
                         ? Icons.notifications_active_outlined
                         : Icons.notifications_active)),
                 IconButton(
-                    onPressed: () {
-                      if (widget.active != 2)
+                    onPressed: () async {
+                      String id = await Stored.loadStoredText("userid");
+                      setState(() {});
+
+                      if (kDebugMode) {
+                        print(id);
+                      }
+                      if (widget.active != 2) {
+                        // ignore: use_build_context_synchronously
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return ProfileScreen(
-                            id: widget.userid,
-                          );
+                          return int.parse(id) == 1
+                              ? AdminProfileScreen(id: int.parse(id))
+                              : ProfileScreen(
+                                  id: int.parse(id),
+                                );
                         }));
+                      }
                     },
                     icon: Icon(widget.active != 2
                         ? Icons.person_outline

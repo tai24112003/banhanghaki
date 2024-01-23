@@ -10,22 +10,27 @@ import 'package:http/io_client.dart';
 class OrderPresenter {
   static List<Order> lstOrder = [];
 
-  static Future<void> loadData(int id) async {
+  static Future<List<Order>> loadData(int id) async {
     HttpClient client = new HttpClient();
     client.badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
     final req = new IOClient(client);
-    final response = await req.post(
+    final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}/api/order/get'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'id': id}),
     );
+    print(response.body);
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
+      print(data);
       lstOrder = data.map((orderData) => Order.fromJson(orderData)).toList();
+      return lstOrder;
     } else {
       print('Failed to load data. Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
+      // Handle the failure case, you might want to throw an exception or return an empty list
+      return [];
     }
   }
 

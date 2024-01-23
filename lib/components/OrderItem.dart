@@ -1,4 +1,5 @@
 import 'package:bangiayhaki/models/OrderModel.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/DetailOrderScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -9,9 +10,17 @@ class OrderItem extends StatefulWidget {
   State<OrderItem> createState() => _OrderItemState();
 }
 
-class _OrderItemState extends State<OrderItem> {
+class _OrderItemState extends State<OrderItem> implements UserView {
   String dateformat(DateTime dateTime) {
     return "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+  }
+
+  UserPresenter? user;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    user = UserPresenter(this);
   }
 
   @override

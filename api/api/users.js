@@ -17,9 +17,8 @@ const executeQuery = async (query, params) => {
 }
 
 router.get('/', (req, res) => {
-    connection.query('SELECT * FROM Users WHERE status=1', (error, results) => {
+    connection.query('SELECT * FROM users WHERE status=1', (error, results) => {
         if (error) {
-            //return res.send(error);
             return res.status(500).json({ error: 'Internal server error' });
         }
         else {

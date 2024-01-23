@@ -1,11 +1,14 @@
 import 'package:bangiayhaki/components/ProfileItem.dart';
+import 'package:bangiayhaki/models/OrderModel.dart';
 import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/OrderPresenter.dart';
+import 'package:bangiayhaki/presenters/StoreLocal.dart';
 import 'package:bangiayhaki/presenters/UserPresenter.dart';
 import 'package:bangiayhaki/views/CheckoutScreen.dart';
 import 'package:bangiayhaki/views/EditAddressScreen.dart';
 import 'package:bangiayhaki/views/OrderScreen.dart';
 import 'package:bangiayhaki/views/SettingScreen.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,34 +22,42 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> implements UserView {
   late UserPresenter userPresenter;
   late Future<User?> userFuture;
-  late ScrollController _scrollController;
-
+  late String Fullname;
+  late String Email;
+  late String Phone;
   @override
-  void initState() {
+  initState() {
     super.initState();
     userPresenter = UserPresenter(this);
-    userFuture = loadUser();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-  }
 
-  Future<void> _refresh() async {
+    loadUser().then((value) {
+      savedata("FullName", value!.Fullname);
+      savedata("Email", value.Email);
+      savedata("Phone", value.Phone);
+    });
+    loadingdata();
     userFuture = loadUser();
     setState(() {});
   }
 
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-    } else if (_scrollController.position.pixels ==
-        _scrollController.position.minScrollExtent) {
-      _refresh();
-    }
+  Future<bool> isWifiConnected() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult == ConnectivityResult.wifi;
+  }
+
+  loadingdata() async {
+    Fullname = await Stored.loadStoredText("FullName");
+    Email = await Stored.loadStoredText("Email");
+    Phone = await Stored.loadStoredText("Phone");
   }
 
   Future<User?> loadUser() async {
     await OrderPresenter.loadData(widget.id);
-    return userPresenter.getUserById(widget.id);
+    return await userPresenter.getUserById(widget.id);
+  }
+
+  Future<void> savedata(String a, String b) async {
+    await Stored.saveText(a, b);
   }
 
   @override
@@ -66,44 +77,40 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
           ),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: SingleChildScrollView(
-          child: FutureBuilder<User?>(
-            future: userFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error}'),
-                );
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return Center(
-                  child: Text('Failed to load user data.'),
-                );
-              } else {
-                User user = snapshot.data!;
-                return buildProfileView(user);
-              }
-            },
-          ),
-        ),
+      body: FutureBuilder<User?>(
+        future: userFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Center(
+              child: Text('Failed to load user data.'),
+            );
+          } else {
+            User user = snapshot.data!;
+            return buildProfileView(user);
+          }
+        },
       ),
     );
   }
 
-  String getAvatarText(User user) {
-    if (user.Fullname.isNotEmpty) {
-      if (user.Fullname.contains(' ')) {
-        return user.Fullname.split(' ')
-            .map((word) => word[0])
+  String getAvatarText(String name) {
+    print(Fullname);
+    if (Fullname.isNotEmpty) {
+      if (Fullname.contains(' ')) {
+        return Fullname.split(' ')
+            .map((word) => word.isNotEmpty ? word[0] : '')
             .join('')
             .toUpperCase();
       } else {
-        return user.Fullname.substring(0, 1).toUpperCase();
+        return Fullname.substring(0, 1).toUpperCase();
       }
     } else {
       return 'QD';
@@ -132,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
                         shape: BoxShape.circle,
                       ),
                       child: Text(
-                        getAvatarText(user),
+                        getAvatarText(Fullname),
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -144,14 +151,14 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user.Fullname,
+                        Fullname,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        user.Email,
+                        Email,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color.fromRGBO(128, 128, 128, 1),
@@ -163,19 +170,19 @@ class _ProfileScreenState extends State<ProfileScreen> implements UserView {
               ],
             ),
             ProfileItem(
-              mywidget: OrderScreen(id: 1),
+              mywidget: OrderScreen(id: widget.id),
               title: "Đơn hàng của tôi",
               detail: "Bạn có ${OrderPresenter.lstOrder.length} đơn hàng",
             ),
             ProfileItem(
               mywidget: EditAddressScreen(id: user.ID),
               title: "Địa chỉ giao hàng",
-              detail: "Bạn có 3 địa chỉ",
+              detail: "",
             ),
             ProfileItem(
-              mywidget: CheckoutScreen(id: 1),
+              mywidget: CheckoutScreen(id: widget.id),
               title: "Thanh toán",
-              detail: "Bạn có 1 hình thức thanh toán",
+              detail: "",
             ),
             ProfileItem(
               mywidget: SettingScreen(

@@ -2,7 +2,10 @@ import 'dart:typed_data';
 
 import 'package:bangiayhaki/models/OrderDetailsModel.dart';
 import 'package:bangiayhaki/models/Product.dart';
+import 'package:bangiayhaki/models/UserModel.dart';
 import 'package:bangiayhaki/presenters/ProductPresenter.dart';
+import 'package:bangiayhaki/presenters/UserPresenter.dart';
+import 'package:bangiayhaki/presenters/noti_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -14,14 +17,17 @@ class DetailOrderItem extends StatefulWidget {
   State<DetailOrderItem> createState() => _DetailOrderItemState();
 }
 
-class _DetailOrderItemState extends State<DetailOrderItem> {
+class _DetailOrderItemState extends State<DetailOrderItem> implements UserView {
   Product? item;
   Uint8List? uint8List;
-
+  UserPresenter? user;
+  User? admin;
   @override
   void initState() {
     super.initState();
     loadItem();
+    user = UserPresenter(this);
+    NotificationServices().sendFCMNotification(title: "title", body: "body", deviceToken: "deviceToken")
     if (kDebugMode) {
       print(uint8List);
     }
@@ -29,6 +35,8 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
 
   Future<void> loadItem() async {
     try {
+    admin=await user.getUserById(1);
+
       item = await ProductPresenter.fetchProduct(widget.myitem.productID);
       if (kDebugMode) {
         print(item!.image);
@@ -114,5 +122,10 @@ class _DetailOrderItemState extends State<DetailOrderItem> {
         ],
       ),
     );
+  }
+
+  @override
+  void displayMessage(String message) {
+    // TODO: implement displayMessage
   }
 }
